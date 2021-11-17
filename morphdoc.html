@@ -6,7 +6,7 @@
   </head>
   <body>
     <div contenteditable="true" spellcheck="false" id="main">
-      <div>Morphdoc v0.0.1</div><div><br /></div><div>#About<br />Morphdoc is Editable/Standalone/Text-based/Interactive/Light document system.<br />It is build on pure HTML5/JavaScript with support of Native FileSystem API.</div><div><br /></div><div>#Usage<br />- Ctrl+S to overwrite.<br />- Ctrl+Shift+S to write to another file.</div><div><br /></div><div>#Issues<br />- Auto save</div>
+      <div>Morphdoc v0.0.1</div><div><br /></div><div>#About<br />Morphdoc is Editable/Standalone/Text-based/Interactive/Light document system.<br />It is build on pure HTML5/JavaScript with support of Native FileSystem API.</div><div><br /></div><div>#Usage<br />- Ctrl+S to overwrite.<br />- Ctrl+Shift+S to write to another file.</div><div><br /></div><div>#Issues</div>
     </div>
 
 
@@ -23,6 +23,13 @@
   }
 </style>
 <script id="mpdScript">
+
+let globalOverwriteTimeout = null;
+
+document.getElementById("main").addEventListener("input", function() {
+  overwrite();
+});
+
 function addLog(str) {
   console.log(str);
 }
@@ -116,6 +123,31 @@ function serializeSource() {
       + `<script id="mpdScript">` + document.getElementById("mpdScript").innerHTML + `<\/script>`
       + "\n"
       + `<\/html>`);
+}
+
+async function overwrite() {
+  if (!nativeFSSupported) {
+    return;
+  }
+
+  if(!globalFSHandle) {
+    return;
+  }
+
+  clearTimeout(globalOverwriteTimeout);
+  globalOverwriteTimeout = setTimeout(async function() {
+      const fsHandle = await saveFile(
+        serializeSource(),
+        globalFSHandle
+      );
+      if (fsHandle) {
+        globalFSHandle = fsHandle;
+        addLog("saved");
+      } else {
+        addLog("failed to save");
+      }
+    },
+    3000);
 }
 
 document.addEventListener("keydown", async (e) => {

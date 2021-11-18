@@ -6,7 +6,7 @@
   </head>
   <body>
     <div contenteditable="true" spellcheck="false" id="main">
-      <div>Morphdoc v0.0.1</div><div><br /></div><div>#About<br />Morphdoc is Editable/Standalone/Text-based/Interactive/Light document system.<br />It is build on pure HTML5/JavaScript with support of Native FileSystem API.</div><div><br /></div><div>#Usage<br />- Ctrl+S to overwrite.<br />- Ctrl+Shift+S to write to another file.</div><div><br /></div><div>#Issues</div>
+      <div>Morphdoc v0.0.1</div><div><br /></div><div>#About<br />Morphdoc is Editable/Standalone/Text-based/Interactive/Light document system.<br />It is build on pure HTML5/JavaScript with support of Native FileSystem API.</div><div><br /></div><div>#Usage<br />- Ctrl+S to overwrite.<br />- Ctrl+Shift+S to write to another file.</div><div><br /></div><div>#Issues<br /></div>
     </div>
 
 
@@ -21,14 +21,15 @@
   #main > div {
     border-bottom: solid 1px #CCC;
   }
+
+  * {
+    font-size: small;
+  }
 </style>
 <script id="mpdScript">
 
 let globalOverwriteTimeout = null;
-
-document.getElementById("main").addEventListener("input", function() {
-  overwrite();
-});
+let globalFSHandle;
 
 function addLog(str) {
   console.log(str);
@@ -105,9 +106,6 @@ function isNativeFileSystemSupported() {
   return "showOpenFilePicker" in window;
 }
 
-const nativeFSSupported = isNativeFileSystemSupported();
-let globalFSHandle;
-
 function serializeSource() {
   const xs = new XMLSerializer();
   const dp = new DOMParser();
@@ -149,6 +147,10 @@ async function overwrite() {
     },
     3000);
 }
+
+document.getElementById("main").addEventListener("input", function() {
+  overwrite();
+});
 
 document.addEventListener("keydown", async (e) => {
   if (e.ctrlKey && e.shiftKey && e.code === "KeyS") {
@@ -203,6 +205,7 @@ document.addEventListener("keydown", async (e) => {
   }
 });
 
+const nativeFSSupported = isNativeFileSystemSupported();
 addLog(`support for nfs: ${(nativeFSSupported) ? "yes" : "no"}`);
 </script>
 </html>

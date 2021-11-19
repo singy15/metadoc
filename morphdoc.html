@@ -5,7 +5,7 @@
     <title>Morphdoc</title>
   </head>
   <body>
-    <div style="position:fixed; top:0px; left:0px; right:0px; height:46px; padding:5px; border-bottom: solid 1px #CCC; background-color:#FCFCFC;">
+    <div style="position:fixed; top:0px; left:0px; right:0px; height:46px; padding:5px; border-bottom: solid 1px #CCC; background-color:#FCFCFC; z-index:999;">
       <div style="text-decoration:underline; font-size:small; font-weight:bold; color:#555;">Morphdoc v0.0.1</div>
       <div class="button-container">
         <button id="btnAddTable" onclick="toggleMode()">Edit/View</button>
@@ -16,9 +16,22 @@
       </div>
     </div>
 
-    <div contenteditable="true" spellcheck="false" class="content" id="main" style="position:relative; top:58px;" onclick="saveFocus()">
-      <div>Morphdoc v0.0.1</div><div><br /></div><div>#About<br />Morphdoc is Editable/Standalone/Text-based/Interactive/Light document system.<br />It is build on pure HTML5/JavaScript with support of Native FileSystem API.</div><div><br /></div><div>#Usage<br />- Ctrl+S to overwrite.<br />- Ctrl+Shift+S to write to another file.</div><div><br /></div><div>#Issues<br /></div>
+    <div spellcheck="false" class="content" id="main" style="position:relative; top:58px;" onclick="saveFocus()" contenteditable="true">
+      <div>Morphdoc v0.0.1</div><div>#About<br />Morphdoc is Editable/Standalone/Text-based/Interactive/Light document system.<br />It is build on pure HTML5/JavaScript with support of Native FileSystem API.</div><div>#Usage<br />- Ctrl+S to overwrite.<br />- Ctrl+Shift+S to write to another file.</div><div>#Examples<br /></div><div>&lt;Table&gt;</div><div><table>
+      <tbody><tr><th>h1</th><th>h2</th><th>h3</th></tr>
+      <tr><td>c1</td><td>c2</td><td><table>
+      <tbody><tr><th>h1</th><th>h2</th><th>h3</th></tr>
+      <tr><td>c1</td><td>c2</td><td>c3</td></tr>
+      <tr><td>c4</td><td>c5</td><td>c6</td></tr>
+     </tbody></table><br /></td></tr>
+      <tr><td>c4</td><td>c5</td><td>c6</td></tr>
+     </tbody></table><br /></div><div>&lt;Link&gt;</div><div><a href="https://github.com/singy15">GitHub(kedama)</a><br /></div>
     </div>
+
+
+
+
+
 </body>
 <style id="mpdStyle">
   * {

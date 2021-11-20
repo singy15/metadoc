@@ -306,9 +306,16 @@ function createH1() {
 function envelope() {
   let tag = prompt("Tag to envelope (hint: 'span' for <span>)");
   if(tag) {
-  domUtil.insertElementAtCaret(
-    domUtil.createElementFromString(
-      `<${tag}>${domUtil.getSelected().textContent}</${tag}>`));
+    domUtil.insertElementAtCaret(
+      domUtil.createElementFromString(
+        `<${tag}>${domUtil.getSelected().textContent}</${tag}>`));
+  }
+}
+
+function createTag() {
+  let tag = prompt("Tag to create");
+  if(tag) {
+    domUtil.insertElementAtCaret(domUtil.createElementFromString(tag));
   }
 }
 
@@ -338,6 +345,7 @@ window.createSpan = createSpan;
 window.createDiv = createDiv;
 window.createH1 = createH1;
 window.envelope = envelope;
+window.createTag = createTag;
 window.saveOver = saveOver;
 window.editStyle = editStyle;
 

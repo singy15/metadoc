@@ -19,6 +19,7 @@ button {
   background-color: #727272;
   color: #FFF;
   cursor: pointer;
+  border-radius: 3px;
 }
 
 button:hover {
@@ -35,11 +36,21 @@ button:active {
   margin: 5px;
 }
 
+/*
 #main * {
   padding: 3px;
 }
+*/
 
 #main table {
+  margin: 5px;
+}
+
+#main td {
+  margin: 5px;
+}
+
+#main th {
   margin: 5px;
 }
 

@@ -4,7 +4,7 @@ let globalOverwriteTimeout = null;
 let globalFSHandle;
 let globalFocused;
 let globalSelection;
-let globalEditMode = false;
+let globalEditMode = true;
 
 function toggleMode() {
   globalEditMode = !globalEditMode;
@@ -33,18 +33,27 @@ function insertElement(el) {
   target.innerHTML = html.substring(0,offset) + el + html.substring(offset);
 }
 
+
+function createElementFromString(html) {
+  let el = (new DOMParser()).parseFromString(html,"text/html").body.children[0];
+  console.log(el);
+  return el;
+}
+
 function addTable() {
-  insertElement(
-    `<table>
-      <tr><th>h1</th><th>h2</th><th>h3</th></tr>
-      <tr><td>c1</td><td>c2</td><td>c3</td></tr>
-      <tr><td>c4</td><td>c5</td><td>c6</td></tr>
-     </table>`);
+  insertElementAtCaret(
+    createElementFromString(
+      `<table>
+        <tr><th>h1</th><th>h2</th><th>h3</th></tr>
+        <tr><td>c1</td><td>c2</td><td>c3</td></tr>
+        <tr><td>c4</td><td>c5</td><td>c6</td></tr>
+       </table>`));
 }
 
 function addLink() {
-  insertElement(
-    `<a href="${prompt('Input link url')}">link</a>`);
+  insertElementAtCaret(
+    createElementFromString(
+      `<a href="${prompt('Input link url')}">link</a>`));
 }
 
 function restoreFocus() {
@@ -269,6 +278,49 @@ function insertTextAtCaret(text) {
     }
 }
 
+function insertElementAtCaret(el) {
+    var sel, range;
+    if (window.getSelection) {
+        sel = window.getSelection();
+        if (sel.getRangeAt && sel.rangeCount) {
+            range = sel.getRangeAt(0);
+            range.deleteContents();
+            range.insertNode(el);
+        }
+    }
+}
+
+function getSelected() {
+    var sel, range;
+    if (window.getSelection) {
+        sel = window.getSelection();
+        if (sel.getRangeAt && sel.rangeCount) {
+            range = sel.getRangeAt(0);
+            return range.cloneContents();
+        }
+    } else if (document.selection && document.selection.createRange) {
+        document.selection.createRange().text = text;
+    }
+}
+
+function markBold() {
+  insertElementAtCaret(
+    createElementFromString(
+      `<b>${getSelected().textContent}</b>`));
+}
+
+function markStrike() {
+  insertElementAtCaret(
+    createElementFromString(
+      `<s>${getSelected().textContent}</s>`));
+}
+
+function markClear() {
+  insertElementAtCaret(
+    document.createTextNode(
+      `${getSelected().textContent}`));
+}
+
 
 /**
  * Export
@@ -281,4 +333,8 @@ window.saveNew = saveNew;
 window.saveOverwrite = saveOverwrite;
 window.toggleMode = toggleMode;
 window.insertTextAtCaret = insertTextAtCaret;
+window.getSelected = getSelected;
+window.markBold = markBold;
+window.markStrike = markStrike;
+window.markClear = markClear;
 

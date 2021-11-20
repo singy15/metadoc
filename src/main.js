@@ -5,6 +5,7 @@ let globalFSHandle;
 let globalFocused;
 let globalSelection;
 let globalEditMode = true;
+let globalOver;
 
 function toggleMode() {
   globalEditMode = !globalEditMode;
@@ -71,6 +72,16 @@ function saveFocus() {
   globalSelection = document.getSelection();
   console.log(globalFocused);
   console.log(globalSelection);
+}
+
+function saveOver() {
+  event.stopPropagation();
+  globalOver = event.target;
+
+  let ctrl = document.getElementById("optionControl");
+  let bound = globalOver.getBoundingClientRect();
+  ctrl.style.top = bound.top - 5 + "px";
+  ctrl.style.left = bound.left + bound.width - ctrl.getBoundingClientRect().width + "px";
 }
 
 function addLog(str) {
@@ -321,6 +332,26 @@ function markClear() {
       `${getSelected().textContent}`));
 }
 
+function createSpan() {
+  insertElementAtCaret(
+    createElementFromString(
+      `<span>${getSelected().textContent}</span>`));
+}
+
+function createDiv() {
+  insertElementAtCaret(
+    createElementFromString(
+      `<div>${getSelected().textContent}</div>`));
+}
+
+function editStyle() {
+  let style = globalOver.getAttribute("style");
+  let param = prompt("Input style", (style)? style.trim() : "" );
+  if(param) {
+    globalOver.setAttribute("style", param);
+  }
+}
+
 
 /**
  * Export
@@ -337,4 +368,8 @@ window.getSelected = getSelected;
 window.markBold = markBold;
 window.markStrike = markStrike;
 window.markClear = markClear;
+window.createSpan = createSpan;
+window.createDiv = createDiv;
+window.saveOver = saveOver;
+window.editStyle = editStyle;
 

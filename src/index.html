@@ -10,18 +10,32 @@
   <div style="position:fixed; top:0px; left:0px; right:0px; height:46px; padding:5px; border-bottom: solid 1px #CCC; background-color:#FCFCFC; z-index:999;">
     <div style="text-decoration:underline; font-size:small; font-weight:bold; color:#555;">Morphdoc v0.0.1</div>
     <div class="button-container">
-      <button id="btnAddTable" onclick="toggleMode()">Edit/View</button>
-      <button onclick="saveNew()">Save New</button>
-      <button onclick="saveOverwrite()">Save</button>
-      <button onclick="addTable()">Table</button>
-      <button onclick="addLink()">Link</button>
-      <button onclick="markClear()">Clear</button>
+      <button class="m-button" id="btnAddTable" onclick="toggleMode()">Edit/View</button>
+      <button class="m-button" onclick="saveNew()">Save New</button>
+      <button class="m-button" onclick="saveOverwrite()">Save</button>
+      <button class="m-button" onclick="addTable()">Table</button>
+      <button class="m-button" onclick="addLink()">Link</button>
+      <button class="m-button" onclick="markClear()">Clear</button>
+      <!--
       <button onclick="markBold()" style="font-weight:bold">Bold</button>
       <button onclick="markStrike()" style="text-decoration:line-through">Strike</button>
+      -->
+      <button class="m-button" onclick="createSpan()" >&lt;span&gt;</button>
+      <button class="m-button" onclick="createDiv()" >&lt;div&gt;</button>
     </div>
   </div>
 
-  <div spellcheck="false" class="content" id="main" style="position:relative; top:58px;" onclick="saveFocus()" contenteditable="true">
+  <div id="optionControl" style="position:fixed; z-index:9999;">
+    <button onclick="editStyle()" class="s-button">S</button>
+  </div>
+
+  <!--
+  <div id="styleEditor" style="position:fixed; left:calc(50% - 150px); top:calc(50% - 200px); border:solid 1px #000; width:300px; height:400px; background-color:#FFF; z-index:99999;">
+    <textarea id="styleEditorTextarea" style="margin:5px; width:290px; height:350px; resize:none; outline:none;"></textarea>
+  </div>
+  -->
+
+  <div spellcheck="false" class="content" id="main" style="position:relative; top:58px;" onclick="saveFocus()" onmouseover="saveOver()" contenteditable="true">
     <div>Morphdoc v0.0.1</div><div>#About<br />Morphdoc is Editable/Standalone/Text-based/Interactive/Light document system.<br />It is build on pure HTML5/JavaScript with support of Native FileSystem API.</div><div>#Usage<br />- Ctrl+S to overwrite.<br />- Ctrl+Shift+S to write to another file.</div><div>#Examples<br /></div><div>&lt;Table&gt;</div><div><table>
     <tbody><tr><th>h1</th><th>h2</th><th>h3</th></tr>
     <tr><td>c1</td><td>c2</td><td><table>

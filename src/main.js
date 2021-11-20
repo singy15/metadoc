@@ -255,6 +255,21 @@ document.addEventListener("keydown", async (e) => {
 const nativeFSSupported = isNativeFileSystemSupported();
 addLog(`support for nfs: ${(nativeFSSupported) ? "yes" : "no"}`);
 
+function insertTextAtCaret(text) {
+    var sel, range;
+    if (window.getSelection) {
+        sel = window.getSelection();
+        if (sel.getRangeAt && sel.rangeCount) {
+            range = sel.getRangeAt(0);
+            range.deleteContents();
+            range.insertNode( document.createTextNode(text) );
+        }
+    } else if (document.selection && document.selection.createRange) {
+        document.selection.createRange().text = text;
+    }
+}
+
+
 /**
  * Export
  */
@@ -265,4 +280,5 @@ window.addLink = addLink;
 window.saveNew = saveNew;
 window.saveOverwrite = saveOverwrite;
 window.toggleMode = toggleMode;
+window.insertTextAtCaret = insertTextAtCaret;
 

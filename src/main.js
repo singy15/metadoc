@@ -222,6 +222,10 @@ async function saveOverwrite() {
   }
 }
 
+/**
+ * Register event
+ */
+
 document.addEventListener("keydown", async (e) => {
   if (e.ctrlKey && e.shiftKey && e.code === "KeyS") {
     e.preventDefault();
@@ -250,6 +254,10 @@ document.addEventListener("keydown", async (e) => {
 
 const nativeFSSupported = isNativeFileSystemSupported();
 addLog(`support for nfs: ${(nativeFSSupported) ? "yes" : "no"}`);
+
+/**
+ * Export
+ */
 
 window.saveFocus = saveFocus;
 window.addTable = addTable;

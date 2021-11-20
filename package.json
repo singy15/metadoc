@@ -1,0 +1,33 @@
+{
+  "name": "morphdoc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/singy15/morphdoc.git"
+  },
+  "author": "kedama",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/singy15/morphdoc/issues"
+  },
+  "homepage": "https://github.com/singy15/morphdoc#readme",
+  "dependencies": {
+    "@editorjs/editorjs": "^2.22.2"
+  },
+  "devDependencies": {
+    "css-loader": "^5.2.7",
+    "html-webpack-inline-source-plugin": "1.0.0-beta.2",
+    "html-webpack-plugin": "4.2.0",
+    "style-loader": "^2.0.0",
+    "ts-loader": "6.2.2",
+    "typescript": "3.8.3",
+    "webpack": "4.42.1",
+    "webpack-cli": "3.3.11",
+    "webpack-dev-server": "3.10.3"
+  }
+}

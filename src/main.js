@@ -1,4 +1,5 @@
 import './style.css';
+import domUtil from './dom-util.js';
 
 let globalOverwriteTimeout = null;
 let globalFSHandle;
@@ -6,6 +7,7 @@ let globalFocused;
 let globalSelection;
 let globalEditMode = true;
 let globalOver;
+let globalMain = document.getElementById("main");
 
 function toggleMode() {
   globalEditMode = !globalEditMode;
@@ -18,13 +20,13 @@ function toggleMode() {
 }
 
 function changeToViewMode() {
-  document.getElementById("main").removeAttribute("contenteditable");
-  document.getElementById("main").classList.remove("content");
+  globalMain.removeAttribute("contenteditable");
+  globalMain.classList.remove("content");
 }
 
 function changeToEditMode() {
-  document.getElementById("main").setAttribute("contenteditable", "true");
-  document.getElementById("main").classList.add("content");
+  globalMain.setAttribute("contenteditable", "true");
+  globalMain.classList.add("content");
 }
 
 function insertElement(el) {
@@ -34,27 +36,18 @@ function insertElement(el) {
   target.innerHTML = html.substring(0,offset) + el + html.substring(offset);
 }
 
-
-function createElementFromString(html) {
-  let el = (new DOMParser()).parseFromString(html,"text/html").body.children[0];
-  console.log(el);
-  return el;
-}
-
 function addTable() {
-  insertElementAtCaret(
-    createElementFromString(
-      `<table>
-        <tr><th>h1</th><th>h2</th><th>h3</th></tr>
-        <tr><td>c1</td><td>c2</td><td>c3</td></tr>
-        <tr><td>c4</td><td>c5</td><td>c6</td></tr>
-       </table>`));
+  domUtil.insertElementAtCaretByHtml(
+    `<table>
+      <tr><th>h1</th><th>h2</th><th>h3</th></tr>
+      <tr><td>c1</td><td>c2</td><td>c3</td></tr>
+      <tr><td>c4</td><td>c5</td><td>c6</td></tr>
+     </table>`);
 }
 
 function addLink() {
-  insertElementAtCaret(
-    createElementFromString(
-      `<a href="${prompt('Input link url')}">link</a>`));
+  domUtil.insertElementAtCaretByHtml(
+    `<a href="${prompt('Input link url')}">link</a>`);
 }
 
 function restoreFocus() {
@@ -275,73 +268,34 @@ document.addEventListener("keydown", async (e) => {
 const nativeFSSupported = isNativeFileSystemSupported();
 addLog(`support for nfs: ${(nativeFSSupported) ? "yes" : "no"}`);
 
-function insertTextAtCaret(text) {
-    var sel, range;
-    if (window.getSelection) {
-        sel = window.getSelection();
-        if (sel.getRangeAt && sel.rangeCount) {
-            range = sel.getRangeAt(0);
-            range.deleteContents();
-            range.insertNode( document.createTextNode(text) );
-        }
-    } else if (document.selection && document.selection.createRange) {
-        document.selection.createRange().text = text;
-    }
-}
-
-function insertElementAtCaret(el) {
-    var sel, range;
-    if (window.getSelection) {
-        sel = window.getSelection();
-        if (sel.getRangeAt && sel.rangeCount) {
-            range = sel.getRangeAt(0);
-            range.deleteContents();
-            range.insertNode(el);
-        }
-    }
-}
-
-function getSelected() {
-    var sel, range;
-    if (window.getSelection) {
-        sel = window.getSelection();
-        if (sel.getRangeAt && sel.rangeCount) {
-            range = sel.getRangeAt(0);
-            return range.cloneContents();
-        }
-    } else if (document.selection && document.selection.createRange) {
-        document.selection.createRange().text = text;
-    }
-}
-
 function markBold() {
-  insertElementAtCaret(
-    createElementFromString(
-      `<b>${getSelected().textContent}</b>`));
+  domUtil.insertElementAtCaret(
+    domUtil.createElementFromString(
+      `<b>${domUtil.getSelected().textContent}</b>`));
 }
 
 function markStrike() {
-  insertElementAtCaret(
-    createElementFromString(
-      `<s>${getSelected().textContent}</s>`));
+  domUtil.insertElementAtCaret(
+    domUtil.createElementFromString(
+      `<s>${domUtil.getSelected().textContent}</s>`));
 }
 
 function markClear() {
-  insertElementAtCaret(
+  domUtil.insertElementAtCaret(
     document.createTextNode(
-      `${getSelected().textContent}`));
+      `${domUtil.getSelected().textContent}`));
 }
 
 function createSpan() {
-  insertElementAtCaret(
-    createElementFromString(
-      `<span>${getSelected().textContent}</span>`));
+  domUtil.insertElementAtCaret(
+    domUtil.createElementFromString(
+      `<span>${domUtil.getSelected().textContent}</span>`));
 }
 
 function createDiv() {
-  insertElementAtCaret(
-    createElementFromString(
-      `<div>${getSelected().textContent}</div>`));
+  domUtil.insertElementAtCaret(
+    domUtil.createElementFromString(
+      `<div>${domUtil.getSelected().textContent}</div>`));
 }
 
 function editStyle() {
@@ -363,8 +317,6 @@ window.addLink = addLink;
 window.saveNew = saveNew;
 window.saveOverwrite = saveOverwrite;
 window.toggleMode = toggleMode;
-window.insertTextAtCaret = insertTextAtCaret;
-window.getSelected = getSelected;
 window.markBold = markBold;
 window.markStrike = markStrike;
 window.markClear = markClear;

@@ -157,15 +157,14 @@ function serializeSource() {
   const dp = new DOMParser();
   
   const dom = dp.parseFromString(xs.serializeToString(document), "text/html");
-  dom.getElementById("mpdStyle").remove();
-  // dom.getElementById("mpdScript").remove();
-  dom.getElementByTagName("script").remove();
+  dom.getElementsByTagName("style")[0].remove();
+  dom.getElementsByTagName("script")[0].remove();
   return xs.serializeToString(dom)
     .replace('<\/html>',
       "\n"
-      + `<style id="mpdStyle">` + document.getElementById("mpdStyle").innerHTML + `<\/style>`
+      + `<style>` + document.getElementsByTagName("style")[0].innerHTML + `<\/style>`
       + "\n"
-      + `<script type="text/javascript">` + document.getElementByTagName("script").innerHTML + `<\/script>`
+      + `<script type="text/javascript">` + document.getElementsByTagName("script")[0].innerHTML + `<\/script>`
       + "\n"
       + `<\/html>`);
 }
@@ -298,6 +297,21 @@ function createDiv() {
       `<div>${domUtil.getSelected().textContent}</div>`));
 }
 
+function createH1() {
+  domUtil.insertElementAtCaret(
+    domUtil.createElementFromString(
+      `<h1>${domUtil.getSelected().textContent}</h1>`));
+}
+
+function envelope() {
+  let tag = prompt("Tag to envelope (hint: 'span' for <span>)");
+  if(tag) {
+  domUtil.insertElementAtCaret(
+    domUtil.createElementFromString(
+      `<${tag}>${domUtil.getSelected().textContent}</${tag}>`));
+  }
+}
+
 function editStyle() {
   let style = globalOver.getAttribute("style");
   let param = prompt("Input style", (style)? style.trim() : "" );
@@ -322,6 +336,8 @@ window.markStrike = markStrike;
 window.markClear = markClear;
 window.createSpan = createSpan;
 window.createDiv = createDiv;
+window.createH1 = createH1;
+window.envelope = envelope;
 window.saveOver = saveOver;
 window.editStyle = editStyle;
 

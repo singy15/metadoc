@@ -157,13 +157,13 @@ function serializeSource() {
   const dp = new DOMParser();
   
   const dom = dp.parseFromString(xs.serializeToString(document), "text/html");
-  dom.getElementsByTagName("style")[0].remove();
+  // dom.getElementsByTagName("style")[0].remove();
   dom.getElementsByTagName("script")[0].remove();
   return xs.serializeToString(dom)
     .replace('<\/html>',
       "\n"
-      + `<style>` + document.getElementsByTagName("style")[0].innerHTML + `<\/style>`
-      + "\n"
+      // + `<style>` + document.getElementsByTagName("style")[0].innerHTML + `<\/style>`
+      // + "\n"
       + `<script type="text/javascript">` + document.getElementsByTagName("script")[0].innerHTML + `<\/script>`
       + "\n"
       + `<\/html>`);

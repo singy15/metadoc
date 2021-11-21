@@ -1,8 +1,11 @@
+
+/*
 * {
   margin: 0px;
   padding: 0px;
   font-size: small;
 }
+*/
 
 .button-container {
   padding: 5px;
@@ -50,16 +53,24 @@
   color: #727272;
 }
 
+* {
+  outline: none;
+}
+
+/*
 #main {
   padding: 2px;
   margin: 5px;
 }
+*/
 
 /*
 #main * {
   padding: 3px;
 }
 */
+
+/*
 
 #main table {
   margin: 5px;
@@ -87,5 +98,11 @@ th { background-color: #EEE; }
 
 table,tr {
   outline: none;
+}
+
+*/
+
+.over {
+  outline: dotted 1px #CCC;
 }
 

@@ -65,6 +65,10 @@ function saveFocus() {
   globalSelection = document.getSelection();
   console.log(globalFocused);
   console.log(globalSelection);
+
+  if(globalFocused.id === "main") {
+    globalFocused.children[globalFocused.children.length - 1].focus();
+  }
 }
 
 function saveOver() {
@@ -75,6 +79,12 @@ function saveOver() {
   let bound = globalOver.getBoundingClientRect();
   ctrl.style.top = bound.top - 5 + "px";
   ctrl.style.left = bound.left + bound.width - ctrl.getBoundingClientRect().width + "px";
+
+  globalOver.classList.add("over");
+}
+
+function onOver() {
+  event.target.classList.remove("over");
 }
 
 function addLog(str) {
@@ -327,6 +337,52 @@ function editStyle() {
   }
 }
 
+function moveEl(dir) {
+  console.log(dir);
+
+  if((dir < 0) && (globalOver.previousSibling)) {
+    let targetEl = globalOver;
+    let prevEl = globalOver.previousSibling;
+    let parentEl = targetEl.parentElement;
+
+    if(parentEl == prevEl.parentElement) {
+      targetEl.remove();
+      parentEl.insertBefore(targetEl, prevEl);
+    }
+  } else if((dir > 0) && (globalOver.nextSibling)) {
+
+    let targetEl = globalOver.nextSibling;
+    let refEl = globalOver;
+    let parentEl = refEl.parentElement;
+
+    console.log("down",targetEl);
+
+    // if(parentEl == prevEl.parentElement) {
+      targetEl.remove();
+      parentEl.insertBefore(targetEl, refEl);
+    // }
+
+
+    // console.log("down",targetEl);
+    // let targetEl = globalOver;
+    // let prevEl = globalOver.nextSibling.nextSibling;
+    // let parentEl = targetEl.parentElement;
+
+    // if(parentEl == prevEl.parentElement) {
+    //   targetEl.remove();
+    //   parentEl.insertBefore(targetEl, prevEl);
+    // }
+  }
+}
+
+function modified() {
+  console.log("modified2");
+  let main = document.getElementById("main");
+  if(main.children.length == 0) {
+    main.appendChild(domUtil.createElementFromString("<div>&nbsp;</div>"));
+    main.children[0].focus();
+  }
+}
 
 /**
  * Export
@@ -348,4 +404,7 @@ window.envelope = envelope;
 window.createTag = createTag;
 window.saveOver = saveOver;
 window.editStyle = editStyle;
+window.onOver = onOver;
+window.moveEl = moveEl;
+window.modified = modified;
 

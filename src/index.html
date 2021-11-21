@@ -26,6 +26,8 @@
 
   <div id="optionControl" style="position:fixed; z-index:9999;">
     <button onclick="editStyle()" class="s-button">S</button>
+    <button onclick="moveEl(-1)" class="s-button">U</button>
+    <button onclick="moveEl(1)" class="s-button">D</button>
   </div>
 
   <!--
@@ -34,9 +36,13 @@
   </div>
   -->
 
-  <div spellcheck="false" class="content" id="main" style="position:relative; top:58px;" onclick="saveFocus()" onmouseover="saveOver()" contenteditable="true">
-    <div><h1 style="font-size:medium;">Morphdoc v0.0.1</h1></div><div><h2>#About</h2><span style="color:blue;">Morphdoc</span> is <span style="font-weight:bold;">Editable/Standalone/Text-based/Interactive/Light</span> document system.<br />It is build on pure HTML5/JavaScript with support of Native FileSystem API.</div><div><h2>#Usage</h2>- Ctrl+S to overwrite.<br />- Ctrl+Shift+S to write to another file.</div><div><h2>#Example</h2><div style="margin-left:20px;">&lt;Table&gt;<br /><table><tbody><tr><th>th1</th><th>th2</th><th>th3</th></tr><tr><td>td1</td><td>td2</td><td><table><tbody><tr><th>th1</th><th>th2</th><th>th3</th></tr><tr><td>td1</td><td>td2</td><td>td3</td></tr><tr><td>td4</td><td>td5</td><td>td6</td></tr></tbody></table><br /></td></tr><tr><td>td4</td><td>td5</td><td style="text-align:right;">td6</td></tr></tbody></table><br /></div><div style="margin-left:20px;">&lt;Link&gt;<br /><a href="https://github.com/singy15">GitHub(kedama)</a></div></div>
+  <div spellcheck="false" class="content" id="main" style="position:relative; top:58px;" onclick="saveFocus()" onmouseover="saveOver()" onmouseout="onOver()" oninput="modified()" contenteditable="true">
+    <div><h1>Morphdoc v0.0.1</h1></div><div><h2>#About</h2><span style="color:blue;">Morphdoc</span> is <span style="font-weight:bold;">Editable/Standalone/Text-based/Interactive/Light</span> document system.<br />It is build on pure HTML5/JavaScript with support of Native FileSystem API.</div><div><h2>#Usage</h2>- Ctrl+S to overwrite.<br />- Ctrl+Shift+S to write to another file.</div><div><h2>#Example</h2><div style="margin-left:20px;">&lt;Table&gt;<br /><table><tbody><tr><th>th1</th><th>th2</th><th>th3</th></tr><tr><td>td1</td><td>td2</td><td><table><tbody><tr><th>th1</th><th>th2</th><th>th3</th></tr><tr><td>td1</td><td>td2</td><td>td3</td></tr><tr><td>td4</td><td>td5</td><td>td6</td></tr></tbody></table><br /></td></tr><tr><td>td4</td><td>td5</td><td style="text-align:right;">td6</td></tr></tbody></table><br /></div><div style="margin-left:20px;">&lt;Link&gt;<br /><a href="https://github.com/singy15">GitHub(kedama)</a></div></div>
   </div>
 
 </body>
+<style id="userStyle">
+</style>
+<script id="userScript">
+</script>
 </html>

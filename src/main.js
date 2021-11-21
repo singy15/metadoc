@@ -384,6 +384,14 @@ function modified() {
   }
 }
 
+function keydown() {
+  console.log(event);
+  if(event.keyCode === 13) {
+    event.preventDefault();
+    domUtil.insertElementAtCaretByHtml(`<br />`);
+  }
+}
+
 /**
  * Export
  */
@@ -407,4 +415,5 @@ window.editStyle = editStyle;
 window.onOver = onOver;
 window.moveEl = moveEl;
 window.modified = modified;
+window.keydown = keydown;
 

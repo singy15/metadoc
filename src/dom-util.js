@@ -54,11 +54,18 @@ function getSelected() {
     }
 }
 
+function decodeHtml(input){
+  var e = document.createElement('div');
+  e.innerHTML = input;
+  return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+}
+
 module.exports = {
   insertTextAtCaret: insertTextAtCaret,
   insertElementAtCaret: insertElementAtCaret,
   insertElementAtCaretByHtml: insertElementAtCaretByHtml,
   getSelected: getSelected,
-  createElementFromString: createElementFromString
+  createElementFromString: createElementFromString,
+  decodeHtml: decodeHtml
 };
 

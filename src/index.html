@@ -3,60 +3,43 @@
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="x-ua-compatible" content="IE=Edge" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,
+    minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
   <title>Metadoc</title>
 </head>
 <body>
-  <div style="position:fixed; top:0px; left:0px; right:0px; height:46px; padding:5px; border-bottom: solid 1px #CCC; background-color:#AAA; z-index:999;">
-    <div style="text-decoration:underline; font-size:small; font-weight:bold;" class="color-light">Metadoc v0.0.1</div>
-    <div class="button-container">
-      <span class="span-button-inline font-size-small color-light" id="btnAddTable" onclick="toggleMode()">Edit/View</span>
-      <span class="span-button-inline font-size-small color-light" onclick="saveNew()">Save New</span>
+  <!-- header -->
+  <div class="__metadoc-header">
+    <div class="__metadoc-header-title">Metadoc v0.0.1</div>
+    <div class="__metadoc-button-container">
+      <span class="span-button-inline font-size-small color-light" id="btnToggleMode" onclick="toggleMode()">EditMode</span>
+      <span class="span-button-inline font-size-small color-light" onclick="saveNew()">Save-As</span>
       <span class="span-button-inline font-size-small color-light" onclick="saveOverwrite()">Save</span>
       <span class="span-button-inline font-size-small color-light" onclick="addTable()">Table</span>
       <span class="span-button-inline font-size-small color-light" onclick="addLink()">Link</span>
       <span class="span-button-inline font-size-small color-light" onclick="markClear()">Clear</span>
-      <span class="span-button-inline font-size-small color-light" onclick="createH1()">&lt;h1&gt;</span>
-      <span class="span-button-inline font-size-small color-light" onclick="createSpan()" >&lt;span&gt;</span>
-      <span class="span-button-inline font-size-small color-light" onclick="createDiv()" >&lt;div&gt;</span>
       <span class="span-button-inline font-size-small color-light" onclick="envelope()" >&lt;/&gt;</span>
       <span class="span-button-inline font-size-small color-light" onclick="createTag()" >&lt;&gt;</span>
-      <span class="span-button-inline font-size-small color-light" onclick="testFeature()" >test</span>
     </div>
   </div>
 
-  <div id="optionControl" style="position:fixed; z-index:9999; display:none; line-height:8px; box-shadow: 3px 3px 5px #888;">
-    <span id="tagName" style="font-size:x-small; color:#AAA;"></span>
-    <table style="text-align:center;">
-      <tr>
-        <td><span onclick="editStyle()" class="span-button-inline color-dark">Style</span></td>
-        <td><span onclick="moveEl(-1)" class="span-button-inline color-dark">Up</span></td>
-        <td><span onclick="moveEl(1)" class="span-button-inline color-dark">Down</span></td>
-      </tr>
-      <tr>
-        <td><span onclick="convertTag('p')" class="span-button-inline color-dark">&lt;p&gt;</span></td>
-        <td><span onclick="convertTag('div')" class="span-button-inline color-dark">&lt;div&gt;</span></td>
-        <td><span onclick="convertTag('span')" class="span-button-inline color-dark">&lt;span&gt;</span></td>
-      </tr>
-    </table>
-  </div>
-
-  <div spellcheck="false" class="content" id="main" 
-      style="width:900px; margin-left:calc(((100% - 900px) / 2) - 10px); margin-top:64px; padding:32px; background-color:#FFF; box-shadow: 5px 5px 5px #888;" 
-      onkeydown="" onclick="saveFocus()" onmouseover="saveOver()" onmouseout="onOver()" oninput="modified()"
-      contenteditable="true">
-    <h1 class="" style="font-family:'MV Boli';">Metadoc <span class="" style="font-size:x-small; font-family:mono;">version 0.0.1</span></h1>
-    <h2 class="over">About</h2>
-    <p class="">
-      <span class="" style="font-family:'MV Boli';">'Metadoc is future of documentation'</span></p><p class="">Metadoc is <span class="" style="font-style:italic; text-decoration:underline;">Editable/Light/Interactive/PlainText-based</span> document system, built with vanilla HTML5 and JavaScript.<br /></p>
-    <h2 class="">Usage</h2>
-    <p class="">
-      <span class="" style="font-weight:bold;">Ctrl+Shift+S</span>: Save document to file
+  <!-- content -->
+  <div spellcheck="false" class="content __metadoc-shadow" id="main" 
+      contenteditable="true"
+      style="width:900px; margin-left:calc(((100% - 900px) / 2) - 10px); margin-top:64px; padding:32px; background-color:#FFF;" 
+      onkeydown="" onclick="saveFocus()" onmouseover="saveOver()" onmouseout="onOver()" oninput="modified()">
+    <h1 style="font-family:'MV Boli';">Metadoc&nbsp;<span style="font-size:x-small; font-family:mono;">version 0.0.1</span></h1>
+    <h2>About</h2>
+    <p>
+      <span style="font-family:'MV Boli';">'Metadoc is future of documentation'</span></p><p>Metadoc is <span style="font-style:italic; text-decoration:underline;">Editable/Light/Interactive/PlainText-based</span> document system, built with vanilla HTML5 and JavaScript.<br /></p>
+    <h2>Usage</h2>
+    <p>
+      <span style="font-weight:bold;">Ctrl+Shift+S</span>: Save document to file
       <br />
-      <span class="" style="font-weight:bold;">Ctrl+S</span>: Overwrite document
+      <span style="font-weight:bold;">Ctrl+S</span>: Overwrite document
     </p>
-    <h2 class="">Example</h2>
-    <h3 class="">Table</h3>
+    <h2>Example</h2>
+    <h3>Table</h3>
     <p>
       </p><table>
         <tbody><tr><th>th1</th><th>th2</th><th>th3</th></tr>
@@ -65,5 +48,23 @@
       </tbody></table>
     <p></p>
   </div>
+
+  <!-- option control -->
+  <div id="optionControl" class="__metadoc-option-control">
+    <span id="tagName" style="font-size:x-small; color:#AAA;"></span>
+    <table style="text-align:center;">
+      <tr>
+        <td><span onclick="editStyle()" class="span-button-inline color-dark">style</span></td>
+        <td><span onclick="moveEl(-1)" class="span-button-inline color-dark">up</span></td>
+        <td><span onclick="moveEl(1)" class="span-button-inline color-dark">down</span></td>
+      </tr>
+      <tr>
+        <td><span onclick="convertTag('p')" class="span-button-inline color-dark">&lt;p&gt;</span></td>
+        <td><span onclick="convertTag('div')" class="span-button-inline color-dark">&lt;div&gt;</span></td>
+        <td><span onclick="convertTag('span')" class="span-button-inline color-dark">&lt;span&gt;</span></td>
+      </tr>
+    </table>
+  </div>
 </body>
 </html>
+

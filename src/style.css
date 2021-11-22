@@ -7,13 +7,6 @@
 }
 */
 
-.button-container {
-  padding: 5px;
-}
-
-.button-container button {
-  margin-right: 5px;
-}
 
 .m-button {
   outline: none;
@@ -169,4 +162,50 @@ body {
   font-size: small;
 }
 
+/* ------------------------------------------------------------------------- */
+
+/* header */
+
+.__metadoc-header {
+  position:fixed;
+  top:0px;
+  left:0px;
+  right:0px;
+  height:46px;
+  padding:5px;
+  border-bottom: solid 1px #CCC;
+  background-color:#AAA;
+  z-index:999;
+}
+
+.__metadoc-header-title {
+  text-decoration:underline;
+  font-size:small;
+  font-weight:bold;
+  color: #EEE;
+}
+
+.__metadoc-button-container {
+  padding: 5px;
+}
+
+.__metadoc-button-container button {
+  margin-right: 5px;
+}
+
+/* option control */
+
+.__metadoc-option-control {
+  position:fixed;
+  z-index:9999;
+  display:none;
+  line-height:8px;
+  box-shadow: 3px 3px 5px #888;
+}
+
+/* misc */
+
+.__metadoc-shadow {
+  box-shadow: 5px 5px 5px #888;
+}
 

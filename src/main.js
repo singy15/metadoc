@@ -1,6 +1,14 @@
+/*
+ * import
+ */
+
 import './style.css';
-import domUtil from './dom-util.js';
-import VanillaCaret from 'vanilla-caret-js';
+import DomUtil from './dom-util.js';
+// import VanillaCaret from 'vanilla-caret-js';
+
+/*
+ * variables
+ */
 
 let globalOverwriteTimeout = null;
 let globalFSHandle;
@@ -10,6 +18,32 @@ let globalEditMode = true;
 let globalOver;
 let globalMain = document.getElementById("main");
 let globalHiddenOptionControl = null;
+
+/*
+ * utilities
+ */
+
+function writeLog(str) {
+  console.log(str);
+}
+
+/*
+ * core functions
+ */
+
+function addTable() {
+  DomUtil.insertElementAtCaretByHtml(
+    `<div><table>
+      <tr><th>h1</th><th>h2</th><th>h3</th></tr>
+      <tr><td>c1</td><td>c2</td><td>c3</td></tr>
+      <tr><td>c4</td><td>c5</td><td>c6</td></tr>
+     </table></div>`);
+}
+
+function addLink() {
+  DomUtil.insertElementAtCaretByHtml(
+    `<a href="${prompt('Input link url')}">link</a>`);
+}
 
 function toggleMode() {
   globalEditMode = !globalEditMode;
@@ -22,11 +56,13 @@ function toggleMode() {
 }
 
 function changeToViewMode() {
+  document.getElementById("btnToggleMode").innerText = "ViewMode";
   globalMain.removeAttribute("contenteditable");
   globalMain.classList.remove("content");
 }
 
 function changeToEditMode() {
+  document.getElementById("btnToggleMode").innerText = "EditMode";
   globalMain.setAttribute("contenteditable", "true");
   globalMain.classList.add("content");
 }
@@ -38,20 +74,6 @@ function insertElement(el) {
   target.innerHTML = html.substring(0,offset) + el + html.substring(offset);
 }
 
-function addTable() {
-  domUtil.insertElementAtCaretByHtml(
-    `<table>
-      <tr><th>h1</th><th>h2</th><th>h3</th></tr>
-      <tr><td>c1</td><td>c2</td><td>c3</td></tr>
-      <tr><td>c4</td><td>c5</td><td>c6</td></tr>
-     </table>`);
-}
-
-function addLink() {
-  domUtil.insertElementAtCaretByHtml(
-    `<a href="${prompt('Input link url')}">link</a>`);
-}
-
 function restoreFocus() {
   event.preventDefault();
   event.stopPropagation();
@@ -60,10 +82,9 @@ function restoreFocus() {
   document.getSelection().addRange(document.getSelection().getRangeAt(0));
 }
 
-function hideOptionControl() {
-  let ctrl = document.getElementById("optionControl");
-  ctrl.style.display = "none";
-}
+/*
+ * option control
+ */
 
 function showOptionControl(el) {
   if(globalHiddenOptionControl) {
@@ -81,6 +102,11 @@ function showOptionControl(el) {
   // globalHiddenOptionControl = setTimeout(function(){
   //   hideOptionControl();
   // }, 5000);
+}
+
+function hideOptionControl() {
+  let ctrl = document.getElementById("optionControl");
+  ctrl.style.display = "none";
 }
 
 function saveFocus() {
@@ -134,11 +160,7 @@ function onOver() {
   event.target.classList.remove("over");
 }
 
-function addLog(str) {
-  console.log(str);
-}
-
-async function _writeFile(fileHandle, contents) {
+async function writeFile(fileHandle, contents) {
   const writable = await fileHandle.createWritable();
   // await writable.truncate(0);
   await writable.write(contents);
@@ -159,7 +181,7 @@ async function saveFile(contents, handle = null) {
         ],
       });
     }
-    await _writeFile(handle, contents);
+    await writeFile(handle, contents);
     return handle;
   } catch (ex) {
     const msg = "failed to save";
@@ -209,13 +231,6 @@ function isNativeFileSystemSupported() {
   return "showOpenFilePicker" in window;
 }
 
-function htmlDecode(input){
-  var e = document.createElement('div');
-  e.innerHTML = input;
-  return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
-}
-window.htmlDecode = htmlDecode;
-
 function serializeSource() {
   const xs = new XMLSerializer();
   const dp = new DOMParser();
@@ -227,10 +242,10 @@ function serializeSource() {
   let userScript = null;
   for(var i = 0; i < scripts.length; i++) {
     if(!scripts[i].id) {
-      baseScript = htmlDecode(scripts[i].innerHTML);
+      baseScript = DomUtil.decodeHtml(scripts[i].innerHTML);
       scripts[i].remove();
     } else if(scripts[i].id === "userScript") {
-      userScript = htmlDecode(scripts[i].innerHTML);
+      userScript = DomUtil.decodeHtml(scripts[i].innerHTML);
       scripts[i].remove();
     }
   }
@@ -265,17 +280,13 @@ async function overwrite() {
       );
       if (fsHandle) {
         globalFSHandle = fsHandle;
-        addLog("saved");
+        writeLog("saved");
       } else {
-        addLog("failed to save");
+        writeLog("failed to save");
       }
     },
     3000);
 }
-
-document.getElementById("main").addEventListener("input", function() {
-  overwrite();
-});
 
 async function saveNew() {
   if (!nativeFSSupported) {
@@ -289,9 +300,9 @@ async function saveNew() {
   );
   if (fsHandle) {
     globalFSHandle = fsHandle;
-    addLog("saved");
+    writeLog("saved");
   } else {
-    addLog("failed to save");
+    writeLog("failed to save");
   }
 }
 
@@ -307,94 +318,64 @@ async function saveOverwrite() {
   );
   if (fsHandle) {
     globalFSHandle = fsHandle;
-    addLog("saved");
+    writeLog("saved");
   } else {
-    addLog("failed to save");
+    writeLog("failed to save");
   }
 }
 
-/**
- * Register event
- */
-
-document.addEventListener("keydown", async (e) => {
-  if (e.ctrlKey && e.shiftKey && e.code === "KeyS") {
-    e.preventDefault();
-    saveNew();
-  } else if (e.ctrlKey && e.code === "KeyS") {
-    e.preventDefault();
-    saveOverwrite();
-  } 
-  // else if (e.ctrlKey && e.code === "KeyO") {
-  //   e.preventDefault();
-  //   if (!nativeFSSupported) {
-  //     alert("nfs not supported");
-  //     return;
-  //   }
-  //
-  //   const res = await openFile();
-  //   if (res) {
-  //     globalFSHandle = res.handle;
-  //     document.getElementById("content").value = res.text;
-  //     addLog("file opened");
-  //   } else {
-  //     addLog("failed to open file");
-  //   }
-  // }
-});
-
 const nativeFSSupported = isNativeFileSystemSupported();
-addLog(`support for nfs: ${(nativeFSSupported) ? "yes" : "no"}`);
+writeLog(`support for nfs: ${(nativeFSSupported) ? "yes" : "no"}`);
 
 function markBold() {
-  domUtil.insertElementAtCaret(
-    domUtil.createElementFromString(
-      `<b>${domUtil.getSelected().textContent}</b>`));
+  DomUtil.insertElementAtCaret(
+    DomUtil.createElementFromString(
+      `<b>${DomUtil.getSelected().textContent}</b>`));
 }
 
 function markStrike() {
-  domUtil.insertElementAtCaret(
-    domUtil.createElementFromString(
-      `<s>${domUtil.getSelected().textContent}</s>`));
+  DomUtil.insertElementAtCaret(
+    DomUtil.createElementFromString(
+      `<s>${DomUtil.getSelected().textContent}</s>`));
 }
 
 function markClear() {
-  domUtil.insertElementAtCaret(
+  DomUtil.insertElementAtCaret(
     document.createTextNode(
-      `${domUtil.getSelected().textContent}`));
+      `${DomUtil.getSelected().textContent}`));
 }
 
 function createSpan() {
-  domUtil.insertElementAtCaret(
-    domUtil.createElementFromString(
-      `<span>${domUtil.getSelected().textContent}</span>`));
+  DomUtil.insertElementAtCaret(
+    DomUtil.createElementFromString(
+      `<span>${DomUtil.getSelected().textContent}</span>`));
 }
 
 function createDiv() {
-  domUtil.insertElementAtCaret(
-    domUtil.createElementFromString(
-      `<div>${domUtil.getSelected().textContent}</div>`));
+  DomUtil.insertElementAtCaret(
+    DomUtil.createElementFromString(
+      `<div>${DomUtil.getSelected().textContent}</div>`));
 }
 
 function createH1() {
-  domUtil.insertElementAtCaret(
-    domUtil.createElementFromString(
-      `<h1>${domUtil.getSelected().textContent}</h1>`));
+  DomUtil.insertElementAtCaret(
+    DomUtil.createElementFromString(
+      `<h1>${DomUtil.getSelected().textContent}</h1>`));
 }
 
 function envelope() {
   let tag = prompt("Tag to envelope (hint: 'span' for <span>)");
   if(tag) {
-    domUtil.insertElementAtCaret(
-      domUtil.createElementFromString(
-        `<${tag}>${domUtil.getSelected().textContent}</${tag}>`));
+    DomUtil.insertElementAtCaret(
+      DomUtil.createElementFromString(
+        `<${tag}>${DomUtil.getSelected().textContent}</${tag}>`));
   }
 }
 
 function createTag() {
   let tag = prompt("Tag to create");
   if(tag) {
-    domUtil.insertElementAtCaret(domUtil.createElementFromString(tag));
+    DomUtil.insertElementAtCaret(DomUtil.createElementFromString(tag));
   }
 }
 
@@ -452,7 +433,7 @@ function moveEl(dir) {
 function modified() {
   let main = document.getElementById("main");
   if(main.children.length == 0) {
-    main.appendChild(domUtil.createElementFromString("<p><br /></p>"));
+    main.appendChild(DomUtil.createElementFromString("<p><br /></p>"));
     main.children[0].focus();
   }
 }
@@ -461,32 +442,21 @@ function keydown() {
   console.log(event);
   if(event.keyCode === 13) {
     event.preventDefault();
-    domUtil.insertElementAtCaretByHtml(`<br />`);
+    DomUtil.insertElementAtCaretByHtml(`<br />`);
   }
 }
 
-window.vc = new VanillaCaret(document.getElementById('main'));
+// window.vc = new VanillaCaret(document.getElementById('main'));
 // caret.setPos(4); // Set
 // document.getElementById('currentPosition').value = caret.getPos(); // Get
 
-function testFeature() {
-  console.log("testFeature");
-  
-}
-
-
-function sss() {
-  console.log("sss", event, event.target);
-  // event.stopPropagation();
-}
-
 function convertTag(tagType) {
-  if(domUtil.getSelected().textContent === '') {
+  if(DomUtil.getSelected().textContent === '') {
     convertTo(tagType);
   } else {
-    domUtil.insertElementAtCaret(
-      domUtil.createElementFromString(
-        `<${tagType}>${domUtil.getSelected().textContent}</${tagType}>`));
+    DomUtil.insertElementAtCaret(
+      DomUtil.createElementFromString(
+        `<${tagType}>${DomUtil.getSelected().textContent}</${tagType}>`));
   }
 }
 
@@ -494,17 +464,17 @@ function convertTo(tagType) {
   let html = globalOver.innerHTML;
 
   if(tagType === "p") {
-    globalOver.replaceWith(domUtil.createElementFromString(
+    globalOver.replaceWith(DomUtil.createElementFromString(
       "<p>" + html + "</p>"));
   }
 
   if(tagType === "div") {
-    globalOver.replaceWith(domUtil.createElementFromString(
+    globalOver.replaceWith(DomUtil.createElementFromString(
       "<div>" + html + "</div>"));
   }
 
   if(tagType === "span") {
-    globalOver.replaceWith(domUtil.createElementFromString(
+    globalOver.replaceWith(DomUtil.createElementFromString(
       "<span>" + html + "</span>"));
   }
 } 
@@ -612,6 +582,59 @@ function convertTo(tagType) {
 //   });
 // });
 
+
+/**
+ * Register event
+ */
+
+document.addEventListener("keydown", async (e) => {
+  if (e.ctrlKey && e.shiftKey && e.code === "KeyS") {
+    e.preventDefault();
+    saveNew();
+  } else if (e.ctrlKey && e.code === "KeyS") {
+    e.preventDefault();
+    saveOverwrite();
+  } 
+  // else if (e.ctrlKey && e.code === "KeyO") {
+  //   e.preventDefault();
+  //   if (!nativeFSSupported) {
+  //     alert("nfs not supported");
+  //     return;
+  //   }
+  //
+  //   const res = await openFile();
+  //   if (res) {
+  //     globalFSHandle = res.handle;
+  //     document.getElementById("content").value = res.text;
+  //     writeLog("file opened");
+  //   } else {
+  //     writeLog("failed to open file");
+  //   }
+  // }
+});
+
+document.getElementById("main").addEventListener("keydown", function(e) {
+  let els = document.querySelectorAll("#main *");
+  let sanitizeTarget = {
+    "P": true,
+    "SPAN": true,
+    "DIV": true
+  };
+  for(var i = 0; i < els.length; i++) {
+    if(sanitizeTarget[els[i].tagName]) {
+      if(els[i].innerHTML.trim() === "") {
+        els[i].remove();
+      }
+    }
+  }
+});
+
+document.getElementById("main").addEventListener("input", function() {
+  overwrite();
+});
+
+
+
 /**
  * Export
  */
@@ -636,9 +659,7 @@ window.onOver = onOver;
 window.moveEl = moveEl;
 window.modified = modified;
 window.keydown = keydown;
-window.testFeature = testFeature;
-window.sss = sss;
 window.convertTo = convertTo;
-window.domUtil = domUtil;
+window.DomUtil = DomUtil;
 window.convertTag = convertTag;
 

@@ -9,6 +9,7 @@ let globalSelection;
 let globalEditMode = true;
 let globalOver;
 let globalMain = document.getElementById("main");
+let globalHiddenOptionControl = null;
 
 function toggleMode() {
   globalEditMode = !globalEditMode;
@@ -57,31 +58,76 @@ function restoreFocus() {
   console.log("restoreFocus");
   globalFocused.focus();
   document.getSelection().addRange(document.getSelection().getRangeAt(0));
-  console.log(document.getSelection());
+}
+
+function hiddenOptionControl() {
+  let ctrl = document.getElementById("optionControl");
+  ctrl.style.display = "none";
+}
+
+function showOptionControl(el) {
+  if(globalHiddenOptionControl) {
+    clearTimeout(globalHiddenOptionControl);
+  }
+
+  let ctrl = document.getElementById("optionControl");
+  let bound = el.getBoundingClientRect();
+  ctrl.style.top = bound.top - 50 + "px";
+  ctrl.style.left = bound.left + bound.width + "px";
+  el.classList.add("over");
+  document.getElementById("tagName").innerText = el.tagName;
+  ctrl.style.display = "block";
+
+  globalHiddenOptionControl = setTimeout(function(){
+    hiddenOptionControl();
+  }, 5000);
 }
 
 function saveFocus() {
-  console.log("saveFocus");
+  if(event.target.id === "optionControl"
+    || event.target.id === "main") {
+    return;
+  }
+
+  event.stopPropagation();
+
   globalFocused = event.target;
   globalSelection = document.getSelection();
-  console.log(globalFocused);
-  console.log(globalSelection);
 
   if(globalFocused.id === "main") {
     globalFocused.children[globalFocused.children.length - 1].focus();
   }
+
+  showOptionControl(globalFocused);
+
+  // let ctrl = document.getElementById("optionControl");
+  // let bound = globalFocused.getBoundingClientRect();
+  // ctrl.style.top = bound.top - 50 + "px";
+  // ctrl.style.left = bound.right + 100 + "px";
+  // ctrl.style.left = bound.left + bound.width - ctrl.getBoundingClientRect().width + "px";
+
+  // globalFocused.classList.add("over");
+
+  // document.getElementById("tagName").innerText = globalFocused.tagName;
 }
 
 function saveOver() {
+  if(event.target.id === "optionControl"
+    || event.target.id === "main") {
+    return;
+  }
+
   event.stopPropagation();
   globalOver = event.target;
 
-  let ctrl = document.getElementById("optionControl");
-  let bound = globalOver.getBoundingClientRect();
-  ctrl.style.top = bound.top - 5 + "px";
-  ctrl.style.left = bound.left + bound.width - ctrl.getBoundingClientRect().width + "px";
+  // let ctrl = document.getElementById("optionControl");
+  // let bound = globalOver.getBoundingClientRect();
+  // ctrl.style.top = bound.top - 50 + "px";
+  // ctrl.style.left = bound.left + bound.width - ctrl.getBoundingClientRect().width + "px";
 
-  globalOver.classList.add("over");
+  // globalOver.classList.add("over");
+
+  // document.getElementById("tagName").innerText = globalOver.tagName;
 }
 
 function onOver() {
@@ -341,19 +387,23 @@ function editStyle() {
 function moveEl(dir) {
   console.log(dir);
 
-  if((dir < 0) && (globalOver.previousSibling)) {
-    let targetEl = globalOver;
-    let prevEl = globalOver.previousSibling;
+    console.debug("foo");
+
+  let el = globalFocused;
+
+  if((dir < 0) && (el.previousSibling)) {
+    let targetEl = el;
+    let prevEl = el.previousSibling;
     let parentEl = targetEl.parentElement;
 
     if(parentEl == prevEl.parentElement) {
       targetEl.remove();
       parentEl.insertBefore(targetEl, prevEl);
     }
-  } else if((dir > 0) && (globalOver.nextSibling)) {
+  } else if((dir > 0) && (el.nextSibling)) {
 
-    let targetEl = globalOver.nextSibling;
-    let refEl = globalOver;
+    let targetEl = el.nextSibling;
+    let refEl = el;
     let parentEl = refEl.parentElement;
 
     console.log("down",targetEl);
@@ -365,8 +415,8 @@ function moveEl(dir) {
 
 
     // console.log("down",targetEl);
-    // let targetEl = globalOver;
-    // let prevEl = globalOver.nextSibling.nextSibling;
+    // let targetEl = el;
+    // let prevEl = el.nextSibling.nextSibling;
     // let parentEl = targetEl.parentElement;
 
     // if(parentEl == prevEl.parentElement) {
@@ -377,10 +427,9 @@ function moveEl(dir) {
 }
 
 function modified() {
-  console.log("modified2");
   let main = document.getElementById("main");
   if(main.children.length == 0) {
-    main.appendChild(domUtil.createElementFromString("<div>&nbsp;</div>"));
+    main.appendChild(domUtil.createElementFromString("<p><br /></p>"));
     main.children[0].focus();
   }
 }
@@ -396,6 +445,139 @@ function keydown() {
 window.vc = new VanillaCaret(document.getElementById('main'));
 // caret.setPos(4); // Set
 // document.getElementById('currentPosition').value = caret.getPos(); // Get
+
+function testFeature() {
+  console.log("testFeature");
+  
+}
+
+
+function sss() {
+  console.log("sss", event, event.target);
+  // event.stopPropagation();
+}
+
+function convertTo(tagType) {
+  let html = globalOver.innerHTML;
+
+  if(tagType === "p") {
+    globalOver.replaceWith(domUtil.createElementFromString(
+      "<p>" + html + "</p>"));
+  }
+
+  if(tagType === "div") {
+    globalOver.replaceWith(domUtil.createElementFromString(
+      "<div>" + html + "</div>"));
+  }
+
+  if(tagType === "span") {
+    globalOver.replaceWith(domUtil.createElementFromString(
+      "<span>" + html + "</span>"));
+  }
+} 
+
+
+
+// document.getElementById("main").addEventListener("keypress", function(e) {
+//   console.log(e);
+//   // event.stopPropagation();
+// 
+//   // let tagName = e.target.tagName;
+//   // let multilineTags = {
+//   //   "P": true,
+//   //   "SPAN": true
+//   // };
+// 
+//   // if(!multilineTags[tagName]) {
+//   //   console.log("none", tagName);
+//   //   return true;
+//   // }
+// 
+//   // if (e.which == 13) {
+//   //   if (window.getSelection) {
+//   //     var selection = window.getSelection(),
+//   //       range = selection.getRangeAt(0),
+//   //       br = document.createElement("br");
+//   //     range.deleteContents();
+//   //     range.insertNode(br);
+//   //     range.setStartAfter(br);
+//   //     range.setEndAfter(br);
+//   //     range.collapse(false);
+//   //     selection.removeAllRanges();
+//   //     selection.addRange(range);
+//   //     e.preventDefault();
+//   //     return false;
+//   //   }
+//   // }
+// 
+//   // if (e.which == 13) {
+//   //   e.preventDefault();
+//   //   if (window.getSelection) {
+//   //     var selection = window.getSelection(),
+//   //       range = selection.getRangeAt(0),
+//   //       br = document.createElement("br"),
+//   //       textNode = document.createTextNode("\u00a0");
+//   //     range.deleteContents();
+//   //     range.insertNode(br);
+//   //     range.collapse(false);
+//   //     range.insertNode(textNode);
+//   //     range.selectNodeContents(textNode);
+// 
+//   //     // selection.removeAllRanges();
+//   //     // selection.addRange(range);
+//   //     let v = new VanillaCaret(globalFocused).setPos(0);
+//   //     v.setPos(0);
+//   //     return false;
+//   //   }
+//   // }
+// 
+// 
+//   // if (e.which == 13) {
+//   //   console.log(globalFocused);
+//   //   console.log(document.activeElement);
+//   // }
+// 
+//   // let els = document.querySelectorAll("#main *");
+//   // for(var i = 0; i < els.length; i++) {
+//   //     console.log(els[i]);
+//   //   els[i].removeEventListener("keypress", sss);
+//   //   els[i].addEventListener("keypress", sss);
+//   // }
+// });
+
+
+
+
+// $(function(){
+// 
+//   $("#editable")
+// 
+//   // make sure br is always the lastChild of contenteditable
+//   .live("keyup mouseup", function(){
+//     if (!this.lastChild || this.lastChild.nodeName.toLowerCase() != "br") {
+//       this.appendChild(document.createChild("br"));
+//      }
+//   })
+// 
+//   // use br instead of div div
+//   .live("keypress", function(e){
+//     if (e.which == 13) {
+//       if (window.getSelection) {
+//         var selection = window.getSelection(),
+//           range = selection.getRangeAt(0),
+//           br = document.createElement("br");
+//         range.deleteContents();
+//         range.insertNode(br);
+//         range.setStartAfter(br);
+//         range.setEndAfter(br);
+//         range.collapse(false);
+//         selection.removeAllRanges();
+//         selection.addRange(range);
+//         return false;
+//       }
+//     }
+//   });
+// });
 
 /**
  * Export
@@ -421,4 +603,7 @@ window.onOver = onOver;
 window.moveEl = moveEl;
 window.modified = modified;
 window.keydown = keydown;
+window.testFeature = testFeature;
+window.sss = sss;
+window.convertTo = convertTo;
 

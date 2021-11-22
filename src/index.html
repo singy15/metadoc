@@ -3,14 +3,20 @@
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="x-ua-compatible" content="IE=Edge" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-  <title>Morphdoc</title>
+  <meta name="viewport" 
+    content="width=device-width,initial-scale=1.0,minimum-scale=1.0,
+      maximum-scale=1.0,user-scalable=no" />
+  <title>Metadoc</title>
 </head>
 <body>
-  <div style="position:fixed; top:0px; left:0px; right:0px; height:46px; padding:5px; border-bottom: solid 1px #CCC; background-color:#FCFCFC; z-index:999;">
-    <div style="text-decoration:underline; font-size:small; font-weight:bold; color:#555;">Morphdoc v0.0.1</div>
+  <div style="position:fixed; top:0px; left:0px; right:0px; height:46px; 
+      padding:5px; border-bottom: solid 1px #CCC; 
+      background-color:#CCC; z-index:999;">
+    <div style="text-decoration:underline; font-size:small; 
+        font-weight:bold; color:#555;">Metadoc v0.0.1</div>
     <div class="button-container">
-      <button class="m-button" id="btnAddTable" onclick="toggleMode()">Edit/View</button>
+      <button class="m-button" id="btnAddTable" onclick="toggleMode()">
+        Edit/View</button>
       <button class="m-button" onclick="saveNew()">Save New</button>
       <button class="m-button" onclick="saveOverwrite()">Save</button>
       <button class="m-button" onclick="addTable()">Table</button>
@@ -21,23 +27,41 @@
       <button class="m-button" onclick="createDiv()" >&lt;div&gt;</button>
       <button class="m-button" onclick="envelope()" >&lt;/&gt;</button>
       <button class="m-button" onclick="createTag()" >&lt;&gt;</button>
+      <button class="m-button" onclick="testFeature()" >test</button>
     </div>
   </div>
 
-  <div id="optionControl" style="position:fixed; z-index:9999;">
-    <button onclick="editStyle()" class="s-button">S</button>
-    <button onclick="moveEl(-1)" class="s-button">U</button>
-    <button onclick="moveEl(1)" class="s-button">D</button>
+  <div id="optionControl" style="position:fixed; z-index:9999; display:none; line-height:8px;">
+    <span id="tagName" style="font-size:x-small; color:#AAA;"></span>
+    <table style="text-align:center;">
+      <tr>
+        <td><span onclick="editStyle()" class="span-button-inline">Style</span></td>
+        <td><span onclick="moveEl(-1)" class="span-button-inline">Up</span></td>
+        <td><span onclick="moveEl(1)" class="span-button-inline">Down</span></td>
+      </tr>
+      <tr>
+        <td><span onclick="convertTo('p')" class="span-button-inline">&lt;p&gt;</span></td>
+        <td><span onclick="convertTo('div')" class="span-button-inline">&lt;div&gt;</span></td>
+        <td><span onclick="convertTo('span')" class="span-button-inline">&lt;span&gt;</span></td>
+      </tr>
+    </table>
   </div>
 
-  <!--
-  <div id="styleEditor" style="position:fixed; left:calc(50% - 150px); top:calc(50% - 200px); border:solid 1px #000; width:300px; height:400px; background-color:#FFF; z-index:99999;">
-    <textarea id="styleEditorTextarea" style="margin:5px; width:290px; height:350px; resize:none; outline:none;"></textarea>
+  <div spellcheck="false" class="content" id="main" style="
+                                 width:80%;
+                                 margin-left:calc(10%);
+                                 margin-top:64px;
+                                 padding:10px;
+      background-color:#FFF;" 
+      onkeydown="" onclick="saveFocus()" onmouseover="saveOver()" 
+      onmouseout="onOver()" oninput="modified()"
+      contenteditable="true">
+    <!-- <p><br /></p> -->
+    <h1>Metadoc</h1>
+    <h2>About</h2>
+    <div>tag div</div>
+    <p>tag p</p>
   </div>
-  -->
-
-  <div spellcheck="false" class="content" id="main" style="position:relative; top:58px;" onkeydown="" onclick="saveFocus()" onmouseover="saveOver()" onmouseout="onOver()" oninput="modified()" contenteditable="true"><div>empty</div></div>
-
 </body>
 <style id="userStyle">
 </style>

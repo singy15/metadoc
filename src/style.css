@@ -110,3 +110,37 @@ table,tr {
   outline: dotted 1px #CCC;
 }
 
+#main {
+  outline: none;
+}
+
+html,body {
+  background-color: #AAA;
+}
+
+body {
+  padding: 10px;
+}
+
+#optionControl {
+  background-color: #FFF;
+  border-radius: 5px;
+  padding: 5px;
+  border: solid 1px #555;
+}
+
+#optionControl td {
+  min-width: 32px;
+}
+
+.span-button-inline {
+  font-size: x-small;
+  color: #555;
+  cursor: pointer;
+}
+
+.span-button-inline:hover {
+  font-size: x-small;
+  color: #111;
+  cursor: pointer;
+}

@@ -11,23 +11,23 @@
 <body>
   <div style="position:fixed; top:0px; left:0px; right:0px; height:46px; 
       padding:5px; border-bottom: solid 1px #CCC; 
-      background-color:#CCC; z-index:999;">
+      background-color:#AAA; z-index:999;">
     <div style="text-decoration:underline; font-size:small; 
-        font-weight:bold; color:#555;">Metadoc v0.0.1</div>
+        font-weight:bold;" class="color-light">Metadoc v0.0.1</div>
     <div class="button-container">
-      <button class="m-button" id="btnAddTable" onclick="toggleMode()">
-        Edit/View</button>
-      <button class="m-button" onclick="saveNew()">Save New</button>
-      <button class="m-button" onclick="saveOverwrite()">Save</button>
-      <button class="m-button" onclick="addTable()">Table</button>
-      <button class="m-button" onclick="addLink()">Link</button>
-      <button class="m-button" onclick="markClear()">Clear</button>
-      <button class="m-button" onclick="createH1()">&lt;h1&gt;</button>
-      <button class="m-button" onclick="createSpan()" >&lt;span&gt;</button>
-      <button class="m-button" onclick="createDiv()" >&lt;div&gt;</button>
-      <button class="m-button" onclick="envelope()" >&lt;/&gt;</button>
-      <button class="m-button" onclick="createTag()" >&lt;&gt;</button>
-      <button class="m-button" onclick="testFeature()" >test</button>
+      <span class="span-button-inline font-size-small color-light" id="btnAddTable" onclick="toggleMode()">
+        Edit/View</span>
+      <span class="span-button-inline font-size-small color-light" onclick="saveNew()">Save New</span>
+      <span class="span-button-inline font-size-small color-light" onclick="saveOverwrite()">Save</span>
+      <span class="span-button-inline font-size-small color-light" onclick="addTable()">Table</span>
+      <span class="span-button-inline font-size-small color-light" onclick="addLink()">Link</span>
+      <span class="span-button-inline font-size-small color-light" onclick="markClear()">Clear</span>
+      <span class="span-button-inline font-size-small color-light" onclick="createH1()">&lt;h1&gt;</span>
+      <span class="span-button-inline font-size-small color-light" onclick="createSpan()" >&lt;span&gt;</span>
+      <span class="span-button-inline font-size-small color-light" onclick="createDiv()" >&lt;div&gt;</span>
+      <span class="span-button-inline font-size-small color-light" onclick="envelope()" >&lt;/&gt;</span>
+      <span class="span-button-inline font-size-small color-light" onclick="createTag()" >&lt;&gt;</span>
+      <span class="span-button-inline font-size-small color-light" onclick="testFeature()" >test</span>
     </div>
   </div>
 
@@ -35,14 +35,14 @@
     <span id="tagName" style="font-size:x-small; color:#AAA;"></span>
     <table style="text-align:center;">
       <tr>
-        <td><span onclick="editStyle()" class="span-button-inline">Style</span></td>
-        <td><span onclick="moveEl(-1)" class="span-button-inline">Up</span></td>
-        <td><span onclick="moveEl(1)" class="span-button-inline">Down</span></td>
+        <td><span onclick="editStyle()" class="span-button-inline color-dark">Style</span></td>
+        <td><span onclick="moveEl(-1)" class="span-button-inline color-dark">Up</span></td>
+        <td><span onclick="moveEl(1)" class="span-button-inline color-dark">Down</span></td>
       </tr>
       <tr>
-        <td><span onclick="convertTo('p')" class="span-button-inline">&lt;p&gt;</span></td>
-        <td><span onclick="convertTo('div')" class="span-button-inline">&lt;div&gt;</span></td>
-        <td><span onclick="convertTo('span')" class="span-button-inline">&lt;span&gt;</span></td>
+        <td><span onclick="convertTo('p')" class="span-button-inline color-dark">&lt;p&gt;</span></td>
+        <td><span onclick="convertTo('div')" class="span-button-inline color-dark">&lt;div&gt;</span></td>
+        <td><span onclick="convertTo('span')" class="span-button-inline color-dark">&lt;span&gt;</span></td>
       </tr>
     </table>
   </div>
@@ -51,7 +51,7 @@
                                  width:80%;
                                  margin-left:calc(10%);
                                  margin-top:64px;
-                                 padding:10px;
+                                 padding:32px;
       background-color:#FFF;" 
       onkeydown="" onclick="saveFocus()" onmouseover="saveOver()" 
       onmouseout="onOver()" oninput="modified()"
@@ -59,8 +59,25 @@
     <!-- <p><br /></p> -->
     <h1>Metadoc</h1>
     <h2>About</h2>
-    <div>tag div</div>
-    <p>tag p</p>
+    <p>
+      Metadoc is future of documentation.
+      <br>
+      Metadoc is Editable/Light/Interactive/PlainText-based document system.
+    </p>
+    <h2>Usage</h2>
+    <p>
+      Ctrl+Shift+S: Save document to file
+      Ctrl+S: Overwrite document
+    </p>
+    <h2>Example</h2>
+    <h3>Table</h3>
+    <p>
+      <table>
+        <tr><th>th1</th><th>th2</th><th>th3</th></tr>
+        <tr><td>td1</td><td>td2</td><td>td3</td></tr>
+        <tr><td>td4</td><td>td5</td><td>td6</td></tr>
+      </table>
+    </p>
   </div>
 </body>
 <style id="userStyle">

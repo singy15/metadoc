@@ -102,9 +102,11 @@ table,tr {
 
 */
 
+/*
 .content, .content * {
   outline: dotted 1px #CCC;
 }
+*/
 
 .over {
   outline: dotted 1px #CCC;
@@ -135,12 +137,35 @@ body {
 
 .span-button-inline {
   font-size: x-small;
-  color: #555;
   cursor: pointer;
 }
 
 .span-button-inline:hover {
-  font-size: x-small;
-  color: #111;
-  cursor: pointer;
+  filter: invert(1);
 }
+
+.color-dark {
+  color: #AAA;
+}
+
+.color-light {
+  color: #EEE;
+}
+
+.bg-dark {
+  background-color: #AAA;
+}
+
+.bg-dark {
+  background-color: #EEE;
+}
+
+.font-size-x-small {
+  font-size: x-small;
+}
+
+.font-size-small {
+  font-size: small;
+}
+
+

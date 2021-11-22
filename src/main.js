@@ -125,7 +125,7 @@ function saveOver() {
   // ctrl.style.top = bound.top - 50 + "px";
   // ctrl.style.left = bound.left + bound.width - ctrl.getBoundingClientRect().width + "px";
 
-  // globalOver.classList.add("over");
+  globalOver.classList.add("over");
 
   // document.getElementById("tagName").innerText = globalOver.tagName;
 }

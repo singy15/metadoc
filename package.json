@@ -17,7 +17,8 @@
   },
   "homepage": "https://github.com/singy15/morphdoc#readme",
   "dependencies": {
-    "@editorjs/editorjs": "^2.22.2"
+    "@editorjs/editorjs": "^2.22.2",
+    "vanilla-caret-js": "^1.0.1"
   },
   "devDependencies": {
     "css-loader": "^5.2.7",

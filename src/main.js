@@ -1,5 +1,6 @@
 import './style.css';
 import domUtil from './dom-util.js';
+import VanillaCaret from 'vanilla-caret-js';
 
 let globalOverwriteTimeout = null;
 let globalFSHandle;
@@ -391,6 +392,10 @@ function keydown() {
     domUtil.insertElementAtCaretByHtml(`<br />`);
   }
 }
+
+window.vc = new VanillaCaret(document.getElementById('main'));
+// caret.setPos(4); // Set
+// document.getElementById('currentPosition').value = caret.getPos(); // Get
 
 /**
  * Export

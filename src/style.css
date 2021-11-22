@@ -102,6 +102,10 @@ table,tr {
 
 */
 
+.content, .content * {
+  outline: dotted 1px #CCC;
+}
+
 .over {
   outline: dotted 1px #CCC;
 }

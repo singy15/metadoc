@@ -399,10 +399,11 @@ function createTag() {
 }
 
 function editStyle() {
-  let style = globalOver.getAttribute("style");
+  let target = globalFocused;
+  let style = target.getAttribute("style");
   let param = prompt("Input style", (style)? style.trim() : "" );
   if(param) {
-    globalOver.setAttribute("style", param);
+    target.setAttribute("style", param);
   }
 }
 
@@ -477,6 +478,16 @@ function testFeature() {
 function sss() {
   console.log("sss", event, event.target);
   // event.stopPropagation();
+}
+
+function convertTag(tagType) {
+  if(domUtil.getSelected().textContent === '') {
+    convertTo(tagType);
+  } else {
+    domUtil.insertElementAtCaret(
+      domUtil.createElementFromString(
+        `<${tagType}>${domUtil.getSelected().textContent}</${tagType}>`));
+  }
 }
 
 function convertTo(tagType) {
@@ -628,4 +639,6 @@ window.keydown = keydown;
 window.testFeature = testFeature;
 window.sss = sss;
 window.convertTo = convertTo;
+window.domUtil = domUtil;
+window.convertTag = convertTag;
 

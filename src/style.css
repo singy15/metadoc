@@ -138,6 +138,7 @@ body {
 .span-button-inline {
   font-size: x-small;
   cursor: pointer;
+  user-select:none;
 }
 
 .span-button-inline:hover {

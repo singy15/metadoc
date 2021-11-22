@@ -31,7 +31,7 @@
     </div>
   </div>
 
-  <div id="optionControl" style="position:fixed; z-index:9999; display:none; line-height:8px;">
+  <div id="optionControl" style="position:fixed; z-index:9999; display:none; line-height:8px; box-shadow: 3px 3px 5px #888;">
     <span id="tagName" style="font-size:x-small; color:#AAA;"></span>
     <table style="text-align:center;">
       <tr>
@@ -48,11 +48,12 @@
   </div>
 
   <div spellcheck="false" class="content" id="main" style="
-                                 width:80%;
-                                 margin-left:calc(10%);
+                                 width:900px;
+                                 margin-left:calc(((100% - 900px) / 2) - 10px);
                                  margin-top:64px;
                                  padding:32px;
-      background-color:#FFF;" 
+      background-color:#FFF;
+      box-shadow: 5px 5px 5px #888;" 
       onkeydown="" onclick="saveFocus()" onmouseover="saveOver()" 
       onmouseout="onOver()" oninput="modified()"
       contenteditable="true">

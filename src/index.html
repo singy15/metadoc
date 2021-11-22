@@ -3,20 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="x-ua-compatible" content="IE=Edge" />
-  <meta name="viewport" 
-    content="width=device-width,initial-scale=1.0,minimum-scale=1.0,
-      maximum-scale=1.0,user-scalable=no" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
   <title>Metadoc</title>
 </head>
 <body>
-  <div style="position:fixed; top:0px; left:0px; right:0px; height:46px; 
-      padding:5px; border-bottom: solid 1px #CCC; 
-      background-color:#AAA; z-index:999;">
-    <div style="text-decoration:underline; font-size:small; 
-        font-weight:bold;" class="color-light">Metadoc v0.0.1</div>
+  <div style="position:fixed; top:0px; left:0px; right:0px; height:46px; padding:5px; border-bottom: solid 1px #CCC; background-color:#AAA; z-index:999;">
+    <div style="text-decoration:underline; font-size:small; font-weight:bold;" class="color-light">Metadoc v0.0.1</div>
     <div class="button-container">
-      <span class="span-button-inline font-size-small color-light" id="btnAddTable" onclick="toggleMode()">
-        Edit/View</span>
+      <span class="span-button-inline font-size-small color-light" id="btnAddTable" onclick="toggleMode()">Edit/View</span>
       <span class="span-button-inline font-size-small color-light" onclick="saveNew()">Save New</span>
       <span class="span-button-inline font-size-small color-light" onclick="saveOverwrite()">Save</span>
       <span class="span-button-inline font-size-small color-light" onclick="addTable()">Table</span>
@@ -47,17 +41,10 @@
     </table>
   </div>
 
-  <div spellcheck="false" class="content" id="main" style="
-                                 width:900px;
-                                 margin-left:calc(((100% - 900px) / 2) - 10px);
-                                 margin-top:64px;
-                                 padding:32px;
-      background-color:#FFF;
-      box-shadow: 5px 5px 5px #888;" 
-      onkeydown="" onclick="saveFocus()" onmouseover="saveOver()" 
-      onmouseout="onOver()" oninput="modified()"
+  <div spellcheck="false" class="content" id="main" 
+      style="width:900px; margin-left:calc(((100% - 900px) / 2) - 10px); margin-top:64px; padding:32px; background-color:#FFF; box-shadow: 5px 5px 5px #888;" 
+      onkeydown="" onclick="saveFocus()" onmouseover="saveOver()" onmouseout="onOver()" oninput="modified()"
       contenteditable="true">
-    <!-- <p><br /></p> -->
     <h1>Metadoc</h1>
     <h2>About</h2>
     <p>
@@ -81,8 +68,4 @@
     </p>
   </div>
 </body>
-<style id="userStyle">
-</style>
-<script id="userScript">
-</script>
 </html>

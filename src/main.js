@@ -209,19 +209,41 @@ function isNativeFileSystemSupported() {
   return "showOpenFilePicker" in window;
 }
 
+function htmlDecode(input){
+  var e = document.createElement('div');
+  e.innerHTML = input;
+  return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+}
+window.htmlDecode = htmlDecode;
+
 function serializeSource() {
   const xs = new XMLSerializer();
   const dp = new DOMParser();
   
   const dom = dp.parseFromString(xs.serializeToString(document), "text/html");
   // dom.getElementsByTagName("style")[0].remove();
-  dom.getElementsByTagName("script")[0].remove();
+  let scripts = dom.getElementsByTagName("script");
+  let baseScript = null;
+  let userScript = null;
+  for(var i = 0; i < scripts.length; i++) {
+    if(!scripts[i].id) {
+      baseScript = htmlDecode(scripts[i].innerHTML);
+      scripts[i].remove();
+    } else if(scripts[i].id === "userScript") {
+      userScript = htmlDecode(scripts[i].innerHTML);
+      scripts[i].remove();
+    }
+  }
+
+  console.log("baseScript", unescape(baseScript));
+  window.baseScript = baseScript;
+
   return xs.serializeToString(dom)
     .replace('<\/html>',
       "\n"
       // + `<style>` + document.getElementsByTagName("style")[0].innerHTML + `<\/style>`
       // + "\n"
-      + `<script type="text/javascript">` + document.getElementsByTagName("script")[0].innerHTML + `<\/script>`
+      + `<script type="text/javascript">` + baseScript + `<\/script>`
       + "\n"
       + `<\/html>`);
 }

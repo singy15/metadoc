@@ -60,7 +60,7 @@ function restoreFocus() {
   document.getSelection().addRange(document.getSelection().getRangeAt(0));
 }
 
-function hiddenOptionControl() {
+function hideOptionControl() {
   let ctrl = document.getElementById("optionControl");
   ctrl.style.display = "none";
 }
@@ -78,9 +78,9 @@ function showOptionControl(el) {
   document.getElementById("tagName").innerText = el.tagName;
   ctrl.style.display = "block";
 
-  globalHiddenOptionControl = setTimeout(function(){
-    hiddenOptionControl();
-  }, 5000);
+  // globalHiddenOptionControl = setTimeout(function(){
+  //   hideOptionControl();
+  // }, 5000);
 }
 
 function saveFocus() {

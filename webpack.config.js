@@ -15,7 +15,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/index.html',
-      filename: 'morphdoc.html',
+      filename: 'metadoc.html',
       // chunks: ['morphdoc'],
       inject: true,
       inlineSource: '.(js)$'

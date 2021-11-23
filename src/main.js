@@ -361,6 +361,7 @@ function serializeSource() {
   let els = dom.querySelectorAll("#main *");
   for(var i = 0; i < els.length; i++) {
     removeOrAttributeDeleteClass(els[i], "over");
+    removeOrAttributeDeleteClass(els[i], "focused");
 
     if(els[i].tagName === "STYLE" && els[i].id !== "userStyle") {
       els[i].remove();
@@ -588,7 +589,11 @@ function deleteEl() {
   // target.replaceWith(DomUtil.createElementFromString(
   //   "<br />"));
 
-  if(target.parentElement.id === "main") {
+  if((target.parentElement.id === "main")
+    || (target.tagName === "TD")
+    || (target.tagName === "TR")
+    || (target.tagName === "TH")
+    ) {
     target.remove();
   } else {
     target.replaceWith(DomUtil.createElementFromString(
@@ -767,7 +772,7 @@ function showMultilineEditor(defaultValue, confirmFn, cancelFn) {
 `<div id="multilineEditor">
   <span class="span-button-inline color-dark" id="multilineEditorConfirm">Confirm</span>
   <span class="span-button-inline color-dark" id="multilineEditorCancel">Cancel</span>
-  <textarea id="multilineEditorTextarea"></textarea>
+  <textarea id="multilineEditorTextarea" spellcheck="false"></textarea>
 </div>`);
 
   document.body.appendChild(el);
@@ -787,6 +792,60 @@ function showMultilineEditor(defaultValue, confirmFn, cancelFn) {
 
 function hideMultilineEditor() {
   let el = document.getElementById("multilineEditor");
+  if(el) {
+    el.remove();
+  }
+}
+
+function showImagePalette(defaultValue, confirmFn, cancelFn) {
+  hideImagePalette();
+
+  let el = DomUtil.createElementFromString(
+`<div id="imagePalette">
+  <span class="span-button-inline color-dark" id="imagePaletteConfirm">Confirm</span>
+  <span class="span-button-inline color-dark" id="imagePaletteCancel">Cancel</span>
+  <div id="imagePaletteEditable" spellcheck="false" contenteditable="true">Paste here</div>
+</div>`);
+
+  document.body.appendChild(el);
+
+  document.getElementById("imagePaletteEditable").value = defaultValue;
+  document.getElementById("imagePaletteConfirm").addEventListener("click", function(e) {
+    confirmFn(document.getElementById("imagePaletteEditable").value);
+    hideImagePalette();
+  });
+  document.getElementById("imagePaletteCancel").addEventListener("click", function(e) { 
+    if(cancelFn) {
+      cancelFn();
+    }
+    hideImagePalette();
+  });
+
+  document.getElementById("imagePaletteEditable").addEventListener("paste", function(e){
+    if (!e.clipboardData 
+        || !e.clipboardData.types
+        || (e.clipboardData.types.length != 1)
+        || (e.clipboardData.types[0] != "Files")) {
+        return true;
+    }
+
+    var imageFile = e.clipboardData.items[0].getAsFile();
+    
+    var fr = new FileReader();
+    fr.onload = function(e) {
+      var base64 = e.target.result;
+      console.log(base64);
+      // document.querySelector("#outputImage").src = base64;
+      // document.querySelector("#outputText").textContent = base64;
+    };
+    fr.readAsDataURL(imageFile);
+    
+    // this.innerHTML = "paste image here";
+  });
+}
+
+function hideImagePalette() {
+  let el = document.getElementById("imagePalette");
   if(el) {
     el.remove();
   }
@@ -849,7 +908,9 @@ function sanitizeDocument() {
   let sanitizeTarget = {
     "P": true,
     "SPAN": true,
-    "DIV": true
+    "DIV": true,
+    "TR": true,
+    "TABLE": true,
   };
   for(var i = 0; i < els.length; i++) {
     if(sanitizeTarget[els[i].tagName]) {
@@ -918,4 +979,6 @@ window.showMultilineEditor = showMultilineEditor;
 window.editUserStyle = editUserStyle;
 window.editRawCode = editRawCode;
 window.unwrap = unwrap;
+window.showImagePalette = showImagePalette;
+window.hideImagePalette = hideImagePalette;
 

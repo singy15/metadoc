@@ -486,7 +486,7 @@ function editStyle() {
   let target = globalFocused;
   let style = target.getAttribute("style");
   let param = prompt("Input style", (style)? style.trim() : "" );
-  if(param) {
+  if(param != null && param !== undefined) {
     target.setAttribute("style", param);
   }
 }

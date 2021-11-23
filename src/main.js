@@ -533,6 +533,23 @@ function moveEl(dir) {
   }
 }
 
+function deleteEl() {
+  let target = globalFocused;
+  globalFocused = null;
+  // target.remove();
+  // target.replaceWith(DomUtil.createElementFromString(
+  //   "<br />"));
+
+  if(target.parentElement.id === "main") {
+    target.remove();
+  } else {
+    target.replaceWith(DomUtil.createElementFromString(
+      "<br />"));
+  }
+
+  hideOptionControl();
+}
+
 function modified() {
   let main = document.getElementById("main");
   if(main.children.length == 0) {
@@ -690,6 +707,56 @@ function convertTo(tagType) {
 //   });
 // });
 
+/**
+ * Multiline editor
+ */
+
+function showMultilineEditor(defaultValue, confirmFn, cancelFn) {
+  hideMultilineEditor();
+
+  let el = DomUtil.createElementFromString(
+`<div id="multilineEditor">
+  <span class="span-button-inline color-dark" id="multilineEditorConfirm">Confirm</span>
+  <span class="span-button-inline color-dark" id="multilineEditorCancel">Cancel</span>
+  <textarea id="multilineEditorTextarea"></textarea>
+</div>`);
+
+  document.body.appendChild(el);
+
+  document.getElementById("multilineEditorTextarea").value = defaultValue;
+  document.getElementById("multilineEditorConfirm").addEventListener("click", function(e) {
+    confirmFn(document.getElementById("multilineEditorTextarea").value);
+    hideMultilineEditor();
+  });
+  document.getElementById("multilineEditorCancel").addEventListener("click", function(e) { 
+    if(cancelFn) {
+      cancelFn();
+    }
+    hideMultilineEditor();
+  });
+}
+
+function hideMultilineEditor() {
+  let el = document.getElementById("multilineEditor");
+  if(el) {
+    el.remove();
+  }
+}
+
+function editUserStyle() {
+  let userStyle = document.getElementById("userStyle");
+  showMultilineEditor(DomUtil.decodeHtml(userStyle.innerHTML), function(s) {
+    userStyle.innerHTML = DomUtil.decodeHtml(s);
+  });
+}
+
+function editRawCode() {
+  let el = globalFocused;
+  console.log(el.outerHTML);
+  showMultilineEditor(el.outerHTML, function(s) {
+    el.outerHTML = s;
+  });
+}
 
 /**
  * Register event
@@ -738,7 +805,7 @@ document.getElementById("main").addEventListener("keydown", function(e) {
 });
 
 document.getElementById("main").addEventListener("input", function() {
-  overwrite();
+  // overwrite();
 });
 
 
@@ -774,4 +841,8 @@ window.onMouseenter = onMouseenter;
 window.onBlur = onBlur;
 window.onFocus = onFocus;
 window.addTagAfter = addTagAfter;
+window.deleteEl = deleteEl;
+window.showMultilineEditor = showMultilineEditor;
+window.editUserStyle = editUserStyle;
+window.editRawCode = editRawCode;
 

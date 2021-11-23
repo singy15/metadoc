@@ -7,8 +7,10 @@
     minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
   <title>Metadoc</title>
 <style id="userStyle">
+
+
 #main * {
-  font-family:'Times New Roman';
+  font-family:'Times New Roman', serif;
   color:#555;
 }
 
@@ -16,10 +18,21 @@
   font-size: 52px;
   text-align: center;
   margin-bottom: 5px;
+  font-weight:bold;
 }
 
 #main h2 {
   text-decoration: underline;
+  font-weight:bold;
+}
+
+#main h3 {
+  font-weight:bold;
+}
+
+#main h4 {
+  font-size: 0.8rem;
+  font-weight:bold;
 }
 
 #main li {
@@ -64,6 +77,29 @@
   font-family:'Ink free';
   font-weight: bold;
 }
+
+#main #appendix-future-table td {
+  vertical-align: top;
+}
+ 
+#main .anim-flash {
+  animation: flash 1s linear infinite;
+}
+
+@keyframes flash {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+  
+  
+  100% {
+    opacity: 1;
+  }
+}
 </style>
 </head>
 <body>
@@ -94,7 +130,7 @@
     <p class="focused"><span style=" ">'metadoc'</span> is <span style="font-style:italic; text-decoration:underline;">Editable/Light/Interactive/PlainText</span>?documentation system that built with vanilla HTML5 / CSS3 / JavaScript.<br /></p><p>*** This document is created with metadoc. (このドキュメントはmetadocを使用して作成しています。)</p><p class="focused">*** For detail, see <a href="#detail">GitHub</a>.</p>
     <h2>Usage</h2><h3>Save/SaveAs</h3><ul>
       <li>Ctrl+Shift+S: Save document to file</li>
-      <li><span style="font-size: 0.8rem;">Ctrl+S: Overwrite document</span><br /></li></ul><h3>Editing Tag</h3><ul><li>Table: Create table</li><li class="focused">Link: Create link</li><li class="focused">Wrap (&lt;/&gt;): Wrap with designated tag</li><li>Create tag (&lt;&gt;): Create and insert tag</li><li class="focused">Edit user stylesheet (stylesheet): Edit user stylesheet</li></ul>
+      <li><span style="font-size: 0.8rem;">Ctrl+S: Overwrite document</span><br /></li></ul><h3>Editing Tag</h3><ul><li>Table: Create table</li><li class="focused">Link: Create link</li><li class="focused">Wrap (&lt;/&gt;): Wrap with designated tag</li><li>Create tag (&lt;&gt;): Create and insert tag</li><li class="focused">Insert tag (insert &lt;&gt;): Create and insert tag after focused tag</li><li class="focused">Edit user stylesheet (stylesheet): Edit user stylesheet</li></ul>
     
     <h2>Example</h2>
     <h3>Table</h3>
@@ -108,8 +144,13 @@
      </tbody></table></div></td></tr>
         <tr><td>left</td><td style="text-align:center;">center</td><td style="text-align:right;">right</td></tr>
         </tbody>
-      </table></div><h3>Link</h3><div style="border:solid 1px #CCC; padding:10px;"><a href="https://github.com/singy15/morphdoc" style=" " name="detail">GitHub(kedama/metadoc)</a></div><h3>Interactive</h3><div style="border:solid 1px #CCC; padding:10px;"><input placeholder="Please input your name" id="yourname" /><button onclick="alert('hello, ' + document.getElementById('yourname').value + '!')">Greeting</button></div><h3>Image</h3><div style="border:solid 1px #CCC; padding:10px;"><span class="focused wip">* work in progress *</span></div><h2>Issues</h2><ul class="issues" style=""><li style="">User script</li><li>Fix class bug</li><li>Show inline toolbar on hover same element over 3sec (prepare support for interactive)</li><li>Navigation (Table of Contents)</li><br /></ul>
-    <p><br /></p>
+      </table></div><h3>Link</h3><div style="border:solid 1px #CCC; padding:10px;"><a href="https://github.com/singy15/morphdoc" style=" " name="detail">GitHub(kedama/metadoc)</a></div><h3>Interactive</h3><div style="border:solid 1px #CCC; padding:10px;"><input placeholder="Please input your name" id="yourname" /><button onclick="alert('hello, ' + document.getElementById('yourname').value + '!')">Greeting</button></div><h3>Image</h3><div style="border:solid 1px #CCC; padding:10px;"><span class="focused wip">* work in progress *</span></div><h2>Issues</h2><ul class="issues" style=""><li style="">User script</li><li>Fix class bug</li><li>Show inline toolbar on hover same element over 3sec (prepare support for interactive)</li><li>Navigation (Table of Contents)</li></ul>
+    <hr /><h2>Appendix. Future of Documentation</h2><h3>序文</h3><p>　本セクションはドキュメンテーションに関する筆者の考えを記述したものです。metadocの開発の動機となったメンタルモデルについて記します。<br /></p><h3>ドキュメンテーションの現在と課題</h3><p>　ドキュメンテーションは私のいるソフトウェア開発の世界でもそれ以外の世界でも非常に重要です。ヒトは見聞きして得た知識を言語化し、文書に書き記すことで知識を他の個体へと伝えてきました。情報技術の発展とともに、文書は電子データとして作成し利用されることが多くなりました。現代になり、文書以外にも画像や動画、音声といった媒体を使うことでより多くの知識を素早く伝えることができるようになりました。では文書は時代遅れな伝達方法なのでしょうか、残念ながら現代の文書作成技術の発展は”可搬性”、”再編集可能性”、”情報量の増加”という大きな壁により阻まれているといえます。ここでいう”可搬性”とは電子データとして作成した文書を様々な情報機器で全く（あるいはほぼ）同じ見た目で見えることを言います。PDFがよい例でしょう。”再編集可能性”とはMicrosoft OfficeのWordやExcelで作成された文書のように、文書が再編集可能であることを言います。これは文書の作成者だけではなく、文書の受け取り手も同様に編集できることが求められることがあります。PDFは多くの情報機器で閲覧することができますが、再編集可能性に欠けます。受け取り手がAdobe Acrobatを所有していることを期待してPDFファイルを送る機会は少ないでしょう。WordやExcelは多くの人がMicrosoft Officeを所有しており可搬性と再編集可能性があるといえますが、バイナリデータであるが故にMicrosoft Officeが編集に必要な点やバージョン管理システム（GitやSubversionなど）との相性が悪く、ソフトウェア開発の現場で問題となることが多くあります。MarkdownやAsciidocといった簡易マークアップ言語はその編集にマークアップ言語についての知識を必要とし、作成されたHTML文書は再編集可能性がありません。最後に”情報量の増加”とは昨今の高度に複雑化したビジネス環境で求められる情報量が今までとは比較にならないほど大きくなっていることを指します。例えばあなたがある業務システムの開発を任せられたとしましょう。あなたは顧客に要件を聞き、それを文書に落とし込んでいきます。ソフトウェア開発プロジェクトが失敗する際のよくある要因は要件漏れや要件が不明瞭であることが挙げられます。それを防ぐためあなたは事細かに、いつ・だれが・どのように・なにを・どこで・なんのためにといった基本的な情報に加えて、要件の重要性、あいまいな点があればその再ヒアリングのための課題管理、誰からの要求かといった情報を管理しなくてはなりません。日本のソフトウェア開発産業ではよく課題管理表や問い合わせ管理表と呼ばれるスプレッドシートを使用してそれを管理します。情報を加えていくたびに増えていく列、いたるところにつけられたコメント、さまざまに色分けされた文字や背景色といった小手先の技で情報量に対処します。仕様書を書き始めるとさらに大変です。このように文書作成技術の発展にはこの３つの重要なファクターに目を向けてそれぞれに対応する必要があると考えます。</p><p>　さて、ドキュメンテーションにおける課題が少なくとも３つ見えました。</p><ol><li>可搬性</li><li>再編集可能性</li><li>情報量の増加</li></ol><p>これらに対処するにはどのようにすればいいでしょうか、私は以下のように対応をすることが課題を解決すると考えています。</p><h4>可搬性</h4><p>　世の中に可搬な文書形式は多く存在します、例えばPDF(.pdf)、Word(.doc/.docx)、Excel(.xls/.xlsx)、PowerPoint(.ppt/.pptx)、テキスト(.txt)、Markdown(.md)、HTML(.html)等々沢山ありますね。しかし、どの環境でも、特にOSに関して、どのOSでも閲覧することができ、さらに編集することもできるものというのは限られるのではないでしょうか。PDFはAdobe Acrobatがないと編集できませんし、Word/Excel/PowerpointとMarkdownも同様に専用ソフトウェアが必要です、テキストは表現力が乏しすぎますので現代で文書作成に使用する機会は少ないでしょう。HTMLはどうでしょう、一般に広く普及しているOSでWebブラウザを搭載していないものは少数でしょう、表現力は改めて述べるまでもなく、昨今の技術の進化により複雑なレイアウトから画像・動画・音声といったマルチメディアを扱うことができ、ユーザの操作に応じてコンテンツが変化するようなインタラクティブ性を与えることもできる。テキストエディタがあれば最小限の編集は行うことができ専用ソフトも必要としない。ドキュメント作成に特化したUIさえ用意することができればドキュメントのプラットフォームとしてこれ以上のものはないでしょう。よって、HTMLを使ったドキュメント作成を考えることで可搬性のあるドキュメントを作ることができるように思います。</p><h4>再編集可能性</h4><p>　再編集可能な文書形式は先に述べたものにもいくつかあります、Word/Excel/PowerPointはMicrosoft Officeがあれば優れたインターフェースで再編集が可能です。HTMLはどうでしょう、テキストエディタを使用して編集することはできますが、文書作成のための優れたインターフェースとは言えません。HTMLに関する知識を必要とし、編集時と閲覧時で異なるアプリケーションを使用して異なる”見た目”で編集する必要があります。Microsoft OfficeのようなインターフェースをWebブラウザ上に再現することができれば容易に再編集可能なHTML文書を作成することができるでしょう。</p><h4>情報量の増加</h4><p>　情報量の増加には①<span style="font-size: 13.6px;">大量の情報を格納する方法、②</span>大量の情報を簡単に扱う方法の二つを考える必要があります。文書中に大量の情報を詰め込むには表や図を使うことでより多くの情報を記録することができます、ほかにもバイナリデータでもテキストデータでも、その形式が対応しているものであれば追加の情報を埋め込むことができるでしょう、例えばExcelであればRDBのように表形式のデータを格納することができますし、画像も文書中に保存することができるでしょう。①については既存の文書形式でも十分で、HTMLでも同様に格納できます。②についてはHTMLの特徴を存分に発揮することができるでしょう、HTML5/CSS3/JavaScriptを利用したインタラクティブなコンテンツやアプリケーションが世の中にあふれていることを考えると疑問の余地はないと思います。一方Word/Excel/PowerPointではある程度の動きをもたせることやVBAマクロを利用してインタラクティブ性を持ったアプリケーションを構築することもできますが、Microsoft Officeを利用したことのある方は共感していただけると思いますが、ある程度の複雑さを超えるとすぐに手に負えないものになることや、ネットワークを介したコンテンツを扱いづらいといった限界があります。よってこれについてもHTMLを使って文書作成を行うことで①大量の情報を格納し②大量の情報を簡単に扱うことができるようになるでしょう。</p><h3>HTML文書作成のためのmetadoc</h3><p>　先述の通り、可搬性・再編集可能性・情報量の増加の３つの課題についてユーザフレンドリーなHTML文書作成基盤を構築することで対応することを考えます。具体的な方策を考える前に夢を膨らませてみましょう。</p><h4>HTML文書で可能になること</h4><div><div style="" class="focused"><table style="width:90%; margin-left:calc(5%);" id="appendix-future-table">
+      <tbody><tr style=""><th style="width:20%;">項目</th><th>内容</th></tr>
+        <tr><td>双方向性</td><td>ユーザ操作に応じてコンテンツの内容を変化させることができます、文書中に検索条件で必要なデータを抽出可能な表を用意してユーザに操作させることや、UIのデモのような用法もあるでしょう。JavaScriptをフルに活用することで簡単なアプリケーションすら構築可能になるかもしれません。<br /><div style="margin:10px; padding:5px; border:double 3px #CCC; border-radius:10px;">例えば以下のフォームを見てください、これはmetadocの機能だけで作られています。<br style="font-size: 13.6px; background-color: rgb(255, 255, 255);" /><span style="font-size: 13.6px; background-color: rgb(255, 255, 255);">単価:</span><input id="appendix-tb1" style="width: 80px;" /><span style="font-size: 13.6px; background-color: rgb(255, 255, 255);">　数量:</span><input id="appendix-tb2" style="width: 80px;" />　<button onclick="document.getElementById('appendix-answer').innerText = '金額:'+(parseInt(document.getElementById('appendix-tb1').value,10) * parseInt(document.getElementById('appendix-tb2').value,10))">計算</button><span style="font-size: 13.6px; background-color: rgb(255, 255, 255);"></span><span>＞＞＞</span><span id="appendix-answer" style="font-size: 13.6px; background-color: rgb(255, 255, 255);">金額:0</span><br /></div></td></tr>
+      <tr><td><span class="fuwafuwa">表現力</span></td><td>HTML5/CSS3/JavaScriptはPDF/Word/Excel/Powerpointと比較して非常に高い表現力を持ちます、複雑なレイアウトが実現でき、マルチメディアを扱うことができるだけでなく、スクリプトを利用した高度な表現も可能です。<br /><div style="text-align:center; margin-top:10px;"><span style="color:#AAF;" class="focused anim-flash">YouTube - 雪花ラミィ 「明日への境界線」</span></div><div style="text-align:center; padding:10px;">
+<span class="focused"><iframe width="320" height="240" src="https://www.youtube.com/embed/ULtGHb83pTI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></span></div></td></tr>
+     </tbody></table></div><br /></div>
   </div>
 
   <!-- option control -->

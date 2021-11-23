@@ -338,6 +338,12 @@ function serializeSource() {
   
   const dom = dp.parseFromString(xs.serializeToString(document), "text/html");
   // dom.getElementsByTagName("style")[0].remove();
+  
+  let els = dom.querySelectorAll("#main *");
+  for(var i = 0; i < els.length; i++) {
+    removeOrAttributeDeleteClass(els[i], "over");
+  }
+
   let scripts = dom.getElementsByTagName("script");
   let baseScript = null;
   let userScript = null;

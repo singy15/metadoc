@@ -141,6 +141,14 @@ function showOptionControl(el) {
   //   .join(">");
   ctrl.style.display = "block";
 
+  // let prependTag = document.getElementById("prependTag");
+  // let appendTag = document.getElementById("appendTag");
+  // prependTag.style.top = bound.top - 10 + 1 + "px";
+  // prependTag.style.left = bound.left - 12 + "px";
+  // appendTag.style.top = bound.top + bound.height - 6 + "px";
+  // appendTag.style.left = bound.left - 12 + "px";
+
+
   // globalHiddenOptionControl = setTimeout(function(){
   //   hideOptionControl();
   // }, 5000);
@@ -180,7 +188,9 @@ function saveFocus() {
   globalFocused = event.target;
   globalSelection = document.getSelection();
 
-  globalFocused.classList.add("focused");
+  if(globalEditMode) {
+    globalFocused.classList.add("focused");
+  }
 
   if(globalFocused.id === "main") {
     globalFocused.children[globalFocused.children.length - 1].focus();
@@ -208,7 +218,9 @@ function setFocus(el) {
   globalFocused = el;
   showOptionControl(globalFocused);
 
-  globalFocused.classList.add("focused");
+  if(globalEditMode) {
+    globalFocused.classList.add("focused");
+  }
 }
 
 function saveOver() {
@@ -231,7 +243,9 @@ function saveOver() {
   // ctrl.style.top = bound.top - 50 + "px";
   // ctrl.style.left = bound.left + bound.width - ctrl.getBoundingClientRect().width + "px";
 
-  globalOver.classList.add("over");
+  if(globalEditMode) {
+    globalOver.classList.add("over");
+  }
 
   // document.getElementById("tagName").innerText = globalOver.tagName;
 }
@@ -483,6 +497,13 @@ function createTag() {
   let tag = prompt("Tag to create");
   if(tag) {
     DomUtil.insertElementAtCaret(DomUtil.createElementFromString(tag));
+  }
+}
+
+function addTagBefore() {
+  let tag = prompt("Tag to create");
+  if(tag) {
+    globalFocused.parentElement.insertBefore(DomUtil.createElementFromString(tag), globalFocused);
   }
 }
 
@@ -860,6 +881,7 @@ window.onMouseenter = onMouseenter;
 window.onBlur = onBlur;
 window.onFocus = onFocus;
 window.addTagAfter = addTagAfter;
+window.addTagBefore = addTagBefore;
 window.deleteEl = deleteEl;
 window.showMultilineEditor = showMultilineEditor;
 window.editUserStyle = editUserStyle;

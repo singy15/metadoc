@@ -129,8 +129,21 @@
         <td><span onclick="convertTag(prompt('tag type?'))" class="span-button-inline color-dark">&lt;?&gt;</span></td>
         <td><span onclick="editRawCode()" class="span-button-inline color-dark">&lt;/&gt;</span></td>
       </tr>
+      <tr>
+        <td><span onclick="addTagBefore()" class="span-button-inline color-dark">prev</span></td>
+        <td><span onclick="addTagAfter()" class="span-button-inline color-dark">next</span></td>
+      </tr>
     </table>
   </div>
+
+  <!--
+  <div id="prependTag" class="span-button-line font-size-x-small" style="position:fixed; z-index:9999; color:#000; cursor:pointer;">
+    &gt;
+  </div>
+  <div id="appendTag" class="span-button-line font-size-x-small" style="position:fixed; z-index:9999; color:#000; cursor:pointer;">
+    &gt;
+  </div>
+  -->
 
 </body>
 </html>

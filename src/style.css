@@ -101,9 +101,6 @@ table,tr {
 }
 */
 
-.over {
-  outline: dotted 1px #CCC;
-}
 
 #main {
   outline: none;
@@ -193,6 +190,28 @@ body {
   margin-right: 5px;
 }
 
+/* core */
+
+.over {
+  outline: dotted 1px #CCC;
+}
+
+.focused {
+  animation: hilite 1s;
+}
+
+@keyframes hilite {
+  0% {
+    background-color: transparent;
+  }
+  20% {
+    background-color: #F6F6BC;
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
 /* option control */
 
 .__metadoc-option-control {
@@ -208,4 +227,5 @@ body {
 .__metadoc-shadow {
   box-shadow: 5px 5px 5px #888;
 }
+
 

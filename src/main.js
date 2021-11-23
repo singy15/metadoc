@@ -27,6 +27,13 @@ function writeLog(str) {
   console.log(str);
 }
 
+function removeOrAttributeDeleteClass(el, cls) {
+  el.classList.remove(cls);
+  if(el.classList.length === 0) {
+    el.removeAttribute("class");
+  }
+}
+
 /*
  * core functions
  */
@@ -58,7 +65,8 @@ function toggleMode() {
 function changeToViewMode() {
   document.getElementById("btnToggleMode").innerText = "ViewMode";
   globalMain.removeAttribute("contenteditable");
-  globalMain.classList.remove("content");
+  // globalMain.classList.remove("content");
+  removeOrAttributeDeleteClass(globalMain, "content");
 }
 
 function changeToEditMode() {
@@ -95,24 +103,55 @@ function showOptionControl(el) {
   let bound = el.getBoundingClientRect();
   ctrl.style.top = bound.top - 50 + "px";
   ctrl.style.left = bound.left + bound.width + "px";
-  el.classList.add("over");
+  // el.classList.add("over");
 
-  let pankuzu = el.tagName;
+  let tagname = document.getElementById("tagName");
+  tagname.innerHTML = "";
+  let pankuzuElems = getPankuzuList(el);
+  let tmp = pankuzuElems.map((x) => {
+    if(tagname.innerHTML !== "") {
+      tagname.appendChild(document.createTextNode(" > "));
+    }
+    let pel = document.createElement("span");
+    pel.innerText = x.tagName;
+    pel.classList.add("span-button-inline");
+    pel.addEventListener("click", function(e) {
+      setFocus(x);
+    });
+    tagname.appendChild(pel);
+  });
+
+  // let pankuzu = document.createElement("span");
+  // pankuzu.innerHTML = "<span>zxcv</span>";
+  // let tagname = document.getElementById("tagName");
+  // tagname.innerHTML = "";
+  // tagname.appendChild(pankuzu);
+  // pankuzu.addEventListener("click", function(e) {
+  //   console.log("foo");
+  // });
+
+
+  // document.getElementById("tagName").innerText = getPankuzuList(el)
+  //   .map(x => x.tagName)
+  //   .join(">");
+  ctrl.style.display = "block";
+
+  // globalHiddenOptionControl = setTimeout(function(){
+  //   hideOptionControl();
+  // }, 5000);
+}
+
+function getPankuzuList(el) {
+  let pankuzu = [el];
   let par = el;
   while(par = par.parentElement) {
     if(par.id === "main") {
       break;
     }
 
-    pankuzu = par.tagName + " > " + pankuzu;
+    pankuzu.unshift(par);
   }
-
-  document.getElementById("tagName").innerText = pankuzu;
-  ctrl.style.display = "block";
-
-  // globalHiddenOptionControl = setTimeout(function(){
-  //   hideOptionControl();
-  // }, 5000);
+  return pankuzu;
 }
 
 function hideOptionControl() {
@@ -128,8 +167,15 @@ function saveFocus() {
 
   event.stopPropagation();
 
+  if(globalFocused) {
+    // globalFocused.classList.remove("focused");
+    removeOrAttributeDeleteClass(globalFocused, "focused");
+  }
+
   globalFocused = event.target;
   globalSelection = document.getSelection();
+
+  globalFocused.classList.add("focused");
 
   if(globalFocused.id === "main") {
     globalFocused.children[globalFocused.children.length - 1].focus();
@@ -148,6 +194,18 @@ function saveFocus() {
   // document.getElementById("tagName").innerText = globalFocused.tagName;
 }
 
+function setFocus(el) {
+  if(globalFocused) {
+    // globalFocused.classList.remove("focused");
+    removeOrAttributeDeleteClass(globalFocused, "focused");
+  }
+
+  globalFocused = el;
+  showOptionControl(globalFocused);
+
+  globalFocused.classList.add("focused");
+}
+
 function saveOver() {
   if(event.target.id === "optionControl"
     || event.target.id === "main") {
@@ -155,6 +213,12 @@ function saveOver() {
   }
 
   event.stopPropagation();
+
+  if(globalOver) {
+    // globalOver.classList.remove("over");
+    removeOrAttributeDeleteClass(globalOver, "over");
+  }
+
   globalOver = event.target;
 
   // let ctrl = document.getElementById("optionControl");
@@ -167,8 +231,29 @@ function saveOver() {
   // document.getElementById("tagName").innerText = globalOver.tagName;
 }
 
-function onOver() {
-  event.target.classList.remove("over");
+
+function onMouseout() {
+  // event.stopPropagation();
+  // event.target.classList.remove("over");
+  // console.log("onMouseout", event.target);
+}
+
+function onMouseenter() {
+  // event.stopPropagation();
+  // event.target.classList.add("over");
+  // console.log("onMouseenter", event.target);
+}
+
+function onBlur() {
+  // event.stopPropagation();
+  // event.target.classList.remove("over");
+  // console.log("onBlur", event.target);
+}
+
+function onFocus() {
+  // event.stopPropagation();
+  // event.target.classList.add("over");
+  // console.log("onFocus", event.target);
 }
 
 async function writeFile(fileHandle, contents) {
@@ -666,11 +751,14 @@ window.envelope = envelope;
 window.createTag = createTag;
 window.saveOver = saveOver;
 window.editStyle = editStyle;
-window.onOver = onOver;
 window.moveEl = moveEl;
 window.modified = modified;
 window.keydown = keydown;
 window.convertTo = convertTo;
 window.DomUtil = DomUtil;
 window.convertTag = convertTag;
+window.onMouseout = onMouseout;
+window.onMouseenter = onMouseenter;
+window.onBlur = onBlur;
+window.onFocus = onFocus;
 

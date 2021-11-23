@@ -67,6 +67,7 @@ function changeToViewMode() {
   globalMain.removeAttribute("contenteditable");
   // globalMain.classList.remove("content");
   removeOrAttributeDeleteClass(globalMain, "content");
+  hideOptionControl();
 }
 
 function changeToEditMode() {
@@ -95,8 +96,12 @@ function restoreFocus() {
  */
 
 function showOptionControl(el) {
-  if(globalHiddenOptionControl) {
-    clearTimeout(globalHiddenOptionControl);
+  // if(globalHiddenOptionControl) {
+  //   clearTimeout(globalHiddenOptionControl);
+  // }
+  
+  if(!globalEditMode) {
+    return;
   }
 
   let ctrl = document.getElementById("optionControl");

@@ -24,8 +24,6 @@
 
 #main li {
   font-size: 0.8rem;
-  font-family:'Ink free';
-  font-weight: bold;
 }
 
 #main p,div {
@@ -61,6 +59,11 @@
 #main a {
   color: blue;
 }
+
+#main .issues li {
+  font-family:'Ink free';
+  font-weight: bold;
+}
 </style>
 </head>
 <body>
@@ -88,13 +91,12 @@
       onkeydown="" onclick="saveFocus()" onmouseover="saveOver()" onmouseout="onMouseout()" onmouseenter="onMouseenter()" onblur="onBlur()" onfocus="onFocus()" oninput="modified()">
     <h1 style="margin-top:0px;">metadoc</h1><p style="margin:0px; text-align:center; font-size:0.5rem; color:#CCC;">version 0.0.1</p>
     <hr /><p style="text-align:center;">
-      <span style="font-family:'MV Boli';">'metadoc is future of documentation'</span></p><h2 class="over">About</h2>
-    <p><span style=" ">'metadoc'</span> is <span style="font-style:italic; text-decoration:underline;">Editable/Light/Interactive/PlainText-based</span> document system that built with vanilla HTML5 and JavaScript.<br /></p><p>*** This document is created with metadoc. (このドキュメントはmetadocを使用して作成しています。)</p><p class="focused">*** For detail, see <a href="#detail">GitHub</a>.</p>
-    <h2>Usage</h2><h3>Save/SaveAs</h3>
-    <p class="focused">
-      <span style=" ">Ctrl+Shift+S</span>: Save document to file
-      <br />
-      <span style=" ">Ctrl+S</span>: Overwrite document<br /></p>
+      <span style="font-family:'MV Boli';">'metadoc is future of documentation'</span></p><h2>About</h2>
+    <p class="focused"><span style=" ">'metadoc'</span> is <span style="font-style:italic; text-decoration:underline;">Editable/Light/Interactive/PlainText</span>?documentation system that built with vanilla HTML5 / CSS3 / JavaScript.<br /></p><p>*** This document is created with metadoc. (このドキュメントはmetadocを使用して作成しています。)</p><p class="focused">*** For detail, see <a href="#detail">GitHub</a>.</p>
+    <h2>Usage</h2><h3>Save/SaveAs</h3><ul>
+      <li>Ctrl+Shift+S: Save document to file</li>
+      <li><span style="font-size: 0.8rem;">Ctrl+S: Overwrite document</span><br /></li></ul><h3>Editing Tag</h3><ul><li>Table: Create table</li><li class="focused">Link: Create link</li><li class="focused">Wrap (&lt;/&gt;): Wrap with designated tag</li><li>Create tag (&lt;&gt;): Create and insert tag</li><li class="focused">Insert tag (insert &lt;&gt;): Create and insert tag after focused tag</li><li class="focused">Edit user stylesheet (stylesheet): Edit user stylesheet</li></ul>
+    
     <h2>Example</h2>
     <h3>Table</h3>
     <div style="border:solid 1px #CCC; padding:10px;">
@@ -107,7 +109,7 @@
      </tbody></table></div></td></tr>
         <tr><td>left</td><td style="text-align:center;">center</td><td style="text-align:right;">right</td></tr>
         </tbody>
-      </table></div><h3>Link</h3><div style="border:solid 1px #CCC; padding:10px;"><a href="https://github.com/singy15/morphdoc" style=" " name="detail">GitHub(kedama/metadoc)</a></div><h3>Interactive</h3><div style="border:solid 1px #CCC; padding:10px;"><input placeholder="Please input your name" id="yourname" /><button onclick="alert('hello, ' + document.getElementById('yourname').value + '!')">Greeting</button></div><h3>Image</h3><div style="border:solid 1px #CCC; padding:10px;"><span class="focused wip">* work in progress *</span></div><h2>Issues</h2><ul><li class="focused">User script</li><li>Fix class bug</li><li>Show inline toolbar on hover same element over 3sec (prepare support for interactive)</li><li class="focused">Unwrap</li></ul>
+      </table></div><h3>Link</h3><div style="border:solid 1px #CCC; padding:10px;"><a href="https://github.com/singy15/morphdoc" style=" " name="detail">GitHub(kedama/metadoc)</a></div><h3>Interactive</h3><div style="border:solid 1px #CCC; padding:10px;"><input placeholder="Please input your name" id="yourname" /><button onclick="alert('hello, ' + document.getElementById('yourname').value + '!')">Greeting</button></div><h3>Image</h3><div style="border:solid 1px #CCC; padding:10px;"><span class="focused wip">* work in progress *</span></div><h2>Issues</h2><ul class="issues" style=""><li style="">User script</li><li>Fix class bug</li><li>Show inline toolbar on hover same element over 3sec (prepare support for interactive)</li><li>Navigation (Table of Contents)</li><br /></ul>
     <p><br /></p>
   </div>
 

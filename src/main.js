@@ -581,25 +581,26 @@ function convertTag(tagType) {
 }
 
 function convertTo(tagType) {
-  let html = globalOver.innerHTML;
+  let target = globalFocused;
+  let html = target.innerHTML;
 
   if(tagType === "p") {
-    globalOver.replaceWith(DomUtil.createElementFromString(
+    target.replaceWith(DomUtil.createElementFromString(
       "<p>" + html + "</p>"));
   } else if(tagType === "div") {
-    globalOver.replaceWith(DomUtil.createElementFromString(
+    target.replaceWith(DomUtil.createElementFromString(
       "<div>" + html + "</div>"));
   } else if(tagType === "span") {
-    globalOver.replaceWith(DomUtil.createElementFromString(
+    target.replaceWith(DomUtil.createElementFromString(
       "<span>" + html + "</span>"));
   } else {
-    globalOver.replaceWith(DomUtil.createElementFromString(
+    target.replaceWith(DomUtil.createElementFromString(
       `<${tagType}>` + html + `</${tagType}>`));
   }
 
   // if(tagType === "?") {
   //   let tag = prompt("Tag type ex. 'span' for <span>:");
-  //   globalOver.replaceWith(DomUtil.createElementFromString(
+  //   target.replaceWith(DomUtil.createElementFromString(
   //     `<${tag}>` + html + `</${tag}>`));
   // }
 } 

@@ -7,22 +7,19 @@
     minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
   <title>Metadoc</title>
 <style id="userStyle">
+#main * {
+  font-family:'Times New Roman';
+  color:#555;
+}
+
 #main h1 {
-  color:#A0F;
-  font-family:'MV Boli';
   font-size: 52px;
   text-align: center;
+  margin-bottom: 5px;
 }
 
 #main h2 {
-  color:#88F;
-  font-family:'MV Boli';
   text-decoration: underline;
-}
-
-#main h3 {
-  color:#ADE;
-  font-family:'MV Boli';
 }
 
 #main li {
@@ -31,13 +28,14 @@
   font-weight: bold;
 }
 
-#main p {
-  font-size: 0.8rem;
+#main p,div {
+  font-size: 0.85rem;
 }
 
 #main table {
   border: solid 1px #CCC;
   margin: 5px;
+  font-size: 0.8rem;
 }
 
 #main th {
@@ -48,6 +46,20 @@
 #main td {
   border: solid 1px #CCC;
   min-width: 100px;
+}
+
+#main ol {
+  padding-left: 30px;
+}
+
+#main .wip {
+  font-family:'Ink free';
+  font-weight: bold;
+  color: #F55;
+}
+
+#main a {
+  color: blue;
 }
 </style>
 </head>
@@ -74,10 +86,10 @@
       contenteditable="true"
       style="width:900px; margin-left:calc(((100% - 900px) / 2) - 10px); margin-top:64px; padding:32px; background-color:#FFF;" 
       onkeydown="" onclick="saveFocus()" onmouseover="saveOver()" onmouseout="onMouseout()" onmouseenter="onMouseenter()" onblur="onBlur()" onfocus="onFocus()" oninput="modified()">
-    <h1 style="font-family:'MV Boli'; margin-top:0px;">metadoc <span style="font-size:x-small; font-family:mono; color:#000;">version 0.0.1</span></h1>
-    <h2>About</h2>
-    <p>
-      <span style="font-family:'MV Boli';">'Metadoc is future of documentation'</span></p><p><span style="color:red;">Metadoc</span> is <span style="font-style:italic; text-decoration:underline;">Editable/Light/Interactive/PlainText-based</span> document system, built with vanilla HTML5 and JavaScript.<br /></p><p>This document itself created with metadoc. <br />(このドキュメントはmetadocを使用して作成しています。)</p>
+    <h1 style="margin-top:0px;">metadoc</h1><p style="margin:0px; text-align:center; font-size:0.5rem; color:#CCC;">version 0.0.1</p>
+    <hr /><p style="text-align:center;">
+      <span style="font-family:'MV Boli';">'Metadoc is future of documentation'</span></p><h2>About</h2>
+    <p><span style=" ">'metadoc'</span> is <span style="font-style:italic; text-decoration:underline;">Editable/Light/Interactive/PlainText-based</span> document system that built with vanilla HTML5 and JavaScript.<br /></p><p>*** This document is created with metadoc. (このドキュメントはmetadocを使用して作成しています。)</p><p class="focused">*** For detail, see <a href="#detail">GitHub</a>.</p>
     <h2>Usage</h2>
     <p>
       <span style="font-weight:bold;">Ctrl+Shift+S</span>: Save document to file
@@ -86,18 +98,18 @@
     </p>
     <h2>Example</h2>
     <h3>Table</h3>
-    <div style="border:solid 1px #CCC; padding:10px;" class="over">
+    <div style="border:solid 1px #CCC; padding:10px;">
       <table>
         <tbody><tr><th>th1</th><th>th2</th><th>th3</th></tr>
-        <tr><td>td1</td><td>td2</td><td><div><table>
+        <tr><td>td1</td><td style=" ">td2</td><td><div><table>
       <tbody><tr><th>h1</th><th>h2</th><th>h3</th></tr>
       <tr><td>c1</td><td>c2</td><td>c3</td></tr>
       <tr><td>c4</td><td>c5</td><td>c6</td></tr>
      </tbody></table></div></td></tr>
-        <tr><td>td4</td><td>td5</td><td>td6</td></tr>
+        <tr><td>left</td><td style="text-align:center;">center</td><td style="text-align:right;">right</td></tr>
         </tbody>
-      </table></div><h3 class="focused">Link</h3><div style="border:solid 1px #CCC; padding:10px;"><a href="https://github.com/singy15/morphdoc" style="color:blue;">GitHub(kedama/metadoc)</a></div><h3>Interactive</h3><div style="border:solid 1px #CCC; padding:10px;"><input /><button>submit</button></div><h3>Image</h3><div style="border:solid 1px #CCC; padding:10px;">* work in progress *</div><h2>Issues</h2><ol><li>User stylesheet</li><li class="focused">User script</li><li>Fix class bug</li></ol>
-    <p class="focused"><br /></p>
+      </table></div><h3>Link</h3><div style="border:solid 1px #CCC; padding:10px;"><a href="https://github.com/singy15/morphdoc" style=" " name="detail">GitHub(kedama/metadoc)</a></div><h3>Interactive</h3><div style="border:solid 1px #CCC; padding:10px;"><input placeholder="Please input your name" id="yourname" /><button onclick="alert('hello, ' + document.getElementById('yourname').value + '!')">Greeting</button></div><h3>Image</h3><div style="border:solid 1px #CCC; padding:10px;"><span class="focused wip">* work in progress *</span></div><h2>Issues</h2><ol><li>User stylesheet</li><li class="focused">User script</li><li>Fix class bug</li><li class="focused">Show inline toolbar on hover same element over 3sec (prepare support for interactive)</li></ol>
+    <p class="over"><br /></p>
   </div>
 
   <!-- option control -->

@@ -20,6 +20,7 @@
       <span class="span-button-inline font-size-small color-light" onclick="markClear()">Clear</span>
       <span class="span-button-inline font-size-small color-light" onclick="envelope()" >&lt;/&gt;</span>
       <span class="span-button-inline font-size-small color-light" onclick="createTag()" >&lt;&gt;</span>
+      <span class="span-button-inline font-size-small color-light" onclick="addTagAfter()" >insert &lt;&gt;</span>
     </div>
   </div>
 
@@ -62,6 +63,7 @@
         <td><span onclick="convertTag('p')" class="span-button-inline color-dark">&lt;p&gt;</span></td>
         <td><span onclick="convertTag('div')" class="span-button-inline color-dark">&lt;div&gt;</span></td>
         <td><span onclick="convertTag('span')" class="span-button-inline color-dark">&lt;span&gt;</span></td>
+        <td><span onclick="convertTag(prompt('tag type?'))" class="span-button-inline color-dark">&lt;?&gt;</span></td>
       </tr>
     </table>
   </div>

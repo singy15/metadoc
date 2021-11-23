@@ -475,6 +475,13 @@ function createTag() {
   }
 }
 
+function addTagAfter() {
+  let tag = prompt("Tag to create");
+  if(tag) {
+    globalFocused.parentElement.insertBefore(DomUtil.createElementFromString(tag), globalFocused.nextElementSibling);
+  }
+}
+
 function editStyle() {
   let target = globalFocused;
   let style = target.getAttribute("style");
@@ -562,17 +569,22 @@ function convertTo(tagType) {
   if(tagType === "p") {
     globalOver.replaceWith(DomUtil.createElementFromString(
       "<p>" + html + "</p>"));
-  }
-
-  if(tagType === "div") {
+  } else if(tagType === "div") {
     globalOver.replaceWith(DomUtil.createElementFromString(
       "<div>" + html + "</div>"));
-  }
-
-  if(tagType === "span") {
+  } else if(tagType === "span") {
     globalOver.replaceWith(DomUtil.createElementFromString(
       "<span>" + html + "</span>"));
+  } else {
+    globalOver.replaceWith(DomUtil.createElementFromString(
+      `<${tagType}>` + html + `</${tagType}>`));
   }
+
+  // if(tagType === "?") {
+  //   let tag = prompt("Tag type ex. 'span' for <span>:");
+  //   globalOver.replaceWith(DomUtil.createElementFromString(
+  //     `<${tag}>` + html + `</${tag}>`));
+  // }
 } 
 
 
@@ -761,4 +773,5 @@ window.onMouseout = onMouseout;
 window.onMouseenter = onMouseenter;
 window.onBlur = onBlur;
 window.onFocus = onFocus;
+window.addTagAfter = addTagAfter;
 

@@ -764,10 +764,17 @@ function editUserStyle() {
 
 function editRawCode() {
   let el = globalFocused;
-  console.log(el.outerHTML);
   showMultilineEditor(el.outerHTML, function(s) {
     el.outerHTML = s;
   });
+}
+
+function unwrap() {
+  let el = globalFocused;
+  if(el.parentElement.id === "main") {
+    return;
+  }
+  el.outerHTML = el.innerHTML;
 }
 
 /**
@@ -857,4 +864,5 @@ window.deleteEl = deleteEl;
 window.showMultilineEditor = showMultilineEditor;
 window.editUserStyle = editUserStyle;
 window.editRawCode = editRawCode;
+window.unwrap = unwrap;
 

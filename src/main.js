@@ -361,6 +361,17 @@ function serializeSource() {
   let els = dom.querySelectorAll("#main *");
   for(var i = 0; i < els.length; i++) {
     removeOrAttributeDeleteClass(els[i], "over");
+
+    if(els[i].tagName === "STYLE" && els[i].id !== "userStyle") {
+      els[i].remove();
+    }
+  }
+
+  let styles = dom.querySelectorAll("style");
+  for(var i = 0; i < styles.length; i++) {
+    if(styles[i].id !== "userStyle") {
+      styles[i].remove();
+    }
   }
 
   let scripts = dom.getElementsByTagName("script");

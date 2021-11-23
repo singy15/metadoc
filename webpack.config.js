@@ -18,7 +18,7 @@ module.exports = {
       filename: 'morphdoc.html',
       // chunks: ['morphdoc'],
       inject: true,
-      inlineSource: '.(js|css)$'
+      inlineSource: '.(js)$'
     }),
     new HtmlWebpackInlineSourcePlugin(HtmlWebpackPlugin)
   ],

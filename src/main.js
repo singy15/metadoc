@@ -96,7 +96,18 @@ function showOptionControl(el) {
   ctrl.style.top = bound.top - 50 + "px";
   ctrl.style.left = bound.left + bound.width + "px";
   el.classList.add("over");
-  document.getElementById("tagName").innerText = el.tagName;
+
+  let pankuzu = el.tagName;
+  let par = el;
+  while(par = par.parentElement) {
+    if(par.id === "main") {
+      break;
+    }
+
+    pankuzu = par.tagName + " > " + pankuzu;
+  }
+
+  document.getElementById("tagName").innerText = pankuzu;
   ctrl.style.display = "block";
 
   // globalHiddenOptionControl = setTimeout(function(){

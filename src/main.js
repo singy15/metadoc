@@ -173,8 +173,12 @@ function hideOptionControl() {
 }
 
 function saveFocus() {
-  if(event.target.id === "optionControl"
-    || event.target.id === "main") {
+  if(event.target.id === "optionControl") {
+    return;
+  }
+
+  if(event.target.id === "main") {
+    hideOptionControl();
     return;
   }
 
@@ -193,7 +197,8 @@ function saveFocus() {
   }
 
   if(globalFocused.id === "main") {
-    globalFocused.children[globalFocused.children.length - 1].focus();
+    // globalFocused.children[globalFocused.children.length - 1].focus();
+    // return;
   }
 
   showOptionControl(globalFocused);
@@ -828,7 +833,7 @@ document.addEventListener("keydown", async (e) => {
   // }
 });
 
-document.getElementById("main").addEventListener("keydown", function(e) {
+function sanitizeDocument() {
   let els = document.querySelectorAll("#main *");
   let sanitizeTarget = {
     "P": true,
@@ -842,6 +847,21 @@ document.getElementById("main").addEventListener("keydown", function(e) {
       }
     }
   }
+
+  let main = document.getElementById("main");
+  let children = main.children;
+  let lastEl = children[children.length - 1];
+  if(!((lastEl.tagName === "P") && (lastEl.innerHTML === "<br>"))) {
+    main.appendChild(DomUtil.createElementFromString("<p><br></p>"));
+  }
+}
+
+document.getElementById("main").addEventListener("keydown", function(e) {
+  sanitizeDocument();
+});
+
+document.getElementById("main").addEventListener("click", function(e) {
+  sanitizeDocument();
 });
 
 document.getElementById("main").addEventListener("input", function() {

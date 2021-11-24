@@ -95,20 +95,74 @@ function restoreFocus() {
  * option control
  */
 
+function addOptionItem() {
+
+}
+
 function showOptionControl(el) {
-  // if(globalHiddenOptionControl) {
-  //   clearTimeout(globalHiddenOptionControl);
-  // }
-  
   if(!globalEditMode) {
     return;
   }
 
-  let ctrl = document.getElementById("optionControl");
+  // let ctrl = document.getElementById("optionControl");
+  // let bound = el.getBoundingClientRect();
+  // ctrl.style.top = bound.top - 50 + "px";
+  // ctrl.style.left = bound.left + bound.width + "px";
+
+  // let tagname = document.getElementById("tagName");
+  // tagname.innerHTML = "";
+  // let pankuzuElems = getPankuzuList(el);
+  // let tmp = pankuzuElems.map((x) => {
+  //   if(tagname.innerHTML !== "") {
+  //     tagname.appendChild(document.createTextNode(" > "));
+  //   }
+  //   let pel = document.createElement("span");
+  //   pel.innerText = x.tagName;
+  //   pel.classList.add("span-button-inline");
+  //   pel.addEventListener("click", function(e) {
+  //     setFocus(x);
+  //   });
+  //   tagname.appendChild(pel);
+  // });
+
+  // ctrl.style.display = "block";
+
+  let optOld = document.getElementById("optionControl");
+  if(optOld) {
+    optOld.remove();
+  }
+
+  let optHtml = `<div id="optionControl" class="__metadoc-option-control">
+    <span id="tagName" style="font-size:x-small; color:#AAA; "></span>
+    <table style="text-align:center;margin-top:3px;" id="optTable">
+      <tr>
+        <td><span onclick="editStyle()" class="span-button-inline color-dark"><b>S</b></span></td>
+        <td><span onclick="moveEl(-1)" class="span-button-inline color-dark"><svg style="width:6px;height:6px;"><polyline points="0,6 6,6 3,0" stroke="rgb(200,200,200)" fill="rgb(200,200,200)" stroke-width="1"></polyline></svg></span></td>
+        <td><span onclick="moveEl(1)" class="span-button-inline color-dark"><svg style="width:6px;height:6px;"><polyline points="0,0 6,0 3,6" stroke="rgb(200,200,200)" fill="rgb(200,200,200)" stroke-width="1"></polyline></svg></span></td>
+        <td><span onclick="deleteEl()" class="span-button-inline color-dark"><svg style="width:10px;height:5px;"><line x1="0" y1="0" x2="5" y2="5" stroke="rgb(200,200,200)" stroke-width="2"/><line x1="5" y1="0" x2="0" y2="5" stroke="rgb(200,200,200)" stroke-width="2"/></svg></span></td>
+        <td><span onclick="unwrap()" class="span-button-inline color-dark">unwrap</span></td>
+      </tr>
+      <tr>
+        <td><span onclick="convertTag('p')" class="span-button-inline color-dark">&lt;p&gt;</span></td>
+        <td><span onclick="convertTag('div')" class="span-button-inline color-dark">&lt;div&gt;</span></td>
+        <td><span onclick="convertTag('span')" class="span-button-inline color-dark">&lt;span&gt;</span></td>
+        <td><span onclick="convertTag(prompt('tag type?'))" class="span-button-inline color-dark">&lt;?&gt;</span></td>
+        <td><span onclick="editRawCode()" class="span-button-inline color-dark">&lt;/&gt;</span></td>
+      </tr>
+      <tr>
+        <td><span onclick="addTagBefore()" class="span-button-inline color-dark"><svg style="width:10px;height:6px;"><polyline points="6,0 0,3 6,6" stroke="rgb(200,200,200)" fill="rgb(200,200,200)" stroke-width="1"></polyline></svg></span></td>
+        <td><span onclick="addTagAfter()" class="span-button-inline color-dark"><svg style="width:10px;height:6px;"><polyline points="0,0 6,3 0,6" stroke="rgb(200,200,200)" fill="rgb(200,200,200)" stroke-width="1"></polyline></svg></span></td>
+      </tr>
+    </table>
+  </div>`;
+
+  let opt = DomUtil.createElementFromString(optHtml);
+
+  document.body.appendChild(opt);
+
   let bound = el.getBoundingClientRect();
-  ctrl.style.top = bound.top - 50 + "px";
-  ctrl.style.left = bound.left + bound.width + "px";
-  // el.classList.add("over");
+  opt.style.top = bound.top - 50 + "px";
+  opt.style.left = bound.left + bound.width + "px";
 
   let tagname = document.getElementById("tagName");
   tagname.innerHTML = "";
@@ -126,32 +180,50 @@ function showOptionControl(el) {
     tagname.appendChild(pel);
   });
 
-  // let pankuzu = document.createElement("span");
-  // pankuzu.innerHTML = "<span>zxcv</span>";
-  // let tagname = document.getElementById("tagName");
-  // tagname.innerHTML = "";
-  // tagname.appendChild(pankuzu);
-  // pankuzu.addEventListener("click", function(e) {
-  //   console.log("foo");
-  // });
+  if(el.tagName === "TD" || el.tagName === "TH") {
+    let tbl = document.getElementById('optTable');
+    let tr = document.createElement('tr');
+    tbl.appendChild(tr);
+
+    let td = document.createElement('td');
+    tr.appendChild(td);
+    let btn = DomUtil.createElementFromString('<span class="span-button-inline color-dark">row+</span>');
+    td.appendChild(btn);
+
+    let td2 = document.createElement('td');
+    tr.appendChild(td2);
+    let btn2 = DomUtil.createElementFromString('<span class="span-button-inline color-dark">col+</span>');
+    td2.appendChild(btn2);
+
+    btn.addEventListener('click', function() {
+      let tbl = el.parentElement.parentElement;
+      let tr = document.createElement('tr');
+      tbl.appendChild(tr);
+
+      let td = null;
+      for(var i = 0; i < el.parentElement.children.length; i++) {
+        td = document.createElement('td');
+        td.innerHTML = '<br>';
+        tr.appendChild(td);
+      }
+    });
+
+    btn2.addEventListener('click', function() {
+      let tbl = el.parentElement.parentElement;
+      for(var i = 0; i < tbl.children.length; i++) {
+        let tr = tbl.children[i];
+        let thtd = null;
+        if(tr.children[0].tagName === "TH") {
+          thtd = document.createElement('th');
+        } else {
+          thtd = document.createElement('td');
+        }
+        tr.appendChild(thtd);
+      }
+    });
+  }
 
 
-  // document.getElementById("tagName").innerText = getPankuzuList(el)
-  //   .map(x => x.tagName)
-  //   .join(">");
-  ctrl.style.display = "block";
-
-  // let prependTag = document.getElementById("prependTag");
-  // let appendTag = document.getElementById("appendTag");
-  // prependTag.style.top = bound.top - 10 + 1 + "px";
-  // prependTag.style.left = bound.left - 12 + "px";
-  // appendTag.style.top = bound.top + bound.height - 6 + "px";
-  // appendTag.style.left = bound.left - 12 + "px";
-
-
-  // globalHiddenOptionControl = setTimeout(function(){
-  //   hideOptionControl();
-  // }, 5000);
 }
 
 function getPankuzuList(el) {
@@ -168,8 +240,10 @@ function getPankuzuList(el) {
 }
 
 function hideOptionControl() {
-  let ctrl = document.getElementById("optionControl");
-  ctrl.style.display = "none";
+  let opt = document.getElementById("optionControl");
+  if(opt) {
+    opt.remove();
+  }
 }
 
 function saveFocus() {
@@ -357,7 +431,16 @@ function serializeSource() {
   
   const dom = dp.parseFromString(xs.serializeToString(document), "text/html");
   // dom.getElementsByTagName("style")[0].remove();
-  
+
+  let opt = dom.getElementById("optionControl");
+  if(opt) { 
+    opt.remove();
+  }
+  let header = dom.getElementById("header");
+  if(header) {
+    header.remove();
+  }
+
   let els = dom.querySelectorAll("#main *");
   for(var i = 0; i < els.length; i++) {
     removeOrAttributeDeleteClass(els[i], "over");
@@ -928,6 +1011,35 @@ function sanitizeDocument() {
   }
 }
 
+function createHeader() {
+  let headerOld = document.getElementById("header");
+  if(headerOld) {
+    headerOld.remove();
+  }
+
+  let headerHtml = `<div id="header" class="__metadoc-header">
+      <div class="__metadoc-header-title">metadoc v0.0.1</div>
+      <div class="__metadoc-button-container">
+        <span class="span-button-inline font-size-small color-light" id="btnToggleMode" onclick="toggleMode()">EditMode</span>
+        <span class="span-button-inline font-size-small color-light" onclick="saveNew()">Save-As</span>
+        <span class="span-button-inline font-size-small color-light" onclick="saveOverwrite()">Save</span>
+        <span class="span-button-inline font-size-small color-light" onclick="addTable()">Table</span>
+        <span class="span-button-inline font-size-small color-light" onclick="addLink()">Link</span>
+        <span class="span-button-inline font-size-small color-light" onclick="markClear()">Clear</span>
+        <span class="span-button-inline font-size-small color-light" onclick="envelope()" >&lt;/&gt;</span>
+        <span class="span-button-inline font-size-small color-light" onclick="createTag()" >&lt;&gt;</span>
+        <span class="span-button-inline font-size-small color-light" onclick="editUserStyle()" >stylesheet</span>
+        <span class="span-button-inline font-size-small color-light" onclick="addImage()">Image</span>
+      </div>
+    </div>`;
+
+  let header = DomUtil.createElementFromString(headerHtml);
+
+  document.body.appendChild(header);
+}
+
+createHeader();
+
 document.getElementById("main").addEventListener("keydown", function(e) {
   sanitizeDocument();
 });
@@ -981,4 +1093,5 @@ window.editRawCode = editRawCode;
 window.unwrap = unwrap;
 window.showImagePalette = showImagePalette;
 window.hideImagePalette = hideImagePalette;
+window.createHeader = createHeader;
 

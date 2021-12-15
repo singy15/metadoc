@@ -171,19 +171,25 @@ body {
   height:46px;
   padding:5px;
   border-bottom: solid 1px #CCC;
-  background-color:#AAA;
+  background-color:#fbfbfb;
   z-index:999;
+  box-shadow: 1px 1px 6px 1px #555;
 }
 
 .__metadoc-header-title {
-  text-decoration:underline;
-  font-size:small;
+  font-size:0.4rem;
   font-weight:bold;
-  color: #EEE;
+  color: #837373;
+  position: relative;
+  left: 15px;
+  top: -7px;
 }
 
 .__metadoc-button-container {
   padding: 5px;
+  position: relative;
+  left: 100px;
+  top: -28px;
 }
 
 .__metadoc-button-container button {

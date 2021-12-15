@@ -1018,18 +1018,23 @@ function createHeader() {
   }
 
   let headerHtml = `<div id="header" class="__metadoc-header">
-      <div class="__metadoc-header-title">metadoc v0.0.1</div>
+      <div style="position:relative; left:23px; top:3px;">
+        <svg xmlns="http://www.w3.org/2000/svg" style="width:32px; height:32px;">
+          <polyline style="stroke:#626060;" points="20 23, 15 28, 2 15, 15 2, 28 15, 25 18" stroke="black" stroke-width="3.0" fill="none"></polyline>
+          <polyline style="stroke:#919191;" points="17 16, 28 27" stroke="black" stroke-width="3.0" fill="none"></polyline>
+        </svg>
+      </div>
+      <div class="__metadoc-header-title">metadoc</div>
       <div class="__metadoc-button-container">
-        <span class="span-button-inline font-size-small color-light" id="btnToggleMode" onclick="toggleMode()">EditMode</span>
-        <span class="span-button-inline font-size-small color-light" onclick="saveNew()">Save-As</span>
-        <span class="span-button-inline font-size-small color-light" onclick="saveOverwrite()">Save</span>
-        <span class="span-button-inline font-size-small color-light" onclick="addTable()">Table</span>
-        <span class="span-button-inline font-size-small color-light" onclick="addLink()">Link</span>
-        <span class="span-button-inline font-size-small color-light" onclick="markClear()">Clear</span>
-        <span class="span-button-inline font-size-small color-light" onclick="envelope()" >&lt;/&gt;</span>
-        <span class="span-button-inline font-size-small color-light" onclick="createTag()" >&lt;&gt;</span>
-        <span class="span-button-inline font-size-small color-light" onclick="editUserStyle()" >stylesheet</span>
-        <span class="span-button-inline font-size-small color-light" onclick="addImage()">Image</span>
+        <span class="span-button-inline font-size-small color-dark" id="btnToggleMode" onclick="toggleMode()">EditMode</span>
+        <span class="span-button-inline font-size-small color-dark" onclick="saveNew()">Save-As</span>
+        <span class="span-button-inline font-size-small color-dark" onclick="saveOverwrite()">Save</span>
+        <span class="span-button-inline font-size-small color-dark" onclick="addTable()">Table</span>
+        <span class="span-button-inline font-size-small color-dark" onclick="addLink()">Link</span>
+        <span class="span-button-inline font-size-small color-dark" onclick="markClear()">Clear</span>
+        <span class="span-button-inline font-size-small color-dark" onclick="envelope()" >&lt;/&gt;</span>
+        <span class="span-button-inline font-size-small color-dark" onclick="createTag()" >&lt;&gt;</span>
+        <span class="span-button-inline font-size-small color-dark" onclick="editUserStyle()" >stylesheet</span>
       </div>
     </div>`;
 

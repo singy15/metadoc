@@ -49,7 +49,7 @@ function addTable() {
 
 function addLink() {
   DomUtil.insertElementAtCaretByHtml(
-    `<a href="${prompt('Input link url')}">link</a>`);
+    `<a href="${prompt('Input link url')}">${prompt('Input link text')}</a>`);
 }
 
 function toggleMode() {
@@ -1031,10 +1031,10 @@ function createHeader() {
         <span class="span-button-inline font-size-small color-dark" onclick="saveOverwrite()">Save</span>
         <span class="span-button-inline font-size-small color-dark" onclick="addTable()">Table</span>
         <span class="span-button-inline font-size-small color-dark" onclick="addLink()">Link</span>
-        <span class="span-button-inline font-size-small color-dark" onclick="markClear()">Clear</span>
+        <!-- <span class="span-button-inline font-size-small color-dark" onclick="markClear()">Clear</span> -->
         <span class="span-button-inline font-size-small color-dark" onclick="envelope()" >&lt;/&gt;</span>
         <span class="span-button-inline font-size-small color-dark" onclick="createTag()" >&lt;&gt;</span>
-        <span class="span-button-inline font-size-small color-dark" onclick="editUserStyle()" >stylesheet</span>
+        <span class="span-button-inline font-size-small color-dark" onclick="editUserStyle()" >A</span>
       </div>
     </div>`;
 

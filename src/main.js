@@ -941,6 +941,10 @@ function editUserStyle() {
   });
 }
 
+function setTitle() {
+  document.getElementsByTagName("title")[0].innerText = prompt("Input document title");
+}
+
 function editRawCode() {
   let el = globalFocused;
   showMultilineEditor(el.outerHTML, function(s) {
@@ -1035,6 +1039,7 @@ function createHeader() {
         <span class="span-button-inline font-size-small color-dark" onclick="envelope()" >&lt;/&gt;</span>
         <span class="span-button-inline font-size-small color-dark" onclick="createTag()" >&lt;&gt;</span>
         <span class="span-button-inline font-size-small color-dark" onclick="editUserStyle()" >A</span>
+        <span class="span-button-inline font-size-small color-dark" onclick="setTitle()" >Title</span>
       </div>
     </div>`;
 
@@ -1094,6 +1099,7 @@ window.addTagBefore = addTagBefore;
 window.deleteEl = deleteEl;
 window.showMultilineEditor = showMultilineEditor;
 window.editUserStyle = editUserStyle;
+window.setTitle = setTitle;
 window.editRawCode = editRawCode;
 window.unwrap = unwrap;
 window.showImagePalette = showImagePalette;

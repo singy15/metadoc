@@ -180,16 +180,20 @@ body {
   font-size:0.4rem;
   font-weight:bold;
   color: #837373;
-  position: relative;
+  position: absolute;
   left: 15px;
-  top: -7px;
+  top: 38px;
 }
 
 .__metadoc-button-container {
   padding: 5px;
-  position: relative;
+  position: absolute;
   left: 100px;
-  top: -28px;
+  top: 27px;
+}
+
+.__metadoc-button-container span {
+  margin-right: 10px;
 }
 
 .__metadoc-button-container button {

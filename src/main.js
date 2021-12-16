@@ -63,7 +63,7 @@ function toggleMode() {
 }
 
 function changeToViewMode() {
-  document.getElementById("btnToggleMode").innerText = "ViewMode";
+  document.getElementById("btnToggleMode").innerText = "[VIEW]";
   globalMain.removeAttribute("contenteditable");
   // globalMain.classList.remove("content");
   removeOrAttributeDeleteClass(globalMain, "content");
@@ -71,7 +71,7 @@ function changeToViewMode() {
 }
 
 function changeToEditMode() {
-  document.getElementById("btnToggleMode").innerText = "EditMode";
+  document.getElementById("btnToggleMode").innerText = "[EDIT]";
   globalMain.setAttribute("contenteditable", "true");
   globalMain.classList.add("content");
 }
@@ -1022,24 +1022,33 @@ function createHeader() {
   }
 
   let headerHtml = `<div id="header" class="__metadoc-header">
-      <div style="position:relative; left:23px; top:3px;">
-        <svg xmlns="http://www.w3.org/2000/svg" style="width:32px; height:32px;">
+      <div style="position:absolute; left:23px; top:3px;">
+        <svg xmlns="http://www.w3.org/2000/svg" style="width:32px; height:32px; position:absolute; left:0px; top:6px;">
           <polyline style="stroke:#626060;" points="20 23, 15 28, 2 15, 15 2, 28 15, 25 18" stroke="black" stroke-width="3.0" fill="none"></polyline>
           <polyline style="stroke:#919191;" points="17 16, 28 27" stroke="black" stroke-width="3.0" fill="none"></polyline>
         </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" style="width:32px; height:32px; position:absolute; left:0px; top:4px;">
+          <polyline style="stroke:#333;" points="20 23, 15 28, 2 15, 15 2, 28 15, 25 18" stroke="black" stroke-width="3.0" fill="none"></polyline>
+          <polyline style="stroke:#333;" points="17 16, 28 27" stroke="black" stroke-width="3.0" fill="none"></polyline>
+        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" style="width:32px; height:32px; position:absolute; left:0px; top:3px;">
+          <polyline style="stroke:#fff;" points="20 23, 15 28, 2 15, 15 2, 28 15, 25 18" stroke="black" stroke-width="3.0" fill="none"></polyline>
+          <polyline style="stroke:#fff;" points="17 16, 28 27" stroke="black" stroke-width="3.0" fill="none"></polyline>
+        </svg>
       </div>
       <div class="__metadoc-header-title">metadoc</div>
+      <div class="__metadoc-header-title" style="color:#fff; top:36px; left:14px;">metadoc</div>
       <div class="__metadoc-button-container">
-        <span class="span-button-inline font-size-small color-dark" id="btnToggleMode" onclick="toggleMode()">EditMode</span>
-        <span class="span-button-inline font-size-small color-dark" onclick="saveNew()">Save-As</span>
-        <span class="span-button-inline font-size-small color-dark" onclick="saveOverwrite()">Save</span>
-        <span class="span-button-inline font-size-small color-dark" onclick="addTable()">Table</span>
-        <span class="span-button-inline font-size-small color-dark" onclick="addLink()">Link</span>
+        <span class="span-button-inline font-size-small color-dark" id="btnToggleMode" onclick="toggleMode()">[EDIT]</span>
+        <span class="span-button-inline font-size-small color-dark" onclick="saveNew()">SAVE-AS</span>
+        <span class="span-button-inline font-size-small color-dark" onclick="saveOverwrite()">SAVE</span>
+        <span class="span-button-inline font-size-small color-dark" onclick="addTable()">&lt;table&gt;</span>
+        <span class="span-button-inline font-size-small color-dark" onclick="addLink()">&lt;a&gt;</span>
         <!-- <span class="span-button-inline font-size-small color-dark" onclick="markClear()">Clear</span> -->
         <span class="span-button-inline font-size-small color-dark" onclick="envelope()" >&lt;/&gt;</span>
         <span class="span-button-inline font-size-small color-dark" onclick="createTag()" >&lt;&gt;</span>
         <span class="span-button-inline font-size-small color-dark" onclick="editUserStyle()" >A</span>
-        <span class="span-button-inline font-size-small color-dark" onclick="setTitle()" >Title</span>
+        <span class="span-button-inline font-size-small color-dark" onclick="setTitle()" >&lt;title&gt;</span>
       </div>
     </div>`;
 

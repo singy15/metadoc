@@ -57,7 +57,17 @@ function getSelected() {
 function decodeHtml(input){
   var e = document.createElement('div');
   e.innerHTML = input;
-  return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+
+  if(e.childNodes.length === 0) {
+    return "";
+  }
+
+  let str = "";
+  for(var i = 0; i < e.childNodes.length; i++) {
+    str = str + e.childNodes[i].nodeValue;
+  }
+
+  return str;
 }
 
 module.exports = {

@@ -159,6 +159,11 @@ body {
   font-size: small;
 }
 
+.font-size-button {
+  font-size: 0.5rem;
+  vertical-align: middle;
+}
+
 /* ------------------------------------------------------------------------- */
 
 /* header */
@@ -168,7 +173,7 @@ body {
   top:0px;
   left:0px;
   right:0px;
-  height:46px;
+  height:64px;
   padding:5px;
   border-bottom: solid 1px #CCC;
   background-color:#fbfbfb;
@@ -182,22 +187,41 @@ body {
   color: #837373;
   position: absolute;
   left: 15px;
-  top: 38px;
+  top: 45px;
 }
 
 .__metadoc-button-container {
   padding: 5px;
   position: absolute;
   left: 100px;
-  top: 27px;
-}
-
-.__metadoc-button-container span {
-  margin-right: 10px;
+  top: 2px;
 }
 
 .__metadoc-button-container button {
   margin-right: 5px;
+}
+
+.__metadoc-button-container table {
+  display: inline-block;
+  vertical-align: top;
+  /* border: solid 1px #CCC; */
+  background-color: #e3e3e3;
+  border-radius: 6px;
+  margin-right: 10px;
+  border-collapse:separate;
+  border-spacing:4px; 
+}
+
+.__metadoc-button-container table td {
+  text-align: center;
+  min-width: 32px;
+  padding: 1px 3px;
+  border-right: solid 1px #CCC;
+  border-bottom: solid 1px #CCC;
+  border-left: solid 1px #FFF;
+  border-top: solid 1px #FFF;
+  border-radius: 4px;
+  background-color: #f9f9f9;
 }
 
 /* core */

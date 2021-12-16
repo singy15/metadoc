@@ -716,6 +716,19 @@ function convertTag(tagType) {
   }
 }
 
+function multiwrap(...tagType) {
+  if(DomUtil.getSelected().textContent === '') {
+    // convertTo(tagType);
+  } else {
+    let tag = `${DomUtil.getSelected().textContent}`;
+    for(var i = 0; i < tagType.length; i++) {
+      tag = `<${tagType[i]}>${tag}</${tagType[i]}>`;
+    }
+
+    DomUtil.insertElementAtCaret(DomUtil.createElementFromString(tag));
+  }
+}
+
 function convertTo(tagType) {
   let target = globalFocused;
   let html = target.innerHTML;
@@ -1023,34 +1036,96 @@ function createHeader() {
 
   let headerHtml = `<div id="header" class="__metadoc-header">
       <div style="position:absolute; left:23px; top:3px;">
-        <svg xmlns="http://www.w3.org/2000/svg" style="width:32px; height:32px; position:absolute; left:0px; top:6px;">
+        <svg xmlns="http://www.w3.org/2000/svg" style="width:32px; height:32px; position:absolute; left:0px; top:13px;">
           <polyline style="stroke:#626060;" points="20 23, 15 28, 2 15, 15 2, 28 15, 25 18" stroke="black" stroke-width="3.0" fill="none"></polyline>
           <polyline style="stroke:#919191;" points="17 16, 28 27" stroke="black" stroke-width="3.0" fill="none"></polyline>
         </svg>
-        <svg xmlns="http://www.w3.org/2000/svg" style="width:32px; height:32px; position:absolute; left:0px; top:4px;">
+        <svg xmlns="http://www.w3.org/2000/svg" style="width:32px; height:32px; position:absolute; left:0px; top:11px;">
           <polyline style="stroke:#333;" points="20 23, 15 28, 2 15, 15 2, 28 15, 25 18" stroke="black" stroke-width="3.0" fill="none"></polyline>
           <polyline style="stroke:#333;" points="17 16, 28 27" stroke="black" stroke-width="3.0" fill="none"></polyline>
         </svg>
-        <svg xmlns="http://www.w3.org/2000/svg" style="width:32px; height:32px; position:absolute; left:0px; top:3px;">
+        <svg xmlns="http://www.w3.org/2000/svg" style="width:32px; height:32px; position:absolute; left:0px; top:10px;">
           <polyline style="stroke:#fff;" points="20 23, 15 28, 2 15, 15 2, 28 15, 25 18" stroke="black" stroke-width="3.0" fill="none"></polyline>
           <polyline style="stroke:#fff;" points="17 16, 28 27" stroke="black" stroke-width="3.0" fill="none"></polyline>
         </svg>
       </div>
       <div class="__metadoc-header-title">metadoc</div>
-      <div class="__metadoc-header-title" style="color:#fff; top:36px; left:14px;">metadoc</div>
+      <div class="__metadoc-header-title" style="color:#fff; top:43px; left:14px;">metadoc</div>
       <div class="__metadoc-button-container">
-        <span class="span-button-inline font-size-small color-dark" id="btnToggleMode" onclick="toggleMode()">[EDIT]</span>
-        <span class="span-button-inline font-size-small color-dark" onclick="saveNew()">SAVE-AS</span>
-        <span class="span-button-inline font-size-small color-dark" onclick="saveOverwrite()">SAVE</span>
-        <span class="span-button-inline font-size-small color-dark" onclick="addTable()">&lt;table&gt;</span>
-        <span class="span-button-inline font-size-small color-dark" onclick="addLink()">&lt;a&gt;</span>
-        <!-- <span class="span-button-inline font-size-small color-dark" onclick="markClear()">Clear</span> -->
-        <span class="span-button-inline font-size-small color-dark" onclick="envelope()" >&lt;/&gt;</span>
-        <span class="span-button-inline font-size-small color-dark" onclick="createTag()" >&lt;&gt;</span>
-        <span class="span-button-inline font-size-small color-dark" onclick="editUserStyle()" >A</span>
-        <span class="span-button-inline font-size-small color-dark" onclick="setTitle()" >&lt;title&gt;</span>
+        <table>
+        <tr>
+        <td><span class="span-button-inline font-size-button color-dark" id="btnToggleMode" onclick="toggleMode()">[EDIT]</span></td>
+        <td><span class="span-button-inline font-size-button color-dark" onclick="saveNew()">SAVE-AS</span></td>
+        <td><span class="span-button-inline font-size-button color-dark" onclick="saveOverwrite()">SAVE</span></td>
+        </tr>
+        <tr>
+        <td><span class="span-button-inline font-size-button color-dark" onclick="setTitle()" >TITLE</span></td>
+        </tr>
+        </table>
+
+        <table>
+        <tr>
+        <td><span class="span-button-inline font-size-button color-dark" onclick="addTable()">table</span></td>
+        <td><span class="span-button-inline font-size-button color-dark" onclick="addLink()">a</span></td>
+        <td><span class="span-button-inline font-size-button color-dark" onclick="convertTag('p')">p</span></td>
+        <td><span class="span-button-inline font-size-button color-dark" onclick="convertTag('div')">div</span></td>
+        <td><span class="span-button-inline font-size-button color-dark" onclick="convertTag('span')">span</span></td>
+        <td><span class="span-button-inline font-size-button color-dark" onclick="multiwrap('li', 'ul')">ul</span></td>
+        <td><span class="span-button-inline font-size-button color-dark" onclick="multiwrap('li', 'ol')">ol</span></td>
+        <td><span class="span-button-inline font-size-button color-dark" onclick="convertTag(prompt('tag type?'))">?</span></td>
+        <!--
+        <td><span class="span-button-inline font-size-button color-dark" onclick="envelope()" >/</span></td>
+        <td><span class="span-button-inline font-size-button color-dark" onclick="createTag()" ></span></td>
+        -->
+        </tr>
+        <tr>
+        <td><span class="span-button-inline font-size-button color-dark" onclick="convertTag('h1')">h1</span></td>
+        <td><span class="span-button-inline font-size-button color-dark" onclick="convertTag('h2')">h2</span></td>
+        <td><span class="span-button-inline font-size-button color-dark" onclick="convertTag('h3')" >h3</span></td>
+        <td><span class="span-button-inline font-size-button color-dark" onclick="convertTag('h4')" >h4</span></td>
+        <td><span class="span-button-inline font-size-button color-dark" onclick="convertTag('h5')" >h5</span></td>
+        <td><span class="span-button-inline font-size-button color-dark" onclick="convertTag('h6')" >h6</span></td>
+        <td><span class="span-button-inline font-size-button color-dark" onclick="convertTag('hr')" >hr</span></td>
+        </tr>
+        </table>
+
+        <table>
+        <tr>
+        <td><span class="span-button-inline font-size-button color-dark" onclick="editUserStyle()" style="text-decoration:underline" >A</span></td>
+        </tr>
+        </table>
       </div>
     </div>`;
+
+
+
+  let optHtml = `<div id="optionControl" class="__metadoc-option-control">
+    <span id="tagName" style="font-size:x-small; color:#AAA; "></span>
+    <table style="text-align:center;margin-top:3px;" id="optTable">
+      <tr>
+        <td><span onclick="editStyle()" class="span-button-inline color-dark"><b>S</b></span></td>
+        <td><span onclick="moveEl(-1)" class="span-button-inline color-dark"><svg style="width:6px;height:6px;"><polyline points="0,6 6,6 3,0" stroke="rgb(200,200,200)" fill="rgb(200,200,200)" stroke-width="1"></polyline></svg></span></td>
+        <td><span onclick="moveEl(1)" class="span-button-inline color-dark"><svg style="width:6px;height:6px;"><polyline points="0,0 6,0 3,6" stroke="rgb(200,200,200)" fill="rgb(200,200,200)" stroke-width="1"></polyline></svg></span></td>
+        <td><span onclick="deleteEl()" class="span-button-inline color-dark"><svg style="width:10px;height:5px;"><line x1="0" y1="0" x2="5" y2="5" stroke="rgb(200,200,200)" stroke-width="2"/><line x1="5" y1="0" x2="0" y2="5" stroke="rgb(200,200,200)" stroke-width="2"/></svg></span></td>
+        <td><span onclick="unwrap()" class="span-button-inline color-dark">unwrap</span></td>
+      </tr>
+      <tr>
+        <td><span onclick="convertTag('p')" class="span-button-inline color-dark">&lt;p&gt;</span></td>
+        <td><span onclick="convertTag('div')" class="span-button-inline color-dark">&lt;div&gt;</span></td>
+        <td><span onclick="convertTag('span')" class="span-button-inline color-dark">&lt;span&gt;</span></td>
+        <td><span onclick="convertTag(prompt('tag type?'))" class="span-button-inline color-dark">&lt;?&gt;</span></td>
+        <td><span onclick="editRawCode()" class="span-button-inline color-dark">&lt;/&gt;</span></td>
+      </tr>
+      <tr>
+        <td><span onclick="addTagBefore()" class="span-button-inline color-dark"><svg style="width:10px;height:6px;"><polyline points="6,0 0,3 6,6" stroke="rgb(200,200,200)" fill="rgb(200,200,200)" stroke-width="1"></polyline></svg></span></td>
+        <td><span onclick="addTagAfter()" class="span-button-inline color-dark"><svg style="width:10px;height:6px;"><polyline points="0,0 6,3 0,6" stroke="rgb(200,200,200)" fill="rgb(200,200,200)" stroke-width="1"></polyline></svg></span></td>
+      </tr>
+    </table>
+  </div>`;
+
+
+        // <td><span onclick="convertTag(prompt('tag type?'))" class="span-button-inline color-dark">&lt;?&gt;</span></td>
+
 
   let header = DomUtil.createElementFromString(headerHtml);
 
@@ -1099,6 +1174,7 @@ window.keydown = keydown;
 window.convertTo = convertTo;
 window.DomUtil = DomUtil;
 window.convertTag = convertTag;
+window.multiwrap = multiwrap;
 window.onMouseout = onMouseout;
 window.onMouseenter = onMouseenter;
 window.onBlur = onBlur;

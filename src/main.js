@@ -103,29 +103,6 @@ function showOptionControl(el) {
     return;
   }
 
-  // let ctrl = document.getElementById("optionControl");
-  // let bound = el.getBoundingClientRect();
-  // ctrl.style.top = bound.top - 50 + "px";
-  // ctrl.style.left = bound.left + bound.width + "px";
-
-  // let tagname = document.getElementById("tagName");
-  // tagname.innerHTML = "";
-  // let pankuzuElems = getPankuzuList(el);
-  // let tmp = pankuzuElems.map((x) => {
-  //   if(tagname.innerHTML !== "") {
-  //     tagname.appendChild(document.createTextNode(" > "));
-  //   }
-  //   let pel = document.createElement("span");
-  //   pel.innerText = x.tagName;
-  //   pel.classList.add("span-button-inline");
-  //   pel.addEventListener("click", function(e) {
-  //     setFocus(x);
-  //   });
-  //   tagname.appendChild(pel);
-  // });
-
-  // ctrl.style.display = "block";
-
   let optOld = document.getElementById("optionControl");
   if(optOld) {
     optOld.remove();
@@ -701,12 +678,6 @@ function convertTo(tagType) {
     target.replaceWith(DomUtil.createElementFromString(
       `<${tagType}>` + html + `</${tagType}>`));
   }
-
-  // if(tagType === "?") {
-  //   let tag = prompt("Tag type ex. 'span' for <span>:");
-  //   target.replaceWith(DomUtil.createElementFromString(
-  //     `<${tag}>` + html + `</${tag}>`));
-  // }
 } 
 
 function setStyle(style, val) {
@@ -748,109 +719,6 @@ function toggleStyle(style, val1, val2) {
     target.style[style] = val1;
   }
 } 
-
-
-
-// document.getElementById("main").addEventListener("keypress", function(e) {
-//   console.log(e);
-//   // event.stopPropagation();
-// 
-//   // let tagName = e.target.tagName;
-//   // let multilineTags = {
-//   //   "P": true,
-//   //   "SPAN": true
-//   // };
-// 
-//   // if(!multilineTags[tagName]) {
-//   //   console.log("none", tagName);
-//   //   return true;
-//   // }
-// 
-//   // if (e.which == 13) {
-//   //   if (window.getSelection) {
-//   //     var selection = window.getSelection(),
-//   //       range = selection.getRangeAt(0),
-//   //       br = document.createElement("br");
-//   //     range.deleteContents();
-//   //     range.insertNode(br);
-//   //     range.setStartAfter(br);
-//   //     range.setEndAfter(br);
-//   //     range.collapse(false);
-//   //     selection.removeAllRanges();
-//   //     selection.addRange(range);
-//   //     e.preventDefault();
-//   //     return false;
-//   //   }
-//   // }
-// 
-//   // if (e.which == 13) {
-//   //   e.preventDefault();
-//   //   if (window.getSelection) {
-//   //     var selection = window.getSelection(),
-//   //       range = selection.getRangeAt(0),
-//   //       br = document.createElement("br"),
-//   //       textNode = document.createTextNode("\u00a0");
-//   //     range.deleteContents();
-//   //     range.insertNode(br);
-//   //     range.collapse(false);
-//   //     range.insertNode(textNode);
-//   //     range.selectNodeContents(textNode);
-// 
-//   //     // selection.removeAllRanges();
-//   //     // selection.addRange(range);
-//   //     let v = new VanillaCaret(globalFocused).setPos(0);
-//   //     v.setPos(0);
-//   //     return false;
-//   //   }
-//   // }
-// 
-// 
-//   // if (e.which == 13) {
-//   //   console.log(globalFocused);
-//   //   console.log(document.activeElement);
-//   // }
-// 
-//   // let els = document.querySelectorAll("#main *");
-//   // for(var i = 0; i < els.length; i++) {
-//   //     console.log(els[i]);
-//   //   els[i].removeEventListener("keypress", sss);
-//   //   els[i].addEventListener("keypress", sss);
-//   // }
-// });
-
-
-
-
-// $(function(){
-// 
-//   $("#editable")
-// 
-//   // make sure br is always the lastChild of contenteditable
-//   .live("keyup mouseup", function(){
-//     if (!this.lastChild || this.lastChild.nodeName.toLowerCase() != "br") {
-//       this.appendChild(document.createChild("br"));
-//      }
-//   })
-// 
-//   // use br instead of div div
-//   .live("keypress", function(e){
-//     if (e.which == 13) {
-//       if (window.getSelection) {
-//         var selection = window.getSelection(),
-//           range = selection.getRangeAt(0),
-//           br = document.createElement("br");
-//         range.deleteContents();
-//         range.insertNode(br);
-//         range.setStartAfter(br);
-//         range.setEndAfter(br);
-//         range.collapse(false);
-//         selection.removeAllRanges();
-//         selection.addRange(range);
-//         return false;
-//       }
-//     }
-//   });
-// });
 
 /**
  * Multiline editor
@@ -1283,12 +1151,6 @@ document.getElementById("main").addEventListener("click", function(e) {
   sanitizeDocument();
 });
 
-document.getElementById("main").addEventListener("input", function() {
-  // overwrite();
-});
-
-
-
 /**
  * Export
  */
@@ -1316,10 +1178,6 @@ window.convertTo = convertTo;
 window.DomUtil = DomUtil;
 window.convertTag = convertTag;
 window.multiwrap = multiwrap;
-window.onMouseout = onMouseout;
-window.onMouseenter = onMouseenter;
-window.onBlur = onBlur;
-window.onFocus = onFocus;
 window.addTagAfter = addTagAfter;
 window.addTagBefore = addTagBefore;
 window.deleteEl = deleteEl;

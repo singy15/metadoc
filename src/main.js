@@ -430,6 +430,7 @@ function serializeSource() {
   const dp = new DOMParser();
   
   const dom = dp.parseFromString(xs.serializeToString(document), "text/html");
+  console.log(dom);
   // dom.getElementsByTagName("style")[0].remove();
 
   let opt = dom.getElementById("optionControl");
@@ -458,10 +459,11 @@ function serializeSource() {
     }
   }
 
-  let scripts = dom.getElementsByTagName("script");
+  let scripts = dom.querySelectorAll("script");
   let baseScript = null;
   let userScript = null;
   for(var i = 0; i < scripts.length; i++) {
+    console.log(scripts[i]);
     if(!scripts[i].id) {
       baseScript = DomUtil.decodeHtml(scripts[i].innerHTML);
       scripts[i].remove();
@@ -471,15 +473,14 @@ function serializeSource() {
     }
   }
 
-  console.log("baseScript", unescape(baseScript));
-  window.baseScript = baseScript;
-
   return xs.serializeToString(dom)
     .replace('<\/html>',
       "\n"
       // + `<style>` + document.getElementsByTagName("style")[0].innerHTML + `<\/style>`
       // + "\n"
       + `<script type="text/javascript">` + baseScript + `<\/script>`
+      + "\n"
+      + `<script type="text/javascript" id="userScript">` + userScript + `<\/script>`
       + "\n"
       + `<\/html>`);
 }
@@ -617,10 +618,17 @@ function addTagAfter() {
 function editStyle() {
   let target = globalFocused;
   let style = target.getAttribute("style");
-  let param = prompt("Input style", (style)? style.trim() : "" );
-  if(param != null && param !== undefined) {
-    target.setAttribute("style", param);
-  }
+  
+  showMultilineEditor((style)? style.trim() : "", function(s) {
+    if(s != null && s !== undefined) {
+      target.setAttribute("style", s);
+    }
+  });
+
+  // let param = prompt("Input style", (style)? style.trim() : "" );
+  // if(param != null && param !== undefined) {
+  //   target.setAttribute("style", param);
+  // }
 }
 
 function moveEl(dir) {
@@ -752,6 +760,32 @@ function convertTo(tagType) {
   //   target.replaceWith(DomUtil.createElementFromString(
   //     `<${tag}>` + html + `</${tag}>`));
   // }
+} 
+
+function setStyle(style, val) {
+  let target = globalFocused;
+
+  if(!target) {
+    return;
+  }
+
+  target.style[style] = val;
+} 
+
+function toggleStyle(style, val1, val2) {
+  let target = globalFocused;
+
+  if(!target) {
+    return;
+  }
+
+  if(target.style[style] === val1) {
+    target.style[style] = val2;
+  } else if (target.style[style] === val2) {
+    target.style[style] = val1;
+  } else {
+    target.style[style] = val1;
+  }
 } 
 
 
@@ -954,6 +988,13 @@ function editUserStyle() {
   });
 }
 
+function editUserScript() {
+  let userScript = document.getElementById("userScript");
+  showMultilineEditor(DomUtil.decodeHtml(userScript.innerHTML), function(s) {
+    userScript.innerHTML = DomUtil.decodeHtml(s);
+  });
+}
+
 function setTitle() {
   document.getElementsByTagName("title")[0].innerText = prompt("Input document title");
 }
@@ -1035,97 +1076,225 @@ function createHeader() {
   }
 
   let headerHtml = `<div id="header" class="__metadoc-header">
-      <div style="position:absolute; left:23px; top:3px;">
-        <svg xmlns="http://www.w3.org/2000/svg" style="width:32px; height:32px; position:absolute; left:0px; top:13px;">
+      <div class="__metadoc-header-container" style="height:64px;">
+        <div style="width:100px; height:64px;">
+        <svg xmlns="http://www.w3.org/2000/svg" style="width:32px; height:32px; position:absolute; left:31px; top:13px;">
           <polyline style="stroke:#626060;" points="20 23, 15 28, 2 15, 15 2, 28 15, 25 18" stroke="black" stroke-width="3.0" fill="none"></polyline>
           <polyline style="stroke:#919191;" points="17 16, 28 27" stroke="black" stroke-width="3.0" fill="none"></polyline>
         </svg>
-        <svg xmlns="http://www.w3.org/2000/svg" style="width:32px; height:32px; position:absolute; left:0px; top:11px;">
+        <svg xmlns="http://www.w3.org/2000/svg" style="width:32px; height:32px; position:absolute; left:31px; top:11px;">
           <polyline style="stroke:#333;" points="20 23, 15 28, 2 15, 15 2, 28 15, 25 18" stroke="black" stroke-width="3.0" fill="none"></polyline>
           <polyline style="stroke:#333;" points="17 16, 28 27" stroke="black" stroke-width="3.0" fill="none"></polyline>
         </svg>
-        <svg xmlns="http://www.w3.org/2000/svg" style="width:32px; height:32px; position:absolute; left:0px; top:10px;">
+        <svg xmlns="http://www.w3.org/2000/svg" style="width:32px; height:32px; position:absolute; left:30px; top:10px;">
           <polyline style="stroke:#fff;" points="20 23, 15 28, 2 15, 15 2, 28 15, 25 18" stroke="black" stroke-width="3.0" fill="none"></polyline>
           <polyline style="stroke:#fff;" points="17 16, 28 27" stroke="black" stroke-width="3.0" fill="none"></polyline>
         </svg>
+        <div class="__metadoc-header-title" style="position:absolute; left:23px; top:42px;">metadoc</div>
+        <div class="__metadoc-header-title" style="position:absolute; color:#fff; top:40px; left:22px;">metadoc</div>
+        </div>
       </div>
-      <div class="__metadoc-header-title">metadoc</div>
-      <div class="__metadoc-header-title" style="color:#fff; top:43px; left:14px;">metadoc</div>
+
+      <div class="__metadoc-header-container" style="height:64px;">
       <div class="__metadoc-button-container">
         <table>
         <tr>
         <td><span class="span-button-inline font-size-button color-dark" id="btnToggleMode" onclick="toggleMode()">[EDIT]</span></td>
-        <td><span class="span-button-inline font-size-button color-dark" onclick="saveNew()">SAVE-AS</span></td>
-        <td><span class="span-button-inline font-size-button color-dark" onclick="saveOverwrite()">SAVE</span></td>
+        <td>
+          <span class="span-button-inline font-size-button color-dark" onclick="saveOverwrite()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14">
+              <polygon points="6 3, 1 3, 1 13, 11 13, 11 8" stroke="#404040" fill="transparent" stroke-width="1.0" />
+              <polygon points="5 9, 5 7, 11 1, 13 3, 7 9" fill="#404040" />
+            </svg>
+          </span>
+        </td>
         </tr>
         <tr>
         <td><span class="span-button-inline font-size-button color-dark" onclick="setTitle()" >TITLE</span></td>
-        </tr>
-        </table>
-
-        <table>
-        <tr>
-        <td><span class="span-button-inline font-size-button color-dark" onclick="addTable()">table</span></td>
-        <td><span class="span-button-inline font-size-button color-dark" onclick="addLink()">a</span></td>
-        <td><span class="span-button-inline font-size-button color-dark" onclick="convertTag('p')">p</span></td>
-        <td><span class="span-button-inline font-size-button color-dark" onclick="convertTag('div')">div</span></td>
-        <td><span class="span-button-inline font-size-button color-dark" onclick="convertTag('span')">span</span></td>
-        <td><span class="span-button-inline font-size-button color-dark" onclick="multiwrap('li', 'ul')">ul</span></td>
-        <td><span class="span-button-inline font-size-button color-dark" onclick="multiwrap('li', 'ol')">ol</span></td>
-        <td><span class="span-button-inline font-size-button color-dark" onclick="convertTag(prompt('tag type?'))">?</span></td>
-        <!--
-        <td><span class="span-button-inline font-size-button color-dark" onclick="envelope()" >/</span></td>
-        <td><span class="span-button-inline font-size-button color-dark" onclick="createTag()" ></span></td>
-        -->
-        </tr>
-        <tr>
-        <td><span class="span-button-inline font-size-button color-dark" onclick="convertTag('h1')">h1</span></td>
-        <td><span class="span-button-inline font-size-button color-dark" onclick="convertTag('h2')">h2</span></td>
-        <td><span class="span-button-inline font-size-button color-dark" onclick="convertTag('h3')" >h3</span></td>
-        <td><span class="span-button-inline font-size-button color-dark" onclick="convertTag('h4')" >h4</span></td>
-        <td><span class="span-button-inline font-size-button color-dark" onclick="convertTag('h5')" >h5</span></td>
-        <td><span class="span-button-inline font-size-button color-dark" onclick="convertTag('h6')" >h6</span></td>
-        <td><span class="span-button-inline font-size-button color-dark" onclick="convertTag('hr')" >hr</span></td>
-        </tr>
-        </table>
-
-        <table>
-        <tr>
-        <td><span class="span-button-inline font-size-button color-dark" onclick="editUserStyle()" style="text-decoration:underline" >A</span></td>
+        <td>
+          <span class="span-button-inline font-size-button color-dark" onclick="saveNew()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14">
+              <polygon points="6 3, 1 3, 1 13, 11 13, 11 8" stroke="#404040" fill="transparent" stroke-width="1.0" />
+              <polygon points="5 9, 5 7, 11 1, 13 3, 7 9" fill="#404040" />
+            </svg>
+            +
+          </span>
+        </td>
         </tr>
         </table>
       </div>
+      </div>
+
+      <div class="__metadoc-header-container" style="height:64px;">
+      <div class="__metadoc-button-container">
+        <table>
+        <tr>
+        <td><span class="span-button-inline font-size-button color-dark" onclick="convertTag('p')">P</span></td>
+        <td><span class="span-button-inline font-size-button color-dark" onclick="convertTag('div')">DIV</span></td>
+        <td><span class="span-button-inline font-size-button color-dark" onclick="convertTag('span')">SPAN</span></td>
+        <td>
+          <select class="font-size-button" style="background-color:transparent; border:none; color:#7c7c7c; font-weight:bold; font-size:0.7rem;" onchange="convertTag(event.currentTarget.value)">
+            <option value="h1">h1</option>
+            <option value="h2">h2</option>
+            <option value="h3">h3</option>
+            <option value="h4">h4</option>
+            <option value="h5">h5</option>
+            <option value="h6">h6</option>
+          </select>
+        </td>
+        <td><span class="span-button-inline font-size-button color-dark" onclick="convertTag(prompt('tag type?'))">?</span></td>
+        </tr>
+        <tr>
+        <td><span class="span-button-inline font-size-button color-dark" onclick="multiwrap('li', 'ul')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="16">
+              <polygon points="2 2, 4 2, 4 4, 2 4" stroke="#404040" stroke-width="1.0" fill="none"></polygon>
+              <polygon points="2 7, 4 7, 4 9, 2 9" stroke="#404040" stroke-width="1.0" fill="none"></polygon>
+              <polygon points="2 12, 4 12, 4 14, 2 14" stroke="#404040" stroke-width="1.0" fill="none"></polygon>
+              <polyline points="6 3, 12 3" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
+              <polyline points="6 8, 12 8" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
+              <polyline points="6 13, 12 13" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
+            </svg>
+            ul
+          </span></td>
+        <td><span class="span-button-inline font-size-button color-dark" onclick="multiwrap('li', 'ol')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="16">
+              <polygon points="2 2, 4 2, 4 4, 2 4" stroke="#404040" stroke-width="1.0" fill="none"></polygon>
+              <polygon points="2 7, 4 7, 4 9, 2 9" stroke="#404040" stroke-width="1.0" fill="none"></polygon>
+              <polygon points="2 12, 4 12, 4 14, 2 14" stroke="#404040" stroke-width="1.0" fill="none"></polygon>
+              <polyline points="6 3, 12 3" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
+              <polyline points="6 8, 12 8" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
+              <polyline points="6 13, 12 13" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
+            </svg>
+            ol
+          </span></td>
+        <td>
+          <span class="span-button-inline font-size-button color-dark" onclick="addLink()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14">
+              <polyline points="7 5, 10 2, 11 2, 13 4, 13 5, 10 8" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
+              <polyline points="5 10, 10 5" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
+              <polyline points="5 7, 2 10, 2 11, 4 13, 5 13, 8 10" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
+            </svg>
+          </span>
+        </td>
+        <td>
+          <span class="span-button-inline font-size-button color-dark" onclick="addTable()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="14">
+              <polyline points="1 2, 14 2, 14 13, 1 13, 1 2" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
+              <polyline points="2 4, 13 4" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
+              <polyline points="5 4, 5 13" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
+              <polyline points="10 4, 10 13" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
+              <polyline points="2 7, 13 7" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
+              <polyline points="2 10, 13 10" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
+            </svg>
+          </span>
+        </td>
+        <td>
+          <span class="span-button-inline font-size-button color-dark" onclick="editRawCode()">&lt;/&gt;</span>
+        </td>
+        </tr>
+        </table>
+      </div>
+      </div>
+
+      <div class="__metadoc-header-container" style="height:64px;">
+      <div class="__metadoc-button-container">
+        <table>
+        <tr>
+        <td>
+          <span class="span-button-inline font-size-button color-dark" onclick="setStyle('textAlign', 'left')" >
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="12" style="stroke:#404040;">
+              <polyline points="3 4, 12 4" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
+              <polyline points="3 7, 8 7" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
+              <polyline points="3 10, 12 10" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
+            </svg>
+          </span>
+        </td>
+        <td>
+          <span class="span-button-inline font-size-button color-dark" onclick="setStyle('textAlign', 'center')" >
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="12" style="stroke:#404040;">
+              <polyline points="3 4, 12 4" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
+              <polyline points="3 7, 12 7" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
+              <polyline points="3 10, 12 10" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
+            </svg>
+          </span>
+        </td>
+        <td>
+          <span class="span-button-inline font-size-button color-dark" onclick="setStyle('textAlign', 'right')" >
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="12" style="stroke:#404040;">
+              <polyline points="3 4, 12 4" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
+              <polyline points="7 7, 12 7" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
+              <polyline points="3 10, 12 10" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
+            </svg>
+          </span>
+        </td>
+        <td>
+          <span class="span-button-inline font-size-button color-dark" onclick="toggleStyle('verticalAlign', 'super', 'middle');toggleStyle('fontSize','0.15rem', '1.0rem');">A<span style="vertical-align:super; font-size:0.15rem;">x</span></span>
+        </td>
+        <td>
+          <span class="span-button-inline font-size-button color-dark" onclick="toggleStyle('verticalAlign', 'sub', 'middle');toggleStyle('fontSize','0.15rem', '1.0rem');">A<span style="vertical-align:sub; font-size:0.15rem;">x</span></span>
+        </td>
+        </tr>
+        <tr>
+        <td>
+          <span class="span-button-inline font-size-button color-dark" onclick="toggleStyle('fontWeight', 'bold', 'normal')" style="transform:scaleX(1.3); display:inline-block;">B</span>
+        </td>
+        <td>
+          <span class="span-button-inline font-size-button color-dark" onclick="toggleStyle('textDecoration', 'line-through', 'none')" style="text-decoration:line-through;" >&nbsp;S&nbsp;</span>
+        </td>
+        <td>
+          <span class="span-button-inline font-size-button color-dark" onclick="toggleStyle('fontStyle', 'italic', 'normal')" style="font-style:italic;" >I</span>
+        </td>
+        <td>
+          <span class="span-button-inline font-size-button color-dark" onclick="toggleStyle('textDecoration', 'underline', 'none')" style="text-decoration:underline;" >U</span>
+        </td>
+        <td>
+          <span class="span-button-inline font-size-button color-dark" onclick="editStyle()" style="text-decoration:underline" >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="stroke:#404040;">
+              <polyline points="7 2, 2 13" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
+              <polyline points="7 2, 10 9" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
+              <polyline points="4 8, 10 8" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
+              <polyline points="10 11, 14 7" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
+              <polyline points="11 12, 15 8" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
+              <polygon points="6 13, 8 14, 9 12, 9 11, 10 11, 11 12, 11 13, 10 14, 7 14" stroke="#404040" stroke-width="1.0" fill="#404040"></polyline>
+            </svg>
+          </span>
+        </td>
+        </tr>
+        </table>
+      </div>
+      </div>
+
+      <div class="__metadoc-header-container" style="height:64px;">
+      <div class="__metadoc-button-container">
+        <table>
+        <tr>
+        <td>
+          <span class="span-button-inline font-size-button color-dark" onclick="editUserStyle()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="stroke:#404040;">
+              <polyline points="7 2, 2 13" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
+              <polyline points="7 2, 10 9" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
+              <polyline points="4 8, 10 8" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
+              <polyline points="10 11, 14 7" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
+              <polyline points="11 12, 15 8" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
+              <polygon points="6 13, 8 14, 9 12, 9 11, 10 11, 11 12, 11 13, 10 14, 7 14" stroke="#404040" stroke-width="1.0" fill="#404040"></polyline>
+            </svg>
+            CSS
+          </span>
+        </td>
+        </tr>
+        <tr>
+        <td>
+          <span class="span-button-inline font-size-button color-dark" onclick="editUserScript()" >
+            {&nbsp;}
+            <span style="font-size:0.1rem; vertical-align:sub;">JS</span>
+          </span>
+        </td>
+        </tr>
+        </table>
+      </div>
+      </div>
+
     </div>`;
-
-
-
-  let optHtml = `<div id="optionControl" class="__metadoc-option-control">
-    <span id="tagName" style="font-size:x-small; color:#AAA; "></span>
-    <table style="text-align:center;margin-top:3px;" id="optTable">
-      <tr>
-        <td><span onclick="editStyle()" class="span-button-inline color-dark"><b>S</b></span></td>
-        <td><span onclick="moveEl(-1)" class="span-button-inline color-dark"><svg style="width:6px;height:6px;"><polyline points="0,6 6,6 3,0" stroke="rgb(200,200,200)" fill="rgb(200,200,200)" stroke-width="1"></polyline></svg></span></td>
-        <td><span onclick="moveEl(1)" class="span-button-inline color-dark"><svg style="width:6px;height:6px;"><polyline points="0,0 6,0 3,6" stroke="rgb(200,200,200)" fill="rgb(200,200,200)" stroke-width="1"></polyline></svg></span></td>
-        <td><span onclick="deleteEl()" class="span-button-inline color-dark"><svg style="width:10px;height:5px;"><line x1="0" y1="0" x2="5" y2="5" stroke="rgb(200,200,200)" stroke-width="2"/><line x1="5" y1="0" x2="0" y2="5" stroke="rgb(200,200,200)" stroke-width="2"/></svg></span></td>
-        <td><span onclick="unwrap()" class="span-button-inline color-dark">unwrap</span></td>
-      </tr>
-      <tr>
-        <td><span onclick="convertTag('p')" class="span-button-inline color-dark">&lt;p&gt;</span></td>
-        <td><span onclick="convertTag('div')" class="span-button-inline color-dark">&lt;div&gt;</span></td>
-        <td><span onclick="convertTag('span')" class="span-button-inline color-dark">&lt;span&gt;</span></td>
-        <td><span onclick="convertTag(prompt('tag type?'))" class="span-button-inline color-dark">&lt;?&gt;</span></td>
-        <td><span onclick="editRawCode()" class="span-button-inline color-dark">&lt;/&gt;</span></td>
-      </tr>
-      <tr>
-        <td><span onclick="addTagBefore()" class="span-button-inline color-dark"><svg style="width:10px;height:6px;"><polyline points="6,0 0,3 6,6" stroke="rgb(200,200,200)" fill="rgb(200,200,200)" stroke-width="1"></polyline></svg></span></td>
-        <td><span onclick="addTagAfter()" class="span-button-inline color-dark"><svg style="width:10px;height:6px;"><polyline points="0,0 6,3 0,6" stroke="rgb(200,200,200)" fill="rgb(200,200,200)" stroke-width="1"></polyline></svg></span></td>
-      </tr>
-    </table>
-  </div>`;
-
-
-        // <td><span onclick="convertTag(prompt('tag type?'))" class="span-button-inline color-dark">&lt;?&gt;</span></td>
-
 
   let header = DomUtil.createElementFromString(headerHtml);
 
@@ -1184,10 +1353,13 @@ window.addTagBefore = addTagBefore;
 window.deleteEl = deleteEl;
 window.showMultilineEditor = showMultilineEditor;
 window.editUserStyle = editUserStyle;
+window.editUserScript = editUserScript;
 window.setTitle = setTitle;
 window.editRawCode = editRawCode;
 window.unwrap = unwrap;
 window.showImagePalette = showImagePalette;
 window.hideImagePalette = hideImagePalette;
 window.createHeader = createHeader;
+window.setStyle = setStyle;
+window.toggleStyle = toggleStyle;
 

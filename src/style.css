@@ -129,6 +129,8 @@ body {
   font-size: x-small;
   cursor: pointer;
   user-select:none;
+  font-weight: bold;
+  color: #7c7c7c !important;
 }
 
 .span-button-inline:hover {
@@ -173,7 +175,7 @@ body {
   top:0px;
   left:0px;
   right:0px;
-  height:64px;
+  /* height:64px; */
   padding:5px;
   border-bottom: solid 1px #CCC;
   background-color:#fbfbfb;
@@ -185,29 +187,33 @@ body {
   font-size:0.4rem;
   font-weight:bold;
   color: #837373;
-  position: absolute;
+  position: relative;
   left: 15px;
   top: 45px;
 }
 
-.__metadoc-button-container {
-  padding: 5px;
-  position: absolute;
-  left: 100px;
-  top: 2px;
+.__metadoc-header-container {
+  border: none;
+  border-right: solid 1px #FFF;
+  border-bottom: solid 1px #FFF;
+  border-left: solid 1px #CCC;
+  border-top: solid 1px #CCC;
+  background-color: #e3e3e3;
+  display: inline-block;
+  border-radius: 6px;
+  box-sizing: border-box;
+  position: relative;
 }
 
-.__metadoc-button-container button {
-  margin-right: 5px;
+.__metadoc-button-container {
 }
 
 .__metadoc-button-container table {
-  display: inline-block;
-  vertical-align: top;
+  /* display: inline-block; */
+  /* vertical-align: top; */
   /* border: solid 1px #CCC; */
   background-color: #e3e3e3;
   border-radius: 6px;
-  margin-right: 10px;
   border-collapse:separate;
   border-spacing:4px; 
 }

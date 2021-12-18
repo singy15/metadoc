@@ -1,13 +1,4 @@
 
-/*
-* {
-  margin: 0px;
-  padding: 0px;
-  font-size: small;
-}
-*/
-
-
 .m-button {
   outline: none;
   border: none;
@@ -49,58 +40,6 @@
 * {
   outline: none;
 }
-
-/*
-#main {
-  padding: 2px;
-  margin: 5px;
-}
-*/
-
-/*
-#main * {
-  padding: 3px;
-}
-*/
-
-/*
-
-#main table {
-  margin: 5px;
-}
-
-#main div {
-  margin: 5px;
-}
-
-.content, .content * {
-  outline: dotted 1px #CCC;
-}
-
-table {
-  border-collapse: collapse;
-  display: inline-block;
-}
-
-td,th { 
-  border: solid 1px #CCC; 
-  outline: none;
-}
-
-th { background-color: #EEE; }
-
-table,tr {
-  outline: none;
-}
-
-*/
-
-/*
-.content, .content * {
-  outline: dotted 1px #CCC;
-}
-*/
-
 
 #main {
   outline: none;
@@ -209,9 +148,6 @@ body {
 }
 
 .__metadoc-button-container table {
-  /* display: inline-block; */
-  /* vertical-align: top; */
-  /* border: solid 1px #CCC; */
   background-color: #e3e3e3;
   border-radius: 6px;
   border-collapse:separate;

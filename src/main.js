@@ -86,7 +86,6 @@ function insertElement(el) {
 function restoreFocus() {
   event.preventDefault();
   event.stopPropagation();
-  console.log("restoreFocus");
   globalFocused.focus();
   document.getSelection().addRange(document.getSelection().getRangeAt(0));
 }
@@ -135,24 +134,6 @@ function showOptionControl(el) {
   let optHtml = `<div id="optionControl" class="__metadoc-option-control">
     <span id="tagName" style="font-size:x-small; color:#AAA; "></span>
     <table style="text-align:center;margin-top:3px;" id="optTable">
-      <tr>
-        <td><span onclick="editStyle()" class="span-button-inline color-dark"><b>S</b></span></td>
-        <td><span onclick="moveEl(-1)" class="span-button-inline color-dark"><svg style="width:6px;height:6px;"><polyline points="0,6 6,6 3,0" stroke="rgb(200,200,200)" fill="rgb(200,200,200)" stroke-width="1"></polyline></svg></span></td>
-        <td><span onclick="moveEl(1)" class="span-button-inline color-dark"><svg style="width:6px;height:6px;"><polyline points="0,0 6,0 3,6" stroke="rgb(200,200,200)" fill="rgb(200,200,200)" stroke-width="1"></polyline></svg></span></td>
-        <td><span onclick="deleteEl()" class="span-button-inline color-dark"><svg style="width:10px;height:5px;"><line x1="0" y1="0" x2="5" y2="5" stroke="rgb(200,200,200)" stroke-width="2"/><line x1="5" y1="0" x2="0" y2="5" stroke="rgb(200,200,200)" stroke-width="2"/></svg></span></td>
-        <td><span onclick="unwrap()" class="span-button-inline color-dark">unwrap</span></td>
-      </tr>
-      <tr>
-        <td><span onclick="convertTag('p')" class="span-button-inline color-dark">&lt;p&gt;</span></td>
-        <td><span onclick="convertTag('div')" class="span-button-inline color-dark">&lt;div&gt;</span></td>
-        <td><span onclick="convertTag('span')" class="span-button-inline color-dark">&lt;span&gt;</span></td>
-        <td><span onclick="convertTag(prompt('tag type?'))" class="span-button-inline color-dark">&lt;?&gt;</span></td>
-        <td><span onclick="editRawCode()" class="span-button-inline color-dark">&lt;/&gt;</span></td>
-      </tr>
-      <tr>
-        <td><span onclick="addTagBefore()" class="span-button-inline color-dark"><svg style="width:10px;height:6px;"><polyline points="6,0 0,3 6,6" stroke="rgb(200,200,200)" fill="rgb(200,200,200)" stroke-width="1"></polyline></svg></span></td>
-        <td><span onclick="addTagAfter()" class="span-button-inline color-dark"><svg style="width:10px;height:6px;"><polyline points="0,0 6,3 0,6" stroke="rgb(200,200,200)" fill="rgb(200,200,200)" stroke-width="1"></polyline></svg></span></td>
-      </tr>
     </table>
   </div>`;
 
@@ -329,31 +310,6 @@ function saveOver() {
   // document.getElementById("tagName").innerText = globalOver.tagName;
 }
 
-
-function onMouseout() {
-  // event.stopPropagation();
-  // event.target.classList.remove("over");
-  // console.log("onMouseout", event.target);
-}
-
-function onMouseenter() {
-  // event.stopPropagation();
-  // event.target.classList.add("over");
-  // console.log("onMouseenter", event.target);
-}
-
-function onBlur() {
-  // event.stopPropagation();
-  // event.target.classList.remove("over");
-  // console.log("onBlur", event.target);
-}
-
-function onFocus() {
-  // event.stopPropagation();
-  // event.target.classList.add("over");
-  // console.log("onFocus", event.target);
-}
-
 async function writeFile(fileHandle, contents) {
   const writable = await fileHandle.createWritable();
   // await writable.truncate(0);
@@ -430,7 +386,6 @@ function serializeSource() {
   const dp = new DOMParser();
   
   const dom = dp.parseFromString(xs.serializeToString(document), "text/html");
-  console.log(dom);
   // dom.getElementsByTagName("style")[0].remove();
 
   let opt = dom.getElementById("optionControl");
@@ -463,7 +418,6 @@ function serializeSource() {
   let baseScript = null;
   let userScript = null;
   for(var i = 0; i < scripts.length; i++) {
-    console.log(scripts[i]);
     if(!scripts[i].id) {
       baseScript = DomUtil.decodeHtml(scripts[i].innerHTML);
       scripts[i].remove();
@@ -632,10 +586,6 @@ function editStyle() {
 }
 
 function moveEl(dir) {
-  console.log(dir);
-
-    console.debug("foo");
-
   let el = globalFocused;
 
   if((dir < 0) && (el.previousSibling)) {
@@ -652,8 +602,6 @@ function moveEl(dir) {
     let targetEl = el.nextSibling;
     let refEl = el;
     let parentEl = refEl.parentElement;
-
-    console.log("down",targetEl);
 
     // if(parentEl == prevEl.parentElement) {
       targetEl.remove();
@@ -703,7 +651,6 @@ function modified() {
 }
 
 function keydown() {
-  console.log(event);
   if(event.keyCode === 13) {
     event.preventDefault();
     DomUtil.insertElementAtCaretByHtml(`<br />`);
@@ -770,6 +717,20 @@ function setStyle(style, val) {
   }
 
   target.style[style] = val;
+} 
+
+function getStyle(style) {
+  let target = globalFocused;
+
+  if(!target) {
+    return "";
+  }
+
+  if(!target.style[style]) {
+    return "";
+  }
+
+  return target.style[style];
 } 
 
 function toggleStyle(style, val1, val2) {
@@ -1143,6 +1104,9 @@ function createHeader() {
           </select>
         </td>
         <td><span class="span-button-inline font-size-button color-dark" onclick="convertTag(prompt('tag type?'))">?</span></td>
+
+        <td><span class="span-button-inline font-size-button color-dark" onclick="moveEl(-1)"><svg style="width:6px;height:6px;"><polyline points="0,6 6,6 3,0" stroke="#7c7c7c" fill="#7c7c7c" stroke-width="1"></polyline></svg></span></td>
+        <td><span class="span-button-inline font-size-button color-dark" onclick="deleteEl()"><svg style="width:10px;height:5px;"><line x1="0" y1="0" x2="5" y2="5" stroke="#7c7c7c" stroke-width="2"/><line x1="5" y1="0" x2="0" y2="5" stroke="#7c7c7c" stroke-width="2"/></svg></span></td>
         </tr>
         <tr>
         <td><span class="span-button-inline font-size-button color-dark" onclick="multiwrap('li', 'ul')">
@@ -1191,6 +1155,8 @@ function createHeader() {
         <td>
           <span class="span-button-inline font-size-button color-dark" onclick="editRawCode()">&lt;/&gt;</span>
         </td>
+        <td><span class="span-button-inline font-size-button color-dark" onclick="moveEl(1)"><svg style="width:6px;height:6px;"><polyline points="0,0 6,0 3,6" stroke="#7c7c7c" fill="#7c7c7c" stroke-width="1"></polyline></svg></span></td>
+        <td><span class="span-button-inline font-size-button color-dark" onclick="unwrap()">POP</span></td>
         </tr>
         </table>
       </div>
@@ -1233,6 +1199,9 @@ function createHeader() {
         <td>
           <span class="span-button-inline font-size-button color-dark" onclick="toggleStyle('verticalAlign', 'sub', 'middle');toggleStyle('fontSize','0.15rem', '1.0rem');">A<span style="vertical-align:sub; font-size:0.15rem;">x</span></span>
         </td>
+        <td>
+          <span class="span-button-inline font-size-button color-dark" onclick="setStyle('fontSize', prompt('Input font size (ex. 1.2rem)', getStyle('fontSize')));"><span style="">A</span><span style="vertical-align:baseline; display:inline-block; transform:scale(0.6);">A</span></span>
+        </td>
         </tr>
         <tr>
         <td>
@@ -1246,6 +1215,9 @@ function createHeader() {
         </td>
         <td>
           <span class="span-button-inline font-size-button color-dark" onclick="toggleStyle('textDecoration', 'underline', 'none')" style="text-decoration:underline;" >U</span>
+        </td>
+        <td>
+          <span class="span-button-inline font-size-button color-dark" onclick="" style="" ><input type="color" id="colorpicker" onchange="setStyle('color', document.getElementById('colorpicker').value)" style="width:25px; height:16px; padding:0px;"/></span>
         </td>
         <td>
           <span class="span-button-inline font-size-button color-dark" onclick="editStyle()" style="text-decoration:underline" >
@@ -1361,5 +1333,6 @@ window.showImagePalette = showImagePalette;
 window.hideImagePalette = hideImagePalette;
 window.createHeader = createHeader;
 window.setStyle = setStyle;
+window.getStyle = getStyle;
 window.toggleStyle = toggleStyle;
 

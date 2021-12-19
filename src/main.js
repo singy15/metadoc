@@ -1110,23 +1110,14 @@ function createHeader() {
         <tr>
         <td>
           <span class="span-button-inline font-size-button color-dark" onclick="editUserStyle()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="stroke:#404040;">
-              <polyline points="7 2, 2 13" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
-              <polyline points="7 2, 10 9" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
-              <polyline points="4 8, 10 8" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
-              <polyline points="10 11, 14 7" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
-              <polyline points="11 12, 15 8" stroke="#404040" stroke-width="1.0" fill="none"></polyline>
-              <polygon points="6 13, 8 14, 9 12, 9 11, 10 11, 11 12, 11 13, 10 14, 7 14" stroke="#404040" stroke-width="1.0" fill="#404040"></polyline>
-            </svg>
-            CSS
+            { CSS }
           </span>
         </td>
         </tr>
         <tr>
         <td>
           <span class="span-button-inline font-size-button color-dark" onclick="editUserScript()" >
-            {&nbsp;}
-            <span style="font-size:0.1rem; vertical-align:sub;">JS</span>
+            { JS }
           </span>
         </td>
         </tr>

@@ -962,7 +962,9 @@ function createHeader() {
         <td><span class="span-button-inline font-size-button color-dark" onclick="convertTag('div')">DIV</span></td>
         <td><span class="span-button-inline font-size-button color-dark" onclick="convertTag('span')">SPAN</span></td>
         <td>
-          <select class="font-size-button" style="background-color:transparent; border:none; color:#7c7c7c; font-weight:bold; font-size:0.7rem;" onchange="convertTag(event.currentTarget.value)">
+          <span class="span-button-inline font-size-button color-dark">h
+          <select id="__metadoc-heading" class="font-size-button" style="background-color:transparent; border:none; color:#7c7c7c; font-weight:bold; font-size:0.7rem;" onchange="createHeading(event.currentTarget.value)" value="">
+            <option value="">&nbsp;</option>
             <option value="h1">h1</option>
             <option value="h2">h2</option>
             <option value="h3">h3</option>
@@ -970,6 +972,7 @@ function createHeader() {
             <option value="h5">h5</option>
             <option value="h6">h6</option>
           </select>
+          </span>
         </td>
         <td><span class="span-button-inline font-size-button color-dark" onclick="convertTag(prompt('tag type?'))">?</span></td>
 
@@ -1113,11 +1116,21 @@ function createHeader() {
             { CSS }
           </span>
         </td>
+        <td>
+          <span class="span-button-inline font-size-button color-dark" onclick="importFromDoc()" >
+            IMPORT
+          </span>
+        </td>
         </tr>
         <tr>
         <td>
           <span class="span-button-inline font-size-button color-dark" onclick="editUserScript()" >
             { JS }
+          </span>
+        </td>
+        <td>
+          <span class="span-button-inline font-size-button color-dark" onclick="exportHtml()" >
+            EXPORT
           </span>
         </td>
         </tr>
@@ -1132,6 +1145,13 @@ function createHeader() {
   document.body.appendChild(header);
 }
 
+function createHeading(head) {
+  if(head !== "" && globalFocused) {
+    convertTag(head);
+  }
+  document.getElementById("__metadoc-heading").value = "";
+}
+
 createHeader();
 
 document.getElementById("main").addEventListener("keydown", function(e) {
@@ -1141,6 +1161,112 @@ document.getElementById("main").addEventListener("keydown", function(e) {
 document.getElementById("main").addEventListener("click", function(e) {
   sanitizeDocument();
 });
+
+async function importFromDoc() {
+  var html = (await openFile()).text;
+
+  const dp = new DOMParser();
+  const dom = dp.parseFromString(html, "text/html");
+
+  let main = (dom.querySelectorAll("#main")[0]).innerHTML;
+  console.log(main);
+
+  let styles = dom.querySelectorAll("style");
+  var userStyle = "";
+  for(var i = 0; i < styles.length; i++) {
+    if(styles[i].id === "userStyle") {
+      userStyle = DomUtil.decodeHtml(styles[i].innerHTML);
+      console.log(userStyle);
+    }
+  }
+
+  let scripts = dom.querySelectorAll("script");
+  let userScript = "";
+  for(var i = 0; i < scripts.length; i++) {
+    if(scripts[i].id === "userScript") {
+      userScript = DomUtil.decodeHtml(scripts[i].innerHTML);
+      console.log(userScript);
+    }
+  }
+
+  document.getElementById("main").innerHTML = main;
+  document.getElementById("userStyle").innerHTML = userStyle;
+  document.getElementById("userScript").innerHTML = userScript;
+}
+
+async function exportHtml() {
+  const xs = new XMLSerializer();
+  const dp = new DOMParser();
+  
+  const dom = dp.parseFromString(xs.serializeToString(document), "text/html");
+  // dom.getElementsByTagName("style")[0].remove();
+
+  let opt = dom.getElementById("optionControl");
+  if(opt) { 
+    opt.remove();
+  }
+  let header = dom.getElementById("header");
+  if(header) {
+    header.remove();
+  }
+
+  let els = dom.querySelectorAll("#main *");
+  for(var i = 0; i < els.length; i++) {
+    removeOrAttributeDeleteClass(els[i], "over");
+    removeOrAttributeDeleteClass(els[i], "focused");
+
+    if(els[i].tagName === "STYLE" && els[i].id !== "userStyle") {
+      els[i].remove();
+    }
+  }
+
+  let styles = dom.querySelectorAll("style");
+  for(var i = 0; i < styles.length; i++) {
+    if(styles[i].id !== "userStyle") {
+      styles[i].remove();
+    }
+  }
+
+  let scripts = dom.querySelectorAll("script");
+  let baseScript = null;
+  let userScript = null;
+  for(var i = 0; i < scripts.length; i++) {
+    if(!scripts[i].id) {
+      baseScript = DomUtil.decodeHtml(scripts[i].innerHTML);
+      scripts[i].remove();
+    } else if(scripts[i].id === "userScript") {
+      userScript = DomUtil.decodeHtml(scripts[i].innerHTML);
+      scripts[i].remove();
+    }
+  }
+
+  dom.getElementById("main").removeAttribute("contenteditable");
+
+  let plainHtml = xs.serializeToString(dom)
+    .replace('<\/html>',
+      "\n"
+      // + `<style>` + document.getElementsByTagName("style")[0].innerHTML + `<\/style>`
+      // + "\n"
+      + `<script type="text/javascript" id="userScript">` + userScript + `<\/script>`
+      + "\n"
+      + `<\/html>`);
+
+
+  if (!nativeFSSupported) {
+    alert("nfs not supported");
+    return;
+  }
+
+  const fsHandle = await saveFile(
+    plainHtml,
+    null
+  );
+  if (fsHandle) {
+    writeLog("saved");
+  } else {
+    writeLog("failed to save");
+  }
+}
 
 /**
  * Export
@@ -1184,4 +1310,8 @@ window.createHeader = createHeader;
 window.setStyle = setStyle;
 window.getStyle = getStyle;
 window.toggleStyle = toggleStyle;
+window.createHeading = createHeading;
+window.openFile = openFile;
+window.importFromDoc = importFromDoc;
+window.exportHtml = exportHtml;
 

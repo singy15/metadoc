@@ -122,6 +122,10 @@ function showOptionControl(el) {
   opt.style.top = bound.top - 50 + "px";
   opt.style.left = bound.left + bound.width + "px";
 
+  let header = document.getElementById("header");
+  opt.style.top = header.getBoundingClientRect().height + 5 + "px";
+  opt.style.left = 5 + "px";
+
   let tagname = document.getElementById("tagName");
   tagname.innerHTML = "";
   let pankuzuElems = getPankuzuList(el);
@@ -925,7 +929,7 @@ function createHeader() {
       </div>
 
       <div class="__metadoc-header-container" style="height:64px;">
-      <div class="__metadoc-button-container">
+      <div class="__metadoc-button-container" style="height:64px;">
         <table>
         <tr>
         <td><span class="span-button-inline font-size-button color-dark" id="btnToggleMode" onclick="toggleMode()">[EDIT]</span></td>
@@ -955,7 +959,7 @@ function createHeader() {
       </div>
 
       <div class="__metadoc-header-container" style="height:64px;">
-      <div class="__metadoc-button-container">
+      <div class="__metadoc-button-container" style="height:64px;">
         <table>
         <tr>
         <td><span class="span-button-inline font-size-button color-dark" onclick="convertTag('p')">P</span></td>
@@ -1034,7 +1038,7 @@ function createHeader() {
       </div>
 
       <div class="__metadoc-header-container" style="height:64px;">
-      <div class="__metadoc-button-container">
+      <div class="__metadoc-button-container" style="height:64px;">
         <table>
         <tr>
         <td>
@@ -1108,7 +1112,7 @@ function createHeader() {
       </div>
 
       <div class="__metadoc-header-container" style="height:64px;">
-      <div class="__metadoc-button-container">
+      <div class="__metadoc-button-container" style="height:64px;">
         <table>
         <tr>
         <td>

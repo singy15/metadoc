@@ -1125,6 +1125,11 @@ function createHeader() {
             IMPORT
           </span>
         </td>
+        <td>
+          <span class="span-button-inline font-size-button color-dark" onclick="pastePlain()" >
+            PASTE
+          </span>
+        </td>
         </tr>
         <tr>
         <td>
@@ -1147,6 +1152,59 @@ function createHeader() {
   let header = DomUtil.createElementFromString(headerHtml);
 
   document.body.appendChild(header);
+
+  function getClipBoardText(e){
+    if (!e.clipboardData 
+      || !e.clipboardData.types
+      || (e.clipboardData.types.length != 1)
+      || (e.clipboardData.types[0] != "Files")) {
+
+      console.log(e);
+      e.preventDefault();
+
+      var clipboardData = e.clipboardData;
+
+      if(clipboardData != null){
+        window.x = clipboardData;
+        var html = clipboardData.getData("text/html");
+        var xml = clipboardData.getData("text/xml");
+        var text = clipboardData.getData("text/plain");
+
+        console.log(html);
+        console.log(xml);
+        console.log(text);
+        
+        var span = DomUtil.createElementFromString('<span></span>');
+        span.innerText = text;
+        DomUtil.insertElementAtCaret(span);
+
+      }
+
+      return true;
+    }
+  }
+
+  // document.addEventListener("paste" , getClipBoardText);
+
+}
+
+function pastePlain() {
+  if(navigator.clipboard){
+    navigator.clipboard.readText()
+    .then(function(text){
+      console.log(text);
+      // DomUtil.insertTextAtCaret(text);
+      var span = DomUtil.createElementFromString('<span></span>');
+      span.innerText = text;
+      span.innerHTML = span.innerHTML.replaceAll(' ', '&nbsp;');
+      // var span = DomUtil.createElementFromString('<span><![CDATA[' +text+ ']]></span>');
+      DomUtil.insertElementAtCaret(span);
+      globalFocused = span;
+      unwrap();
+
+      //   globalFocused.textContent = text;
+    });
+  }
 }
 
 function createHeading(head) {
@@ -1318,4 +1376,5 @@ window.createHeading = createHeading;
 window.openFile = openFile;
 window.importFromDoc = importFromDoc;
 window.exportHtml = exportHtml;
+window.pastePlain = pastePlain;
 

@@ -79,6 +79,19 @@ body {
   filter: invert(1);
 }
 
+.span-button-inline2 {
+  font-size: x-small;
+  cursor: pointer;
+  user-select:none;
+  font-weight: bold;
+  color: #7c7c7c !important;
+  display: inline-block;
+}
+
+.span-button-inline2:hover {
+  filter: invert(1);
+}
+
 .color-dark {
   color: #555;
 }

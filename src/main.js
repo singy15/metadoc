@@ -135,7 +135,8 @@ function showOptionControl(el) {
     }
     let pel = document.createElement("span");
     pel.innerText = x.tagName;
-    pel.classList.add("span-button-inline");
+    pel.classList.add("span-button-inline2");
+    pel.style.display = "inline-block";
     pel.addEventListener("click", function(e) {
       setFocus(x);
     });

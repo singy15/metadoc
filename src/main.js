@@ -12,12 +12,13 @@ import DomUtil from './dom-util.js';
 
 let globalOverwriteTimeout = null;
 let globalFSHandle;
-let globalFocused;
+window.globalFocused = null;
 let globalSelection;
 let globalEditMode = true;
 let globalOver;
 let globalMain = document.getElementById("main");
 let globalHiddenOptionControl = null;
+let globalOutlineUpdateTimeout = null;
 
 /*
  * utilities
@@ -630,6 +631,11 @@ function modified() {
     main.appendChild(DomUtil.createElementFromString("<p><br /></p>"));
     main.children[0].focus();
   }
+
+  if(globalOverwriteTimeout) {
+    clearTimeout(globalOverwriteTimeout);
+  }
+  globalOverwriteTimeout = setTimeout(updateOutline, 1000);
 }
 
 function keydown() {
@@ -1143,9 +1149,38 @@ function createHeader() {
             EXPORT
           </span>
         </td>
+        <td>
+          <span class="span-button-inline font-size-button color-dark" onclick="toggleOutline()" >
+            OUTLINE
+          </span>
+        </td>
+        <td>
+          <span class="span-button-inline font-size-button color-dark" onclick="showClassEdit()" >
+            CLASS
+          </span>
+        </td>
         </tr>
         </table>
       </div>
+      </div>
+
+      <!-- outline -->
+      <div style="position:fixed; top:115px; bottom:5px; left:5px; width:250px; background-color:#EEE; border:solid 1px #CCC; display:none;" id="outline">
+        <div id="outline-content" style="position:absolute; left:0px; top:0px; bottom:0px; right:0px; padding:5px; background-color:#DDD; overflow:auto; font-size:12px; white-space:nowrap;">
+        </div>
+      </div>
+
+      <!-- class edit -->
+      <div style="position:fixed; top:150px; left:5px; background-color:#FFF; border:solid 1px #CCC; border-radius:10px; padding:10px; display:none; font-size:12px;" id="class-edit">
+        <input type="text" id="cur-classes" spellcheck="false" autocomplete="off" style="width:300px;" readonly />
+        <br>
+        <input type="text" id="class-input" list="classes" spellcheck="false" autocomplete="off" placeholder="Input class name" style="width:150px;" />
+        <button onclick="addClass()">ADD</button>
+        <button onclick="removeClass()">REMOVE</button>
+        <datalist id="classes">
+        </datalist>
+        <br>
+        <button onclick="closeClassEdit()">CLOSE</button>
       </div>
 
     </div>`;
@@ -1331,6 +1366,95 @@ async function exportHtml() {
   }
 }
 
+function toggleOutline() {
+  let outline = document.getElementById("outline");
+  if(outline.style.display === "none") {
+    showOutline();
+  } else {
+    closeOutline();
+  }
+}
+
+function updateOutline() {
+  let outline = document.getElementById("outline");
+  let outlineContent = document.getElementById("outline-content");
+
+  // clear outline contents
+  outlineContent.innerHTML = "";
+
+  // create outline contents
+  [...document.querySelectorAll("h1,h2,h3,h4,h5,h6")]
+  .map(h => {
+    let level = parseInt(h.tagName.substring(1), 10) - 1;
+    let entry = DomUtil.createElementFromString(
+      `<span style="margin-left:${level*10}px; cursor:pointer;"><span style="font-size:0.7em">${h.tagName.toLowerCase()}&nbsp;</span>${h.innerText.substring(0,15)}</span>`)
+    outlineContent.appendChild(entry);
+    entry.addEventListener('click', () => { h.scrollIntoView(); });
+    outlineContent.appendChild(DomUtil.createElementFromString(
+      `<br/>`));
+  });
+}
+
+function showOutline() {
+  let outline = document.getElementById("outline");
+
+  updateOutline();
+
+  outline.style.display = "block";
+}
+
+function closeOutline() {
+  let outline = document.getElementById("outline");
+  outline.style.display = "none";
+}
+
+function showClassEdit() {
+  let classEdit = document.getElementById("class-edit");
+  let curClasses = document.getElementById("cur-classes");
+  let classes = document.getElementById("classes");
+  let classInput = document.getElementById("class-input");
+
+  curClasses.value = [...globalFocused.classList].join(" ");
+
+  classes.innerHTML = "";
+  [...document.styleSheets[0].cssRules]
+    .filter(x => (x.selectorText + " ").match("(\\..+?)[ >]"))
+    .map(x => (x.selectorText + " ").match("(\\..+?)[ >]")[0].trim().replaceAll(".",""))
+    .map(x => {
+      classes.appendChild(DomUtil.createElementFromString(
+        `<option value="${x}"/>`));
+    });
+
+  classInput.value = "";
+  
+  classEdit.style.display = "block";
+}
+
+function closeClassEdit() {
+  let classEdit = document.getElementById("class-edit");
+  
+  classEdit.style.display = "none";
+}
+
+function addClass() {
+  let classInput = document.getElementById("class-input");
+  let curClasses = document.getElementById("cur-classes");
+
+  globalFocused.classList.remove(classInput.value);
+  globalFocused.classList.add(classInput.value);
+
+  curClasses.value = [...globalFocused.classList].join(" ");
+}
+
+function removeClass() {
+  let classInput = document.getElementById("class-input");
+  let curClasses = document.getElementById("cur-classes");
+
+  globalFocused.classList.remove(classInput.value);
+
+  curClasses.value = [...globalFocused.classList].join(" ");
+}
+
 /**
  * Export
  */
@@ -1378,4 +1502,11 @@ window.openFile = openFile;
 window.importFromDoc = importFromDoc;
 window.exportHtml = exportHtml;
 window.pastePlain = pastePlain;
+window.toggleOutline = toggleOutline;
+window.showOutline = showOutline;
+window.closeOutline = closeOutline;
+window.showClassEdit = showClassEdit;
+window.closeClassEdit = closeClassEdit;
+window.addClass = addClass;
+window.removeClass = removeClass;
 
